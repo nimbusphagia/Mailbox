@@ -3,28 +3,31 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import { Form } from "react-router-dom";
+import { Modal } from "@/components/ui/modal";
 
 export function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Form
-        className="w-full max-w-sm"
-      >
-        <Title title="Login" />
-        <FieldGroup>
-          <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input id="email" type="email" placeholder="you@example.com" />
-          </Field>
+    <div className=" flex items-center justify-center min-h-screen">
+      <Modal>
+        <Form
+        >
+          <Title title="Login" />
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input id="email" type="email" placeholder="you@example.com" />
+            </Field>
 
-          <Field>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <Input id="password" type="password" />
-          </Field>
+            <Field>
+              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <Input id="password" type="password" />
+            </Field>
 
-          <Button type="submit">Login</Button>
-        </FieldGroup>
-      </Form>
+            <Button type="submit">Login</Button>
+          </FieldGroup>
+        </Form>
+
+      </Modal>
     </div>
   )
 }
