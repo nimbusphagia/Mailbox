@@ -166,7 +166,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-bg3 text-bg3;
+    @apply bg-bg4 text-bg3;
   }
   html {
     @apply font-jet;

@@ -4,9 +4,9 @@ type Props = {
 }
 export function Title({ title }: Props) {
   return (
-    <div className="bg-fg3 w-fit m-auto px-[1rem] py-[0.2rem] rounded-xs">
+    <div className="w-fit m-auto px-[1rem] py-[0.2rem]">
       <h1
-        className="text-2xl font-bold text-bg4"
+        className="text-2xl font-bold "
       >{title}</h1>
     </div>
   )
