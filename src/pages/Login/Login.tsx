@@ -7,19 +7,25 @@ import { RootLayout } from "@/layouts/RootLayout/RootLayout";
 
 export function LoginPage() {
   return (
-    <RootLayout route="login" message="New to MailBox? Create a new account" redirect="/signup">
+    <RootLayout
+      route="login"
+      footerMessage="Don't have an account yet? "
+      footerLink={{
+        src: "/signup",
+        message: "Signup"
+      }}>
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
-          className=" bg-bg4 px-9 pt-8 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-6 text-fg1 m-auto "
+          className=" bg-bg4 px-12 pt-7 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-4 text-fg1 m-auto "
         >
           <Logo />
-          <FieldGroup className="max-w-[95%] m-auto ">
-            <Field orientation="horizontal" >
+          <FieldGroup className="w-full m-auto ">
+            <Field orientation="horizontal" className="w-[90%] m-auto">
               <FieldLabel htmlFor="text">Username</FieldLabel>
               <Input id="username" type="text" placeholder="@your_username" />
             </Field>
 
-            <Field orientation="horizontal">
+            <Field orientation="horizontal" className="w-[90%] m-auto">
               <FieldLabel htmlFor="password">Password</FieldLabel>
               <Input id="password" type="password" placeholder="*********" />
             </Field>
@@ -29,6 +35,6 @@ export function LoginPage() {
 
       </div>
 
-    </RootLayout>
+    </RootLayout >
   )
 }

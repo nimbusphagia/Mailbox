@@ -2,33 +2,71 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form } from "react-router-dom";
-import { Logo } from "@/components/ui/logo";
 import { RootLayout } from "@/layouts/RootLayout/RootLayout";
+import { LogoVar1 } from "@/components/ui/logo2";
 
 export function SignupPage() {
   return (
-    <RootLayout route="Create">
+    <RootLayout
+      route="Signup"
+      footerMessage="Already have an account? "
+      footerLink={{
+        src: "/login",
+        message: "Login"
+      }}>
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
-          className=" bg-bg4 px-9 pt-8 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-6 text-fg1 m-auto "
+          className=" bg-bg4 px-7 pt-9 pb-5 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-8 text-fg1 m-auto "
         >
-          <Logo />
-          <FieldGroup className="max-w-[95%] m-auto ">
-            <Field orientation="horizontal" >
-              <FieldLabel htmlFor="text">Email</FieldLabel>
-              <Input id="username" type="text" placeholder="@your_username" />
+          <LogoVar1 />
+          <FieldGroup className="w-full m-auto gap-4">
+
+            <Field orientation="horizontal" className="w-[90%] m-auto">
+              <FieldLabel htmlFor="name">Full Name</FieldLabel>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Mary Sue"
+                required />
             </Field>
 
-            <Field orientation="horizontal">
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" placeholder="*********" />
+            <Field orientation="horizontal" className="w-[90%] m-auto">
+              <FieldLabel htmlFor="username">Username</FieldLabel>
+              <Input
+                id="username"
+                type="text"
+                placeholder="@your_username"
+                required />
             </Field>
-            <Button type="submit" className="self-end px-7 mt-2">Login</Button>
+
+
+            <Field orientation="horizontal" className="w-[90%] m-auto">
+              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <Input
+                id="password"
+                type="password"
+                placeholder="*********"
+                required />
+            </Field>
+
+            <Field orientation="horizontal" className="w-[90%] m-auto">
+              <FieldLabel
+                htmlFor="confirm"
+              >Confirm password
+              </FieldLabel>
+              <Input
+                id="confirm"
+                type="password"
+                placeholder="*********"
+                required />
+            </Field>
+
+            <Button type="submit" className="self-end px-7 mt-2">signup</Button>
           </FieldGroup>
         </Form>
 
       </div>
 
-    </RootLayout>
+    </RootLayout >
   )
 }
