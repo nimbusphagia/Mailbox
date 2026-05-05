@@ -7,21 +7,21 @@ import { RootLayout } from "@/layouts/RootLayout/RootLayout";
 
 export function LoginPage() {
   return (
-    <RootLayout route="login">
+    <RootLayout route="login" message="New to MailBox? Create a new account" redirect="/signup">
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
-          className=" bg-bg4 px-9 pt-8 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-6 text-fg1 m-auto mb-40"
+          className=" bg-bg4 px-9 pt-8 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-6 text-fg1 m-auto "
         >
           <Logo />
           <FieldGroup className="max-w-[95%] m-auto ">
             <Field orientation="horizontal" >
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="email" placeholder="you@example.com" />
+              <FieldLabel htmlFor="text">Username</FieldLabel>
+              <Input id="username" type="text" placeholder="@your_username" />
             </Field>
 
             <Field orientation="horizontal">
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" />
+              <Input id="password" type="password" placeholder="*********" />
             </Field>
             <Button type="submit" className="self-end px-7 mt-2">Login</Button>
           </FieldGroup>
