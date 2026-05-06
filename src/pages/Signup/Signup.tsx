@@ -4,20 +4,21 @@ import { Button } from "@/components/ui/button";
 import { Form, useActionData } from "react-router-dom";
 import { RootLayout } from "@/layouts/RootLayout/RootLayout";
 import { LogoVar1 } from "@/components/ui/logo2";
+import type { ErrorMessage } from "@/lib/utils";
 
 export function SignupPage() {
-  const actionData = useActionData() as { error: string } | undefined;
+  const actionData = useActionData() as ErrorMessage | undefined;
 
   return (
     <RootLayout
       route="Signup"
       color="purple"
-      rMessage="Already have an account? "
+      right={{ message: "Already have an account? " }}
       rLink={{
         src: "/login",
         message: "Login"
       }}
-      lMessage={actionData?.error}
+      left={{ message: actionData?.error ?? "", color: "red" }}
     >
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form

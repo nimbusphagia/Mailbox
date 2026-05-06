@@ -5,12 +5,16 @@ type RedLink = {
   message: string,
   src: string,
 }
+type Message = {
+  message: string,
+  color?: "red" | "blue" | "green" | "purple" | "black",
+}
 type Props = {
   route: string,
   color: string,
-  rMessage?: string,
+  right?: Message,
   rLink?: RedLink,
-  lMessage?: string,
+  left?: Message,
 }
 const bgMap: Record<string, string> = {
   red: "bg-red-dark/70",
@@ -19,7 +23,14 @@ const bgMap: Record<string, string> = {
   purple: "bg-purple-dark/70",
   black: "bg-fg0/70",
 };
-export function RootLayout({ children, route, color, rMessage = "", rLink, lMessage = "" }: PropsWithChildren<Props>) {
+const colorMap: Record<string, string> = {
+  red: "text-red-dark/65",
+  blue: "text-blue-dark/65",
+  green: "text-green-dark/65",
+  purple: "text-purple-dark/65",
+  black: "text-fg0/65",
+};
+export function RootLayout({ children, route, color, right, rLink, left }: PropsWithChildren<Props>) {
   return (
     <div className="w-screen h-screen grid grid-rows-[1fr_25px] overflow-hidden">
       {children}
@@ -28,13 +39,13 @@ export function RootLayout({ children, route, color, rMessage = "", rLink, lMess
           <div className={`${bgMap[color]} text-bg3 w-20 h-full  flex items-center justify-center`}>
             <p className="uppercase">{route}</p>
           </div>
-          <div className="flex-1 justify-self-center text-red-dark/65 text-[0.8em]">
-            <p className=" w-fit">{lMessage}</p>
+          <div className={`flex-1 justify-self-center ${colorMap[left?.color ?? "black"]} text-[0.8em]`}>
+            <p className=" w-fit">{left?.message}</p>
           </div>
         </div>
         <div className="text-fg2 text-[0.85em] font-semibold flex items-center justify-center px-3">
           <p>
-            {rMessage}
+            {right?.message}
             {rLink &&
               <Link
                 to={rLink.src}

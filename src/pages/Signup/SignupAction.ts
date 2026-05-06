@@ -2,20 +2,20 @@ import { redirect } from "react-router-dom";
 import api from "@/lib/api";
 import { RegisterSchema } from "@/lib/schemas/auth.schema";
 import type { ActionFunctionArgs } from "react-router-dom";
-
-export type SignupActionResult = { error: string } | Response;
+import type { ActionResult } from "@/lib/utils";
+import { handleAxiosError, SafeParseForm } from "@/lib/utils";
 
 export async function SignupAction({
   request,
-}: ActionFunctionArgs): Promise<SignupActionResult> {
+}: ActionFunctionArgs): Promise<ActionResult> {
   const data = await request.formData();
-  const result = RegisterSchema.safeParse(Object.fromEntries(data));
-
-  if (!result.success) {
-    return { error: "Error: " + result.error.issues[0].message };
+  const result = SafeParseForm(RegisterSchema, data);
+  if ("error" in result) return result;
+  const { confirmPassword, ...payload } = result;
+  try {
+    await api.post("/auth/signup", payload);
+  } catch (err) {
+    return handleAxiosError(err);
   }
-
-  const { confirmPassword, ...payload } = result.data;
-  await api.post("/auth/signup", payload);
   return redirect("/login?registered=true");
 }

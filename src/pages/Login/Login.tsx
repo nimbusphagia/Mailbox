@@ -1,35 +1,52 @@
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form } from "react-router-dom";
+import { Form, useActionData } from "react-router-dom";
 import { Logo } from "@/components/ui/logo";
 import { RootLayout } from "@/layouts/RootLayout/RootLayout";
+import type { ErrorMessage } from "@/lib/utils";
 
 export function LoginPage() {
+  const actionData = useActionData() as ErrorMessage | undefined;
   return (
     <RootLayout
       route="login"
       color="black"
-      rMessage="Don't have an account yet? "
+      right={{ message: "Don't have an account yet? " }}
       rLink={{
         src: "/signup",
         message: "Signup",
-      }
-      }>
+      }}
+      left={{ message: actionData?.error ?? "", color: "red" }}
+    >
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
           className=" bg-bg4 px-12 pt-7 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-4 text-fg1 m-auto "
+          method="post"
+          action=""
         >
           <Logo />
           <FieldGroup className="w-full m-auto ">
             <Field orientation="horizontal" className="w-[90%] m-auto">
-              <FieldLabel htmlFor="text">Username</FieldLabel>
-              <Input id="username" type="text" placeholder="@your_username" />
+              <FieldLabel htmlFor="username">Username</FieldLabel>
+              <Input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="@your_username"
+                required
+              />
             </Field>
 
             <Field orientation="horizontal" className="w-[90%] m-auto">
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" placeholder="*********" />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="*********"
+                required
+              />
             </Field>
             <Button type="submit" className="self-end px-7 mt-2">Login</Button>
           </FieldGroup>
