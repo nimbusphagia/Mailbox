@@ -1,21 +1,28 @@
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form } from "react-router-dom";
+import { Form, useActionData } from "react-router-dom";
 import { RootLayout } from "@/layouts/RootLayout/RootLayout";
 import { LogoVar1 } from "@/components/ui/logo2";
 
 export function SignupPage() {
+  const actionData = useActionData() as { error: string } | undefined;
+
   return (
     <RootLayout
       route="Signup"
-      footerMessage="Already have an account? "
-      footerLink={{
+      color="purple"
+      rMessage="Already have an account? "
+      rLink={{
         src: "/login",
         message: "Login"
-      }}>
+      }}
+      lMessage={actionData?.error}
+    >
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
+          method="post"
+          action=""
           className=" bg-bg4 px-7 pt-9 pb-5 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-8 text-fg1 m-auto "
         >
           <LogoVar1 />
@@ -25,15 +32,18 @@ export function SignupPage() {
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
               <Input
                 id="name"
+                name="name"
                 type="text"
-                placeholder="Mary Sue"
-                required />
+                placeholder="Your Name"
+                required
+              />
             </Field>
 
             <Field orientation="horizontal" className="w-[90%] m-auto">
               <FieldLabel htmlFor="username">Username</FieldLabel>
               <Input
                 id="username"
+                name="username"
                 type="text"
                 placeholder="@your_username"
                 required />
@@ -44,6 +54,7 @@ export function SignupPage() {
               <FieldLabel htmlFor="password">Password</FieldLabel>
               <Input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="*********"
                 required />
@@ -56,6 +67,7 @@ export function SignupPage() {
               </FieldLabel>
               <Input
                 id="confirm"
+                name="confirmPassword"
                 type="password"
                 placeholder="*********"
                 required />

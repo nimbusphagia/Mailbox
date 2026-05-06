@@ -9,11 +9,13 @@ export function LoginPage() {
   return (
     <RootLayout
       route="login"
-      footerMessage="Don't have an account yet? "
-      footerLink={{
+      color="black"
+      rMessage="Don't have an account yet? "
+      rLink={{
         src: "/signup",
-        message: "Signup"
-      }}>
+        message: "Signup",
+      }
+      }>
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
           className=" bg-bg4 px-12 pt-7 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-4 text-fg1 m-auto "
