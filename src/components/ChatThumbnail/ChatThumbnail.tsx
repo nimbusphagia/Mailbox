@@ -1,6 +1,6 @@
 import type { Message } from "@/lib/schemas/message.schema"
-import { Avatar } from "./avatar"
-import { AvatarImage } from "./avatar"
+import { Avatar } from "../ui/avatar"
+import { AvatarImage } from "../ui/avatar"
 
 type ThumbnailProps = {
   imgUrl: string,

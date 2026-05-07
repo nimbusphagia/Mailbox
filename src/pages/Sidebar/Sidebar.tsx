@@ -3,7 +3,7 @@ import { AvatarImage } from "@/components/ui/avatar";
 import { Avatar } from "@/components/ui/avatar";
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
-import { ChatThumbnail } from "@/components/ui/chatThumbnail";
+import { ChatThumbnail } from "@/components/ChatThumbnail/ChatThumbnail";
 
 type SidebarProps = {
   data: HomeLoaderReturn,

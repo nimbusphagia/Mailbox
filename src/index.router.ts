@@ -6,6 +6,7 @@ import { LoginAction } from "./pages/Login/Login.action";
 import { SignupPage } from "./pages/Signup/Signup";
 import { SignupAction } from "./pages/Signup/SignupAction";
 import { HomeLoader } from "./pages/Home/Home.loader";
+import { HomeAction } from "./pages/Home/Home.action";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
     path: "/",
     Component: Home,
     loader: HomeLoader,
+    action: HomeAction,
     ErrorBoundary: ErrorComponent,
   },
 ]);

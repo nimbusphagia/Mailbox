@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from "./avatar"
+import { Avatar, AvatarImage } from "../ui/avatar"
 
 type Props = {
   imgUrl: string,
