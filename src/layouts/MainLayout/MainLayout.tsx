@@ -1,15 +1,16 @@
-import type { ReactNode } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 
 type MainLayoutProps = {
   aside: ReactNode,
   main: ReactNode,
 }
 
-export function MainLayout({ aside, main }: MainLayoutProps) {
+export function MainLayout({ aside, main, children }: PropsWithChildren<MainLayoutProps>) {
   return (
-    <div className="bg-bg2 grid grid-cols-[25vw_1fr]">
+    <div className="bg-bg2 grid grid-cols-[25vw_1fr] relative">
       {aside}
       {main}
+      {children}
     </div>
   );
 }

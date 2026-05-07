@@ -1,9 +1,10 @@
 import type { PropsWithChildren } from "react";
 
 export function Modal({ children }: PropsWithChildren) {
+
   return (
     <div
-      className="bg-bg4 py-6 px-10  w-full max-w-fit text-fg1 flex flex-col gap-5"
+      className="absolute top-0 left-0 size-full bg-fg0/30 flex items-center justify-center"
     >
       {children}
     </div>

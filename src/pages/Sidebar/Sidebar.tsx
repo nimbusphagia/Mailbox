@@ -1,3 +1,4 @@
+import { SquarePlus, Package } from "lucide-react"
 import { AvatarImage } from "@/components/ui/avatar";
 import { Avatar } from "@/components/ui/avatar";
 import type { HomeLoaderReturn } from "../Home/Home.loader";
@@ -5,24 +6,29 @@ import { Button } from "@/components/ui/button";
 import { ChatThumbnail } from "@/components/ui/chatThumbnail";
 
 type SidebarProps = {
-  data: HomeLoaderReturn
+  data: HomeLoaderReturn,
+  toggleModal: () => void,
 }
-export function Sidebar({ data }: SidebarProps) {
+export function Sidebar({ data, toggleModal }: SidebarProps) {
   const { user, chats } = data;
   return (
     <aside className="flex flex-col  bg-bg4/70 text-bg1 font-semibold">
-      <header className="bg-fg4  p-2 grid grid-cols-[10%_1fr_20%] text-center *:flex *:items-center">
+      <header className="bg-fg4  p-2 grid grid-cols-[10%_1fr_auto] text-center *:flex *:items-center">
         <Avatar size="lg">
           <AvatarImage
             src={user.imgUrl}
           />
         </Avatar>
-        <div className="justify-center">
+        <div className="self-center justify-center">
           <h2>MailBox</h2>
         </div>
-        <div className=" justify-around">
-          <Button>A</Button>
-          <Button>N</Button>
+        <div className="justify-around gap-0.5">
+          <Button type="button" className="px-1.5" onClick={toggleModal}>
+            <SquarePlus strokeWidth={2} className="text-bg1 size-[1.5em]" />
+          </Button>
+          <Button className="px-1.5">
+            <Package strokeWidth={2} className="text-bg1 size-[1.5em]" />
+          </Button>
         </div>
       </header>
       <div className="flex items-center justify-center">
