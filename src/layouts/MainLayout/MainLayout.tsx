@@ -7,7 +7,7 @@ type MainLayoutProps = {
 
 export function MainLayout({ aside, main }: MainLayoutProps) {
   return (
-    <div>
+    <div className="bg-bg2 grid grid-cols-[25vw_1fr]">
       {aside}
       {main}
     </div>

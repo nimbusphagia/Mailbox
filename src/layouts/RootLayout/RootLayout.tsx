@@ -5,16 +5,16 @@ type RedLink = {
   message: string,
   src: string,
 }
-type Message = {
+export type FMessage = {
   message: string,
   color?: "red" | "blue" | "green" | "purple" | "black",
 }
 type Props = {
   route: string,
   color: string,
-  right?: Message,
+  right?: FMessage,
   rLink?: RedLink,
-  left?: Message,
+  left?: FMessage,
 }
 const bgMap: Record<string, string> = {
   red: "bg-red-dark/70",

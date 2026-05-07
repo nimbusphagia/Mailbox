@@ -40,7 +40,7 @@ export function SignupPage() {
               />
             </Field>
 
-            <Field orientation="horizontal" className="w-[90%] m-auto">
+            <Field orientation="horizontal" className="w-[90%] m-auto lowercase">
               <FieldLabel htmlFor="username">Username</FieldLabel>
               <Input
                 id="username"

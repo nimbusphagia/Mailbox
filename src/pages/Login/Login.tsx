@@ -1,13 +1,34 @@
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useSearchParams } from "react-router-dom";
 import { Logo } from "@/components/ui/logo";
-import { RootLayout } from "@/layouts/RootLayout/RootLayout";
+import { RootLayout, type FMessage } from "@/layouts/RootLayout/RootLayout";
 import type { ErrorMessage } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export function LoginPage() {
   const actionData = useActionData() as ErrorMessage | undefined;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [fMessage, setFMessage] = useState<FMessage | undefined>(() => {
+    return searchParams.get('registered')
+      ? { message: "User registered successfully.", color: "black" }
+      : undefined;
+  });
+
+  useEffect(() => {
+    if (searchParams.get('registered')) {
+      setSearchParams({});
+    }
+  }, []);
+
+  useEffect(() => {
+    if (actionData?.error) {
+      setFMessage({ message: actionData.error, color: "red" });
+    }
+  }, [actionData]);
+
   return (
     <RootLayout
       route="login"
@@ -17,7 +38,7 @@ export function LoginPage() {
         src: "/signup",
         message: "Signup",
       }}
-      left={{ message: actionData?.error ?? "", color: "red" }}
+      left={fMessage}
     >
       <div className="bg-bg3 flex justify-center w-full h-full ">
         <Form
