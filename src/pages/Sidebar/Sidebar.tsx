@@ -37,12 +37,13 @@ export function Sidebar({ data }: SidebarProps) {
             <p className="text-sm text-bg1">No mail exchanged yet</p>
           </div> :
           chats.map((c) => {
+            const contact = c.otherMember.user;
             return (
               <ChatThumbnail
                 key={c.id}
-                imgUrl={user.imgUrl ?? ""}
-                name="asd"
-                lastMessage="last"
+                imgUrl={contact?.imgUrl ?? ""}
+                name={contact?.name ?? "Unknown"}
+                lastMessage={c.lastMessage}
               />
             )
           }
