@@ -2,7 +2,7 @@ import { MainLayout } from "@/layouts/MainLayout/MainLayout";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { Chat } from "../Chat/Chat";
 import { RootLayout } from "@/layouts/RootLayout/RootLayout";
-import { useActionData, useLoaderData } from "react-router-dom";
+import { useFetcher, useLoaderData } from "react-router-dom";
 import type { HomeLoaderReturn } from "./Home.loader";
 import { useEffect, useState } from "react";
 import { NewMessageModal } from "@/components/NewMessageModal/NewMessageModal";
@@ -13,41 +13,49 @@ import type { SafeUser } from "@/lib/schemas/user.schema";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
-  const actionData = useActionData<ActionReturn | ErrorMessage | undefined>();
   const [showNM, setShowNM] = useState<boolean>(false);
   const [rightFM, setRightFM] = useState<string | undefined>();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [users, setUsers] = useState<SafeUser[]>([]);
+  const fetcher = useFetcher<ActionReturn | ErrorMessage>();
+
 
   useEffect(() => {
-    if (!actionData) return;
-
-    if ("error" in actionData) {
-      setRightFM(actionData.error);
+    const data = fetcher.data;
+    if (!data) return;
+    if ("error" in data) {
+      setRightFM(data.error);
       return;
     }
-
-    if (actionData.intent === "getContacts") {
-      setContacts(actionData.data);
-      return
+    if (data.intent === "getUsers") {
+      setContacts(data.data.contacts);
+      const contactUserIds = new Set(data.data.contacts.map((c) => c.user?.id));
+      const filteredUsers = data.data.users.filter(
+        (u) => u.id !== loaderData.user.id && !contactUserIds.has(u.id)
+      );
+      setUsers(filteredUsers);
+      return;
     }
-    if (actionData.intent === "getUsers") {
-      setContacts(actionData.data.contacts);
-      setUsers(actionData.data.users);
-      return
-    }
-  }, [actionData]);
+  }, [fetcher.data]);
 
+  const loadUsers = () => {
+    fetcher.submit(
+      { intent: "getUsers", userId: loaderData.user.id },
+      { method: "post", action: "" }
+    );
+    setShowNM(true);
+  };
   return (
     <RootLayout
       route="home"
       color="blue"
+      right={rightFM ? { message: rightFM, color: "red" } : undefined}
     >
       <MainLayout
         aside={
           <Sidebar
             data={loaderData}
-            toggleModal={() => { setShowNM(!showNM) }}
+            loadUsers={loadUsers}
           />
         }
         main={<Chat />}

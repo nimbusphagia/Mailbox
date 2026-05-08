@@ -5,6 +5,7 @@ import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import type { Contact } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ContactList } from "../ContactList/ContactList";
+import { UsersList } from "../UsersList/UsersList";
 
 type Props = {
   hideFn: () => void,
@@ -12,46 +13,45 @@ type Props = {
   users: SafeUser[],
 }
 export function NewMessageModal({ hideFn, contacts, users }: Props) {
-  const [filter, setFilter] = useState<boolean>(true);
+  const [filter, setFilter] = useState<"contacts" | "users">("contacts");
 
   return (
     <Modal>
-      <div className="z-10 flex-1 max-w-[35%] h-[clamp(40%,50%,600px) bg-fg4 p-2 flex flex-col gap-2 rounded-xs shadow-xs shadow-fg4">
+      <div className="z-10 flex-1 max-w-[30%] h-[clamp(40%,50%,600px) bg-fg4/70 px-4 py-2  flex flex-col  rounded-xs shadow-xs shadow-fg4">
         <div className="flex items-center justify-between ">
-          <Button className="text-bg3 capitalize" onClick={hideFn}>Cancel</Button>
-          <Button className="text-bg3 capitalize">New Message</Button>
+          <Button className="text-bg1 capitalize" onClick={hideFn}>Cancel</Button>
+          <Button className="text-bg1 capitalize">New Message</Button>
         </div>
-        <div className="w-[98%] m-auto">
+        <div className="w-full m-auto p-2 flex flex-col gap-2">
           <ToggleGroup
             variant="outline"
             type="single"
             className="w-full flex *:uppercase justify-around *:w-[35%] *:rounded-xs"
-            defaultValue="contacts"
+            value={filter}
+            onValueChange={(val: "contacts" | "users") => val && setFilter(val)}
           >
             <ToggleGroupItem
               value="contacts"
               aria-label="filter by contacts"
-              onChange={() => setFilter(true)}
             >Contacts</ToggleGroupItem>
 
             <ToggleGroupItem
-              value="explore"
+              value="users"
               aria-label="show all users"
-              onChange={() => setFilter(false)}
             >Explore</ToggleGroupItem>
           </ToggleGroup>
-          <div >
-            {filter ?
-              <ContactList contacts={contacts} />
-              :
-              users?.map((u) => {
-                return (
-
-                  <div>{u.name}</div>
-                )
-              })
-            }
+          <div className="flex items-center justify-center">
+            <input
+              placeholder=":search"
+              className="bg-fg4/70 p-1 px-2 text-sm  w-full outline-none focus:bg-fg4/30 focus:text-blue-dark/60"
+            />
           </div>
+
+          {filter === "contacts" ?
+            <ContactList contacts={contacts} />
+            :
+            <UsersList users={users} />
+          }
         </div>
       </div>
     </Modal>

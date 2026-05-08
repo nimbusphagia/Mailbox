@@ -36,6 +36,7 @@ export async function HomeAction({
           api.get<SafeUser[]>("api/user"),
           api.get<Contact[]>("api/user/contact"),
         ]);
+        console.log("Action:" + usersRes.data);
         return {
           intent,
           data: { users: usersRes.data, contacts: contactsRes.data },

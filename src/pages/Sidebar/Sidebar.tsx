@@ -7,9 +7,9 @@ import { ChatThumbnail } from "@/components/ChatThumbnail/ChatThumbnail";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
-  toggleModal: () => void,
+  loadUsers: () => void,
 }
-export function Sidebar({ data, toggleModal }: SidebarProps) {
+export function Sidebar({ data, loadUsers }: SidebarProps) {
   const { user, chats } = data;
   return (
     <aside className="flex flex-col  bg-bg4/70 text-bg1 font-semibold">
@@ -23,7 +23,7 @@ export function Sidebar({ data, toggleModal }: SidebarProps) {
           <h2>MailBox</h2>
         </div>
         <div className="justify-around gap-0.5">
-          <Button type="button" className="px-1.5" onClick={toggleModal}>
+          <Button type="button" className="px-1.5" onClick={loadUsers}>
             <SquarePlus strokeWidth={2} className="text-bg1 size-[1.5em]" />
           </Button>
           <Button className="px-1.5">

@@ -1,16 +1,16 @@
 import type { Contact } from "@/lib/schemas/contact.schema"
-import { ContactThumbnail } from "../ContactThumbnail/ContactThumbnail"
+import { UserThumbnail } from "../UserThumbnail/UserThumbnail"
 
 type Props = {
   contacts: Contact[],
 }
 export function ContactList({ contacts }: Props) {
   return (
-    <div className="flex flex-col gap-2 p-2 min-h-50">
+    <div className="flex flex-col gap-2 px-2 min-h-40 ">
       {contacts.length ?
         <>
           {contacts.map((c) =>
-            <ContactThumbnail
+            <UserThumbnail
               imgUrl={c.user!.imgUrl!}
               fullName={c.user!.name}
             />
