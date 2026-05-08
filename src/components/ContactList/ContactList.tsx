@@ -11,6 +11,7 @@ export function ContactList({ contacts }: Props) {
         <>
           {contacts.map((c) =>
             <UserThumbnail
+              key={c.id}
               imgUrl={c.user!.imgUrl!}
               fullName={c.user!.name}
             />

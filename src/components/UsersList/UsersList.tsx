@@ -1,11 +1,13 @@
 import { UserThumbnail } from "../UserThumbnail/UserThumbnail"
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { Button } from "../ui/button"
+import type { UuidType } from "@/lib/schemas/util.schema"
 
 type Props = {
   users: SafeUser[],
+  addFn: (userId: UuidType) => void,
 }
-export function UsersList({ users }: Props) {
+export function UsersList({ users, addFn }: Props) {
   return (
     <div className="flex flex-col *:flex1 max-h-65 p-1 h-fit rounded-xs bg-fg4 overflow-y-scroll">
       {users.length ?
@@ -18,7 +20,11 @@ export function UsersList({ users }: Props) {
                 fullName={"@" + u.username}
               />
 
-              <Button className="text-bg2 ">
+              <Button
+                type="button"
+                className="text-bg2"
+                onClick={() => addFn(u.id)}
+              >
                 Add
               </Button>
             </div>

@@ -12,7 +12,8 @@ import type { ActionFunctionArgs } from "react-router-dom";
 
 export type ActionReturn =
   | { intent: "getContacts"; data: Contact[] }
-  | { intent: "getUsers"; data: { users: SafeUser[]; contacts: Contact[] } };
+  | { intent: "getUsers"; data: { users: SafeUser[]; contacts: Contact[] } }
+  | { intent: "addContact"; data: { users: SafeUser[]; contacts: Contact[] } };
 
 export async function HomeAction({
   request,
@@ -36,7 +37,21 @@ export async function HomeAction({
           api.get<SafeUser[]>("api/user"),
           api.get<Contact[]>("api/user/contact"),
         ]);
-        console.log("Action:" + usersRes.data);
+        return {
+          intent,
+          data: { users: usersRes.data, contacts: contactsRes.data },
+        };
+      }
+      case "addContact": {
+        const { userId } = result;
+        await api.post("api/user/contact", { userId });
+        const [usersRes, contactsRes]: [
+          AxiosResponse<SafeUser[]>,
+          AxiosResponse<Contact[]>,
+        ] = await Promise.all([
+          api.get<SafeUser[]>("api/user"),
+          api.get<Contact[]>("api/user/contact"),
+        ]);
         return {
           intent,
           data: { users: usersRes.data, contacts: contactsRes.data },

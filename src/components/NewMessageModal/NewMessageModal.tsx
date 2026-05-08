@@ -6,13 +6,15 @@ import type { Contact } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ContactList } from "../ContactList/ContactList";
 import { UsersList } from "../UsersList/UsersList";
+import type { UuidType } from "@/lib/schemas/util.schema";
 
 type Props = {
   hideFn: () => void,
   contacts: Contact[],
   users: SafeUser[],
+  addContactFn: (userId: UuidType) => void,
 }
-export function NewMessageModal({ hideFn, contacts, users }: Props) {
+export function NewMessageModal({ hideFn, contacts, users, addContactFn }: Props) {
   const [filter, setFilter] = useState<"contacts" | "users">("contacts");
 
   return (
@@ -43,14 +45,17 @@ export function NewMessageModal({ hideFn, contacts, users }: Props) {
           <div className="flex items-center justify-center">
             <input
               placeholder=":search"
-              className="bg-fg4/70 p-1 px-2 text-sm  w-full outline-none focus:bg-fg4/30 focus:text-blue-dark/60"
+              className="bg-fg4/70 p-1 px-2 text-sm  w-full outline-none border-xs focus:bg-fg4/30 focus:text-bg1"
             />
           </div>
 
           {filter === "contacts" ?
             <ContactList contacts={contacts} />
             :
-            <UsersList users={users} />
+            <UsersList
+              users={users}
+              addFn={addContactFn}
+            />
           }
         </div>
       </div>

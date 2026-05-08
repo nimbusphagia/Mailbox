@@ -46,7 +46,12 @@ export type CurrentUserValidation = z.infer<typeof CurrentUserValidationSchema>;
 
 export const NullableJsonNullValueSchema = z.enum(["DbNull", "JsonNull"]);
 
-export const HOME_INTENTS = ["getUsers", "getContacts", "createChat"] as const;
+export const HOME_INTENTS = [
+  "getUsers",
+  "getContacts",
+  "createChat",
+  "addContact",
+] as const;
 
 export const ActionSchema = z.object({
   intent: z.enum(HOME_INTENTS),
