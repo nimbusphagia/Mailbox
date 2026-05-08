@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, useActionData, useSearchParams } from "react-router-dom";
 import { Logo } from "@/components/ui/logo";
-import { RootLayout, type FMessage } from "@/layouts/RootLayout/RootLayout";
+import { RootLayout, type FMessage } from "@/layouts/RootLayout";
 import type { ErrorMessage } from "@/lib/utils";
 import { useEffect, useState } from "react";
 

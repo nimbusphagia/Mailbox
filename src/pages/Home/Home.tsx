@@ -1,7 +1,7 @@
-import { MainLayout } from "@/layouts/MainLayout/MainLayout";
+import { MainLayout } from "@/layouts/MainLayout";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { Chat } from "../Chat/Chat";
-import { RootLayout, type FMessage } from "@/layouts/RootLayout/RootLayout";
+import { RootLayout, type FMessage } from "@/layouts/RootLayout";
 import { useFetcher, useLoaderData } from "react-router-dom";
 import type { HomeLoaderReturn } from "./Home.loader";
 import { useEffect, useState } from "react";
@@ -38,6 +38,10 @@ export function Home() {
     }
   }, [fetcher.data]);
 
+  useEffect(() => {
+    setTimeout(() => setLeftFM(undefined), 5000);
+  }, [leftFM])
+
   const refreshUsers = (contacts: Contact[], users: SafeUser[]) => {
     setContacts(contacts);
     const contactUserIds = new Set(contacts.map((c) => c.user?.id || c.isBlocked));
@@ -48,7 +52,7 @@ export function Home() {
   }
   const loadUsers = () => {
     fetcher.submit(
-      { intent: "getUsers", userId: loaderData.user.id },
+      { intent: "getUsers" },
       { method: "post", action: "" }
     );
     setShowNM(true);
@@ -56,6 +60,18 @@ export function Home() {
   const addContact = (userId: UuidType) => {
     fetcher.submit(
       { intent: "addContact", userId, },
+      { method: "post", action: "" }
+    );
+  }
+  const createChat = (contactId: UuidType) => {
+    fetcher.submit(
+      { intent: "createChat", contacts: [contactId], },
+      { method: "post", action: "" }
+    );
+  }
+  const createGroup = (contacts: UuidType[]) => {
+    fetcher.submit(
+      { intent: "createGroup", contacts },
       { method: "post", action: "" }
     );
   }
@@ -80,6 +96,8 @@ export function Home() {
             contacts={contacts}
             users={users}
             addContactFn={addContact}
+            createChatFn={createChat}
+            createGroupFn={createGroup}
           />}
       </MainLayout>
     </RootLayout>

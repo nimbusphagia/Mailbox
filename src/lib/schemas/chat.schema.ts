@@ -21,3 +21,13 @@ export const ChatLazySchema = z.object({
   lastMessage: ChatMessageSchema.optional(),
 });
 export type ChatLazy = z.infer<typeof ChatLazySchema>;
+export const ChatSchema = z.object({
+  id: UuidSchema,
+  createdById: UuidSchema.nullable(),
+  createdAt: z.date(),
+  isGroup: z.boolean(),
+  members: z.array(ChatMemberSchema),
+  messages: z.array(ChatMessageSchema),
+});
+
+export type Chat = z.infer<typeof ChatSchema>;

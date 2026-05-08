@@ -13,16 +13,41 @@ type Props = {
   contacts: Contact[],
   users: SafeUser[],
   addContactFn: (userId: UuidType) => void,
+  createChatFn: (userId: UuidType) => void
+  createGroupFn: (userId: UuidType[]) => void
 }
-export function NewMessageModal({ hideFn, contacts, users, addContactFn }: Props) {
+export function NewMessageModal({ hideFn, contacts, users, addContactFn, createChatFn, createGroupFn }: Props) {
   const [filter, setFilter] = useState<"contacts" | "users">("contacts");
+  const [selected, setSelected] = useState<UuidType[]>([]);
 
+  const selectContact = (userId: UuidType | null, checked: boolean) => {
+    if (!userId) return;
+    setSelected(prev =>
+      checked ? [...prev, userId] : prev.filter(id => id !== userId)
+    );
+  }
   return (
     <Modal>
       <div className="z-10 flex-1 max-w-[30%] h-[clamp(40%,50%,600px) bg-fg4/70 px-4 py-2  flex flex-col  rounded-xs shadow-xs shadow-fg4">
         <div className="flex items-center justify-between ">
           <Button className="text-bg1 capitalize" onClick={hideFn}>Cancel</Button>
-          <Button className="text-bg1 capitalize">New Message</Button>
+          {
+            selected.length > 1 ?
+              <Button
+                className="text-bg1 capitalize"
+                onClick={() => { createGroupFn(selected) }}
+              >
+                New Group
+              </Button>
+              :
+              <Button
+                className="text-bg1 capitalize"
+                disabled={!selected.length}
+                onClick={() => { createChatFn(selected[0]) }}
+              >
+                New Chat
+              </Button>
+          }
         </div>
         <div className="w-full m-auto p-2 flex flex-col gap-2">
           <ToggleGroup
@@ -50,7 +75,10 @@ export function NewMessageModal({ hideFn, contacts, users, addContactFn }: Props
           </div>
 
           {filter === "contacts" ?
-            <ContactList contacts={contacts} />
+            <ContactList
+              contacts={contacts}
+              selectFn={selectContact}
+            />
             :
             <UsersList
               users={users}

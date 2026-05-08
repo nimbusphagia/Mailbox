@@ -1,7 +1,9 @@
 import api from "@/lib/api";
+import type { Chat } from "@/lib/schemas/chat.schema";
 import type { Contact } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
-import { ActionSchema } from "@/lib/schemas/util.schema";
+import { ActionSchema } from "@/lib/schemas/action.schema";
+
 import {
   handleAxiosError,
   SafeParseForm,
@@ -13,6 +15,7 @@ import type { ActionFunctionArgs } from "react-router-dom";
 export type ActionReturn =
   | { intent: "getContacts"; data: Contact[] }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: Contact[] } }
+  | { intent: "createChat"; data: { chat: Chat } }
   | { intent: "addContact"; data: { users: SafeUser[]; contacts: Contact[] } };
 
 export async function HomeAction({
@@ -57,6 +60,17 @@ export async function HomeAction({
           data: { users: usersRes.data, contacts: contactsRes.data },
         };
       }
+      case "createChat": {
+        const { contacts } = result;
+        const response = await api.post<Chat>("api/chat", {
+          contactId: contacts![0],
+        });
+        return {
+          intent,
+          data: { chat: response.data },
+        };
+      }
+
       default:
         return { error: "Invalid intent" };
     }

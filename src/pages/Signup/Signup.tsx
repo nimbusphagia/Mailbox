@@ -2,7 +2,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, useActionData } from "react-router-dom";
-import { RootLayout } from "@/layouts/RootLayout/RootLayout";
+import { RootLayout } from "@/layouts/RootLayout";
 import { LogoVar1 } from "@/components/ui/logo2";
 import type { ErrorMessage } from "@/lib/utils";
 

@@ -2,6 +2,7 @@ import { UserThumbnail } from "../UserThumbnail/UserThumbnail"
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { Button } from "../ui/button"
 import type { UuidType } from "@/lib/schemas/util.schema"
+import { ModalListLayout } from "@/layouts/ModalListLayout"
 
 type Props = {
   users: SafeUser[],
@@ -9,8 +10,11 @@ type Props = {
 }
 export function UsersList({ users, addFn }: Props) {
   return (
-    <div className="flex flex-col *:flex1 max-h-65 p-1 h-fit rounded-xs bg-fg4 overflow-y-scroll">
-      {users.length ?
+    <ModalListLayout
+      isEmpty={!!users.length}
+      fbText="You are the first and only user on MailBox. :( "
+    >
+      {
         <>
           {users.map((u) =>
             <div className="flex justify-between px-3 py-2 bg-fg4/70">
@@ -30,10 +34,8 @@ export function UsersList({ users, addFn }: Props) {
             </div>
           )}
 
-        </> :
-        <p className="text-center text-sm text-bg2/70 w-[80%] m-auto">
-          You are the first and only user on MailBox. :( </p>
+        </>
       }
-    </div>
+    </ModalListLayout>
   )
 }
