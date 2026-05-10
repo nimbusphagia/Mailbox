@@ -16,9 +16,11 @@ export function ContactList({ contacts, selectFn }: Props) {
     >
       <>
         {contacts.map((c) =>
-          <div className="flex justify-between px-3 py-2 bg-fg4/70">
+          <div
+            className="flex justify-between px-3 py-2 bg-fg4/70"
+            key={c.id}
+          >
             <UserThumbnail
-              key={c.id}
               imgUrl={c.user!.imgUrl!}
               fullName={c.user!.name}
             />

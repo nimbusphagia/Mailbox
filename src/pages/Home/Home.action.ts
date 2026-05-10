@@ -6,7 +6,7 @@ import { ActionSchema } from "@/lib/schemas/action.schema";
 
 import {
   handleAxiosError,
-  SafeParseForm,
+  SafeParseJSON,
   type ErrorMessage,
 } from "@/lib/utils";
 import type { AxiosResponse } from "axios";
@@ -21,8 +21,8 @@ export type ActionReturn =
 export async function HomeAction({
   request,
 }: ActionFunctionArgs): Promise<ActionReturn | ErrorMessage> {
-  const formData = await request.formData();
-  const result = SafeParseForm(ActionSchema, formData);
+  const data = await request.json();
+  const result = SafeParseJSON(ActionSchema, data);
   if ("error" in result) return result;
   const { intent } = result;
   try {
@@ -75,6 +75,7 @@ export async function HomeAction({
         return { error: "Invalid intent" };
     }
   } catch (err) {
+    console.log(err);
     return handleAxiosError(err);
   }
 }

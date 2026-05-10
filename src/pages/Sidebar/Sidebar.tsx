@@ -43,7 +43,7 @@ export function Sidebar({ data, loadUsers }: SidebarProps) {
             <p className="text-sm text-bg1">No mail exchanged yet</p>
           </div> :
           chats.map((c) => {
-            const contact = c.otherMember.user;
+            const contact = c.otherMember;
             return (
               <ChatThumbnail
                 key={c.id}

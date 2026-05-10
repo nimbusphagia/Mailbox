@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import { ErrorComponent } from "./components/Error/Error";
 import { Home } from "./pages/Home/Home";
 import { LoginPage } from "./pages/Login/Login";
 import { LoginAction } from "./pages/Login/Login.action";
@@ -7,6 +6,7 @@ import { SignupPage } from "./pages/Signup/Signup";
 import { SignupAction } from "./pages/Signup/SignupAction";
 import { HomeLoader } from "./pages/Home/Home.loader";
 import { HomeAction } from "./pages/Home/Home.action";
+import { HomeError } from "./pages/Home/HomeError";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +24,6 @@ export const router = createBrowserRouter([
     Component: Home,
     loader: HomeLoader,
     action: HomeAction,
-    ErrorBoundary: ErrorComponent,
+    ErrorBoundary: HomeError,
   },
 ]);

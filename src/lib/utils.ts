@@ -20,6 +20,16 @@ export function SafeParseForm<T extends ZodRawShape>(
   }
   return result.data;
 }
+export function SafeParseJSON<T extends ZodRawShape>(
+  schema: ZodObject<T>,
+  data: unknown,
+): ErrorMessage | z.infer<ZodObject<T>> {
+  const result = schema.safeParse(data);
+  if (!result.success) {
+    return { error: "Error: " + result.error.issues[0].message };
+  }
+  return result.data;
+}
 
 export function handleAxiosError(err: unknown): { error: string } {
   if (isAxiosError(err)) {

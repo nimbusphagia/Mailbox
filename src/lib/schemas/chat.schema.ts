@@ -17,7 +17,7 @@ export const ChatLazySchema = z.object({
   id: UuidSchema,
   createdAt: z.date(),
   isGroup: z.boolean(),
-  otherMember: ChatMemberSchema,
+  otherMember: SafeUserSchema,
   lastMessage: ChatMessageSchema.optional(),
 });
 export type ChatLazy = z.infer<typeof ChatLazySchema>;

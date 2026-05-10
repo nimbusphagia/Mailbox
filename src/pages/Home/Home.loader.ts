@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import type { ChatLazy } from "@/lib/schemas/chat.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
+import axios from "axios";
 
 export type HomeLoaderReturn = {
   user: SafeUser;
@@ -8,9 +9,22 @@ export type HomeLoaderReturn = {
 };
 
 export async function HomeLoader(): Promise<HomeLoaderReturn> {
-  const [{ data: user }, { data: chats }] = await Promise.all([
-    api.get<SafeUser>("api/user/me"),
-    api.get<ChatLazy[]>("api/chat"),
-  ]);
-  return { user, chats };
+  try {
+    const [{ data: user }, { data: chats }] = await Promise.all([
+      api.get<SafeUser>("api/user/me"),
+      api.get<ChatLazy[]>("api/chat"),
+    ]);
+    return { user, chats };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw new Response(
+        err.response?.data?.message ?? "Something went wrong",
+        {
+          status: err.response?.status ?? 500,
+          statusText: err.response?.statusText ?? "Server Error",
+        },
+      );
+    }
+    throw new Response("Unexpected error", { status: 500 });
+  }
 }

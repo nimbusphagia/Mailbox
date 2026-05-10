@@ -12,7 +12,7 @@ export function ChatThumbnail({ imgUrl, name, lastMessage }: ThumbnailProps) {
     ? lastMessage.type === 'TEXT'
       ? lastMessage.content ?? "This chat is empty."
       : "Media sent"
-    : "This chat is empty.";
+    : "Start a conversation!";
   return (
     <div>
       <Avatar>

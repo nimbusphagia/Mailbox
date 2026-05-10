@@ -1,5 +1,4 @@
 import z from "zod";
-import { SafeUserSchema } from "./user.schema";
 import { UuidSchema } from "./util.schema";
 
 export const HOME_INTENTS = [
@@ -12,7 +11,7 @@ export const HOME_INTENTS = [
 export const ActionSchema = z.object({
   intent: z.enum(HOME_INTENTS),
   userId: UuidSchema.optional(),
-  contacts: SafeUserSchema.array().optional(),
+  contacts: UuidSchema.array().optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

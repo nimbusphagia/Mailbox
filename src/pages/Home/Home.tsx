@@ -53,26 +53,26 @@ export function Home() {
   const loadUsers = () => {
     fetcher.submit(
       { intent: "getUsers" },
-      { method: "post", action: "" }
+      { method: "post", action: "", encType: "application/json" }
     );
     setShowNM(true);
   };
   const addContact = (userId: UuidType) => {
     fetcher.submit(
       { intent: "addContact", userId, },
-      { method: "post", action: "" }
+      { method: "post", action: "", encType: "application/json" }
     );
   }
   const createChat = (contactId: UuidType) => {
     fetcher.submit(
-      { intent: "createChat", contacts: [contactId], },
-      { method: "post", action: "" }
+      { intent: "createChat", contacts: [contactId] },
+      { method: "post", action: "", encType: "application/json" }
     );
   }
   const createGroup = (contacts: UuidType[]) => {
     fetcher.submit(
       { intent: "createGroup", contacts },
-      { method: "post", action: "" }
+      { method: "post", action: "", encType: "application/json" }
     );
   }
   return (
