@@ -2,6 +2,8 @@ import api from "@/lib/api";
 import type { ChatLazy } from "@/lib/schemas/chat.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import axios from "axios";
+import z from "zod";
+import { ChatLazySchema } from "@/lib/schemas/chat.schema";
 
 export type HomeLoaderReturn = {
   user: SafeUser;
@@ -14,7 +16,12 @@ export async function HomeLoader(): Promise<HomeLoaderReturn> {
       api.get<SafeUser>("api/user/me"),
       api.get<ChatLazy[]>("api/chat"),
     ]);
-    return { user, chats };
+
+    const result = z.array(ChatLazySchema).safeParse(chats);
+    if (!result.success) {
+      throw new Response("Invalid data", { status: 500 });
+    }
+    return { user, chats: result.data };
   } catch (err) {
     if (axios.isAxiosError(err)) {
       throw new Response(

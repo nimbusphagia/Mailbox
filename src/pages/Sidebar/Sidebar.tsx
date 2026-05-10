@@ -3,7 +3,7 @@ import { AvatarImage } from "@/components/ui/avatar";
 import { Avatar } from "@/components/ui/avatar";
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
-import { ChatThumbnail } from "@/components/ChatThumbnail/ChatThumbnail";
+import { ChatList } from "@/components/ChatList/ChatList";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -42,18 +42,10 @@ export function Sidebar({ data, loadUsers }: SidebarProps) {
           <div className="h-full flex flex-col items-center justify-center">
             <p className="text-sm text-bg1">No mail exchanged yet</p>
           </div> :
-          chats.map((c) => {
-            const contact = c.otherMember;
-            return (
-              <ChatThumbnail
-                key={c.id}
-                imgUrl={contact?.imgUrl ?? ""}
-                name={contact?.name ?? "Unknown"}
-                lastMessage={c.lastMessage}
-              />
-            )
-          }
-          )}
+          <ChatList
+            chats={chats}
+          />
+        }
       </main>
     </aside >
   )

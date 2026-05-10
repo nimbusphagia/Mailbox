@@ -41,3 +41,26 @@ export function handleAxiosError(err: unknown): { error: string } {
 }
 
 export type ActionResult = ErrorMessage | Response;
+
+export function timeAgo(date: Date): string {
+  date.getTime();
+  const diffMs = date.getTime() - Date.now();
+  const units: { unit: Intl.RelativeTimeFormatUnit; ms: number }[] = [
+    { unit: "year", ms: 1000 * 60 * 60 * 24 * 365 },
+    { unit: "month", ms: 1000 * 60 * 60 * 24 * 30 },
+    { unit: "week", ms: 1000 * 60 * 60 * 24 * 7 },
+    { unit: "day", ms: 1000 * 60 * 60 * 24 },
+    { unit: "hour", ms: 1000 * 60 * 60 },
+    { unit: "minute", ms: 1000 * 60 },
+    { unit: "second", ms: 1000 },
+  ];
+
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+  for (const { unit, ms } of units) {
+    if (Math.abs(diffMs) >= ms) {
+      return rtf.format(Math.round(diffMs / ms), unit);
+    }
+  }
+  return "just now";
+}

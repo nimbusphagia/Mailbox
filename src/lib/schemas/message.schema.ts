@@ -8,7 +8,7 @@ export const ChatMessageSchema = z.object({
   content: z.string().nullable(),
   type: z.enum(["TEXT", "IMAGE", "SYSTEM_EVENT"]),
   metadata: z.json(),
-  createdAt: z.date(),
+  createdAt: z.coerce.date(),
   replyToId: UuidSchema.nullable(),
 });
 
