@@ -1,9 +1,13 @@
-import logo from "@/assets/logo1.txt?raw"
+import logo from "@/assets/logoASCII/logo1.txt?raw"
 
-export function LogoVar1() {
+type Props = {
+  className?: string
+}
+export function LogoVar1({ className = "text-[0.8em]" }: Props) {
   return (
-    <pre className="text-[0.85em] text-fg0 font-black text-center leading-tight overflow-x-auto">
+    <pre className={` text-center text-fg0 font-black leading-tight overflow-x-auto ${className}`}>
       {logo}
     </pre>
   )
 }
+

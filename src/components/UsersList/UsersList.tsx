@@ -12,7 +12,7 @@ export function UsersList({ users, addFn }: Props) {
   return (
     <ModalListLayout
       isEmpty={!!users.length}
-      fbText="You are the first and only user on MailBox. :( "
+      fbText="You've added all available users in MailBox, congrats!"
     >
       {
         <>

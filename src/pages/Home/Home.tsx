@@ -12,6 +12,7 @@ import type { Contact } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { ChatType } from "@/lib/schemas/chat.schema";
+import { Welcome } from "@/components/ui/Welcome";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
@@ -113,7 +114,12 @@ export function Home() {
           openedChat ?
             <Chat
               chat={openedChat}
-            /> : <div>Welcome</div>}
+            />
+            :
+            <div className="bg-fg4/68 w-full h-full flex items-center justify-center">
+              <Welcome className="text-[30px] text-fg1/80 font-bold select-none" />
+            </div>
+        }
       >
         {showNM &&
           <NewMessageModal

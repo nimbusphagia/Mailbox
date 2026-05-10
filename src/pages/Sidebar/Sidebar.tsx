@@ -5,6 +5,7 @@ import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
 import { ChatList } from "@/components/ChatList/ChatList";
 import type { UuidType } from "@/lib/schemas/util.schema";
+import { LogoVar2 } from "@/components/ui/logo3";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -14,15 +15,15 @@ type SidebarProps = {
 export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
   const { user, chats } = data;
   return (
-    <aside className="flex flex-col  bg-bg4 text-bg1 font-semibold overflow-scroll">
-      <header className="bg-fg4  p-2 grid grid-cols-[10%_1fr_auto] text-center *:flex *:items-center">
+    <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-scroll border-r-1 border-fg4/80">
+      <header className="h-[12%] bg-fg3/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
         <Avatar size="lg">
           <AvatarImage
             src={user.imgUrl}
           />
         </Avatar>
         <div className="self-center justify-center">
-          <h2>MailBox</h2>
+          <LogoVar2 className="text-[0.255rem] text-bg1/90" />
         </div>
         <div className="justify-around gap-0.5">
           <Button type="button" className="px-1.5" onClick={loadUsers}>
@@ -36,7 +37,8 @@ export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
       <div className="flex items-center justify-center">
         <input
           placeholder=":search"
-          className="bg-fg4/70 p-1 px-2 text-sm  w-full outline-none focus:bg-fg4/30 focus:text-blue-dark/60"
+          className="bg-fg4/90 p-1 px-2 text-sm font-bold w-full outline-none 
+          focus:bg-fg4/70 focus:placeholder:text-bg2 focus:text-bg1"
         />
       </div>
       <main className="flex-1 flex flex-col text-center max-w-full max-h-full overflow-scroll">

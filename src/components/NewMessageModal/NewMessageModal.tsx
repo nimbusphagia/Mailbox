@@ -28,7 +28,7 @@ export function NewMessageModal({ hideFn, contacts, users, addContactFn, createC
   }
   return (
     <Modal>
-      <div className="z-10 flex-1 max-w-[30%] h-[clamp(40%,50%,600px) bg-fg4/70 px-4 py-2  flex flex-col  rounded-xs shadow-xs shadow-fg4">
+      <div className="z-10 flex-1 max-w-[30%] h-[clamp(40%,50%,600px) bg-fg3 px-4 py-2  flex flex-col  rounded-xs shadow-xs shadow-fg4">
         <div className="flex items-center justify-between ">
           <Button className="text-bg1 capitalize" onClick={hideFn}>Cancel</Button>
           {
