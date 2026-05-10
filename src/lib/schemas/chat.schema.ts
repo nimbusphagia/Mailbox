@@ -30,4 +30,4 @@ export const ChatSchema = z.object({
   messages: z.array(ChatMessageSchema),
 });
 
-export type Chat = z.infer<typeof ChatSchema>;
+export type ChatType = z.infer<typeof ChatSchema>;

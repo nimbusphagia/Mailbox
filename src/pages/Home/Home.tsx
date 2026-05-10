@@ -11,9 +11,11 @@ import type { ErrorMessage } from "@/lib/utils";
 import type { Contact } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import type { UuidType } from "@/lib/schemas/util.schema";
+import type { ChatType } from "@/lib/schemas/chat.schema";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
+  const [openedChat, setOpenedChat] = useState<ChatType | undefined>();
   const [showNM, setShowNM] = useState<boolean>(false);
   const [leftFM, setLeftFM] = useState<FMessage | undefined>();
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -35,11 +37,23 @@ export function Home() {
     if (data.intent === "addContact") {
       refreshUsers(data.data.contacts, data.data.users);
       setLeftFM({ message: "Added new contact." })
+      return;
     }
+    if (data.intent === "createChat") {
+      setLeftFM({ message: "Created new chat." })
+      setShowNM(false);
+      setOpenedChat(data.data.chat);
+      return;
+    }
+    if (data.intent === "getChat") {
+      setOpenedChat(data.data.chat);
+      return;
+    }
+
   }, [fetcher.data]);
 
   useEffect(() => {
-    setTimeout(() => setLeftFM(undefined), 5000);
+    setTimeout(() => setLeftFM(undefined), 8000);
   }, [leftFM])
 
   const refreshUsers = (contacts: Contact[], users: SafeUser[]) => {
@@ -75,6 +89,12 @@ export function Home() {
       { method: "post", action: "", encType: "application/json" }
     );
   }
+  const openChat = (chatId: UuidType) => {
+    fetcher.submit(
+      { intent: "getChat", chatId },
+      { method: "post", action: "", encType: "application/json" }
+    );
+  }
   return (
     <RootLayout
       route="home"
@@ -86,9 +106,14 @@ export function Home() {
           <Sidebar
             data={loaderData}
             loadUsers={loadUsers}
+            openChat={openChat}
           />
         }
-        main={<Chat />}
+        main={
+          openedChat ?
+            <Chat
+              chat={openedChat}
+            /> : <div>Welcome</div>}
       >
         {showNM &&
           <NewMessageModal

@@ -4,15 +4,17 @@ import { Avatar } from "@/components/ui/avatar";
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
 import { ChatList } from "@/components/ChatList/ChatList";
+import type { UuidType } from "@/lib/schemas/util.schema";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
   loadUsers: () => void,
+  openChat: (chatId: UuidType) => void,
 }
-export function Sidebar({ data, loadUsers }: SidebarProps) {
+export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
   const { user, chats } = data;
   return (
-    <aside className="flex flex-col  bg-bg4/70 text-bg1 font-semibold">
+    <aside className="flex flex-col  bg-bg4 text-bg1 font-semibold overflow-scroll">
       <header className="bg-fg4  p-2 grid grid-cols-[10%_1fr_auto] text-center *:flex *:items-center">
         <Avatar size="lg">
           <AvatarImage
@@ -44,6 +46,7 @@ export function Sidebar({ data, loadUsers }: SidebarProps) {
           </div> :
           <ChatList
             chats={chats}
+            showFn={openChat}
           />
         }
       </main>

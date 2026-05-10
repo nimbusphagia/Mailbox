@@ -1,8 +1,12 @@
+import type { ChatType } from "@/lib/schemas/chat.schema"
 
-export function Chat() {
+type Props = {
+  chat: ChatType,
+}
+export function Chat({ chat }: Props) {
   return (
     <main className="flex-1 w-full h-full">
-      <p>GIGA CHAT</p>
+      <p>{chat.id}</p>
     </main>
   )
 }

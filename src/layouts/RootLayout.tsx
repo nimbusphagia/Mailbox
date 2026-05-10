@@ -34,9 +34,9 @@ export function RootLayout({ children, route, color, right, rLink, left }: Props
   return (
     <div className="w-screen h-screen grid grid-rows-[1fr_25px] overflow-hidden">
       {children}
-      <footer className="bg-bg4 w-full h-full flex justify-between">
+      <footer className="bg-bg2/70 w-full h-full flex justify-between ">
         <div className="flex-1 flex justify-start items-center font-semibold gap-3">
-          <div className={`${bgMap[color]} text-bg3 w-20 h-full  flex items-center justify-center`}>
+          <div className={`${bgMap[color]} text-bg0 w-20 h-full  flex items-center justify-center `}>
             <p className="uppercase">{route}</p>
           </div>
           <div className={`flex-1 justify-self-center ${colorMap[left?.color ?? "black"]} text-[0.8em]`}>
