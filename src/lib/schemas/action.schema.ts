@@ -1,5 +1,6 @@
 import z from "zod";
 import { UuidSchema } from "./util.schema";
+import { MessageCreateSchema } from "./message.schema";
 
 export const HOME_INTENTS = [
   "getUsers",
@@ -7,6 +8,7 @@ export const HOME_INTENTS = [
   "createChat",
   "addContact",
   "getChat",
+  "createMessage",
 ] as const;
 
 export const ActionSchema = z.object({
@@ -14,6 +16,7 @@ export const ActionSchema = z.object({
   userId: UuidSchema.optional(),
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),
+  message: MessageCreateSchema.optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

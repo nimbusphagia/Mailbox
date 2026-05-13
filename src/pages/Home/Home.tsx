@@ -13,6 +13,7 @@ import type { SafeUser } from "@/lib/schemas/user.schema";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { ChatType } from "@/lib/schemas/chat.schema";
 import { Welcome } from "@/components/ui/Welcome";
+import type { MessageCreate } from "@/lib/schemas/message.schema";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
@@ -50,7 +51,10 @@ export function Home() {
       setOpenedChat(data.data.chat);
       return;
     }
-
+    if (data.intent === "createMessage") {
+      setOpenedChat(data.data.chat);
+      return;
+    }
   }, [fetcher.data]);
 
   useEffect(() => {
@@ -96,6 +100,12 @@ export function Home() {
       { method: "post", action: "", encType: "application/json" }
     );
   }
+  const createMessage = (message: MessageCreate) => {
+    fetcher.submit(
+      { intent: "createMessage", message },
+      { method: "post", action: "", encType: "application/json" }
+    );
+  }
   return (
     <RootLayout
       route="home"
@@ -114,6 +124,7 @@ export function Home() {
           openedChat ?
             <Chat
               chat={openedChat}
+              sendFn={createMessage}
             />
             :
             <div className="bg-fg4/68 w-full h-full flex items-center justify-center">

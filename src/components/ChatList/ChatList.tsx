@@ -13,6 +13,7 @@ export function ChatList({ chats, showFn }: Props) {
         <div
           className="h-fit border-b-1 border-bg3"
           onClick={() => showFn(c.id)}
+          key={c.id}
         >
           <ChatThumbnail
             key={c.id}

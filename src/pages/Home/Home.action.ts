@@ -17,6 +17,7 @@ export type ActionReturn =
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: Contact[] } }
   | { intent: "createChat"; data: { chat: ChatType } }
   | { intent: "getChat"; data: { chat: ChatType } }
+  | { intent: "createMessage"; data: { chat: ChatType } }
   | { intent: "addContact"; data: { users: SafeUser[]; contacts: Contact[] } };
 
 export async function HomeAction({
@@ -74,6 +75,14 @@ export async function HomeAction({
       case "getChat": {
         const { chatId } = result;
         const response = await api.get<ChatType>(`api/chat/${chatId}`);
+        return {
+          intent,
+          data: { chat: response.data },
+        };
+      }
+      case "createMessage": {
+        const { message } = result;
+        const response = await api.post<ChatType>("api/chat/message", message);
         return {
           intent,
           data: { chat: response.data },

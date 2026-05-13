@@ -4,6 +4,7 @@ import type { SafeUser } from "@/lib/schemas/user.schema";
 import axios from "axios";
 import z from "zod";
 import { ChatLazySchema } from "@/lib/schemas/chat.schema";
+import { redirect } from "react-router-dom";
 
 export type HomeLoaderReturn = {
   user: SafeUser;
@@ -24,6 +25,9 @@ export async function HomeLoader(): Promise<HomeLoaderReturn> {
     return { user, chats: result.data };
   } catch (err) {
     if (axios.isAxiosError(err)) {
+      if (err.response?.status === 401) {
+        throw redirect("/login");
+      }
       throw new Response(
         err.response?.data?.message ?? "Something went wrong",
         {
