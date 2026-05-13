@@ -64,3 +64,9 @@ export function timeAgo(date: Date): string {
   }
   return "just now";
 }
+export function formatDate(date: Date) {
+  return date.toLocaleString(undefined, {
+    timeStyle: "short",
+    dateStyle: "short",
+  });
+}

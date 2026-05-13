@@ -4,7 +4,7 @@ import { UserThumbnail } from "@/components/UserThumbnail/UserThumbnail"
 import type { ChatType } from "@/lib/schemas/chat.schema"
 import type { MessageCreate } from "@/lib/schemas/message.schema"
 import { Mailbox } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 type Props = {
   chat: ChatType,
@@ -12,6 +12,13 @@ type Props = {
 }
 export function Chat({ chat, sendFn }: Props) {
   const [textValue, setTextValue] = useState<string>("");
+  const focusRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    focusRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    focusRef.current?.focus();
+  }, [chat]);
+
+
   const submitText = () => {
     if (textValue?.length) {
       const message = {
@@ -24,7 +31,7 @@ export function Chat({ chat, sendFn }: Props) {
     }
   }
   return (
-    <main className="flex-1 bg-fg4/68 grid grid-rows-[8%_1fr_auto] w-full h-full text-bg1">
+    <main className="box-border flex-1 min-h-0 bg-fg3/90 size-full grid grid-rows-[8%_82%_10%] text-bg1">
       <div className="bg-fg3/92 flex items-center justify-between p-3">
         <UserThumbnail
           imgUrl={chat.secondaryMember?.imgUrl!}
@@ -33,14 +40,16 @@ export function Chat({ chat, sendFn }: Props) {
         />
         <div>...</div>
       </div>
-      <div>
+      <div className="">
         <Messages
           messages={chat.messages}
           primary={chat.primaryMember}
-          secondary={chat.secondaryMember} />
+          secondary={chat.secondaryMember}
+          focusRef={focusRef}
+        />
       </div>
-      <div className="flex items-center m-3 gap-2 flex-1 p-1 bg-fg4 rounded-xs shadow-xs shadow-fg4 text-fg1"  >
-        <Button className="bg-fg4 self-end text-md text-bg2">+</Button>
+      <div className="flex items-center m-3 gap-2 flex-1 p-1 bg-bg4/30 rounded-xs shadow-xs shadow-fg4"  >
+        <Button className=" self-end text-md text-bg2">+</Button>
         <input
           placeholder=":message"
           value={textValue}
@@ -51,11 +60,11 @@ export function Chat({ chat, sendFn }: Props) {
               submitText();
             }
           }}
-          className="bg-fg4/90 p-1 px-2 text-sm font-bold w-full outline-none text-bg2
-          focus:bg-fg3/70 focus:placeholder:text-bg2 focus:text-bg2 rounded-xs"
+          className="p-1 px-3 text-sm font-bold w-full outline-none text-bg1
+          focus:bg-fg3/70 focus:placeholder:text-bg2 focus:text-bg1 rounded-xs"
         />
         <Button
-          className="bg-fg4 self-end text-md text-bg2"
+          className=" self-end text-md text-bg2"
           disabled={!textValue?.length}
           onClick={submitText}
         >
