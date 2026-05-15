@@ -31,8 +31,8 @@ export function Chat({ chat, sendFn }: Props) {
     }
   }
   return (
-    <main className="box-border flex-1 min-h-0 bg-fg3/90 size-full grid grid-rows-[8%_80%_10%] text-bg1">
-      <div className="bg-fg3/92 flex items-center justify-between size-full px-3">
+    <main className="box-border flex-1 min-h-0 bg-fg4 size-full grid grid-rows-[8%_80%_10%] text-bg1">
+      <div className="bg-fg1/65 flex items-center justify-between size-full px-3">
         <UserThumbnail
           imgUrl={chat.secondaryMember?.imgUrl!}
           fullName={chat.secondaryMember?.nickname ?? chat.secondaryMember.name}

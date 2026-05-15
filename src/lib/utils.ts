@@ -76,3 +76,5 @@ export function formatDate(date: Date, format?: "short" | "long") {
     dateStyle: "short",
   });
 }
+export const trimSentence = (str: string, num: number) =>
+  str.split(" ").slice(0, num).join(" ");

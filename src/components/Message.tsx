@@ -32,9 +32,9 @@ export function MessageComponent({ message, primary, secondary, reference }: Pro
     >
       <div
         className={`
-         w-fit max-w-[62%] py-1 px-4 pb-3 rounded-sm
+         w-fit max-w-[62%] py-1 px-4 pb-2 rounded-sm
         text-sm flex flex-col gap-1 font-medium cursor-pointer
-        ${isPrimary ? "items-end bg-bg2/35 hover:bg-bg2/45 " : "items-start bg-fg2/90 hover:bg-fg2"}
+        ${isPrimary ? "items-end bg-bg1/70 hover:bg-bg1/75 " : "items-start bg-fg2 hover:bg-fg1/85"}
         `}
         onClick={handleClick}
       >

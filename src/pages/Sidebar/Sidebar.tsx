@@ -15,15 +15,15 @@ type SidebarProps = {
 export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
   const { user, chats } = data;
   return (
-    <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-scroll border-r-1 border-fg4/80">
-      <header className="h-[12%] bg-fg3/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
+    <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-y-scroll overflow-x-hidden border-r-1 border-fg4/80">
+      <header className="h-[12%] bg-fg2/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
         <Avatar size="lg">
           <AvatarImage
             src={user.imgUrl}
           />
         </Avatar>
         <div className="self-center justify-center">
-          <LogoVar2 className="text-[0.255rem] text-bg1/90" />
+          <LogoVar2 className="text-[0.255rem] text-bg1" />
         </div>
         <div className="justify-around gap-0.5">
           <Button type="button" className="px-1.5" onClick={loadUsers}>
