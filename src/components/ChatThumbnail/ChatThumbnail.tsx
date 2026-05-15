@@ -27,7 +27,7 @@ export function ChatThumbnail({ chat }: Props) {
           <p className="text-[0.6em]">{timeAgo(lastMessage?.createdAt ?? chat.createdAt)}</p>
         </div>
         <div className="flex-1 flex items-center">
-          <p className="text-xs text-bg2 font-bold">{message}</p>
+          <p className="text-xs text-bg2 font-bold text-left">{message}</p>
         </div>
       </div>
     </div>

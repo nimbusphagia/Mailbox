@@ -11,7 +11,7 @@ type Props = {
 }
 export function Messages({ messages, primary, secondary, focusRef }: Props) {
   return (
-    <div className=" h-full p-2 overflow-y-scroll flex flex-col gap-2.5">
+    <div className=" h-full px-5 pb-2 overflow-y-scroll flex flex-col gap-2.5">
       {messages.map((m, i) => {
         return (
           <MessageComponent
