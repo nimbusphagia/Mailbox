@@ -1,5 +1,5 @@
-import { Avatar } from "../ui/avatar"
-import { AvatarImage } from "../ui/avatar"
+import { Avatar } from "./ui/avatar"
+import { AvatarImage } from "./ui/avatar"
 import { timeAgo } from "@/lib/utils";
 import type { ChatLazy } from "@/lib/schemas/chat.schema";
 

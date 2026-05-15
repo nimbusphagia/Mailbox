@@ -1,6 +1,6 @@
 import type { Message } from "@/lib/schemas/message.schema"
 import type { SafeUser } from "@/lib/schemas/user.schema"
-import { NameTag } from "../ui/NameTag";
+import { NameTag } from "./ui/NameTag";
 import { useRef, useState, type RefObject } from "react";
 import { formatDate } from "@/lib/utils";
 

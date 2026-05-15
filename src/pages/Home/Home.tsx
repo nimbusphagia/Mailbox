@@ -5,7 +5,7 @@ import { RootLayout, type FMessage } from "@/layouts/RootLayout";
 import { useFetcher, useLoaderData } from "react-router-dom";
 import type { HomeLoaderReturn } from "./Home.loader";
 import { useEffect, useState } from "react";
-import { NewMessageModal } from "@/components/NewMessageModal/NewMessageModal";
+import { NewMessageModal } from "@/components/NewMessageModal";
 import type { ActionReturn } from "./Home.action";
 import type { ErrorMessage } from "@/lib/utils";
 import type { Contact } from "@/lib/schemas/contact.schema";

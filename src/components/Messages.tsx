@@ -1,7 +1,8 @@
 import type { Message } from "@/lib/schemas/message.schema"
-import { MessageComponent } from "../Message/Message"
+import { MessageComponent } from "./Message"
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { type RefObject } from "react"
+import { ChatInit } from "./ChatInit"
 
 type Props = {
   messages: Message[],
@@ -11,7 +12,8 @@ type Props = {
 }
 export function Messages({ messages, primary, secondary, focusRef }: Props) {
   return (
-    <div className=" h-full px-5 pb-2 overflow-y-scroll flex flex-col gap-2.5">
+    <div className=" h-full px-5 pt-4 pb-2 overflow-y-scroll flex flex-col gap-2.5">
+      <ChatInit contact={secondary} />
       {messages.map((m, i) => {
         return (
           <MessageComponent

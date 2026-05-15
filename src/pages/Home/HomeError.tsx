@@ -1,4 +1,4 @@
-import { ErrorComponent } from "@/components/Error/Error";
+import { ErrorComponent } from "@/components/Error";
 import { RootLayout } from "@/layouts/RootLayout";
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
 

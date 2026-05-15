@@ -1,5 +1,5 @@
 import type { ChatLazy } from "@/lib/schemas/chat.schema";
-import { ChatThumbnail } from "../ChatThumbnail/ChatThumbnail";
+import { ChatThumbnail } from "./ChatThumbnail";
 import type { UuidType } from "@/lib/schemas/util.schema";
 
 type Props = {

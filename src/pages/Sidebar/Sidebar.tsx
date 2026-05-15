@@ -3,7 +3,7 @@ import { AvatarImage } from "@/components/ui/avatar";
 import { Avatar } from "@/components/ui/avatar";
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
-import { ChatList } from "@/components/ChatList/ChatList";
+import { ChatList } from "@/components/ChatList";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import { LogoVar2 } from "@/components/ui/logo3";
 

@@ -1,6 +1,6 @@
-import { Messages } from "@/components/Messages/Messages"
+import { Messages } from "@/components/Messages"
 import { Button } from "@/components/ui/button"
-import { UserThumbnail } from "@/components/UserThumbnail/UserThumbnail"
+import { UserThumbnail } from "@/components/UserThumbnail"
 import type { ChatType } from "@/lib/schemas/chat.schema"
 import type { MessageCreate } from "@/lib/schemas/message.schema"
 import { Mailbox } from "lucide-react"
@@ -14,7 +14,7 @@ export function Chat({ chat, sendFn }: Props) {
   const [textValue, setTextValue] = useState<string>("");
   const focusRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    focusRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    focusRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     focusRef.current?.focus();
   }, [chat]);
 
@@ -40,7 +40,7 @@ export function Chat({ chat, sendFn }: Props) {
         />
         <div>...</div>
       </div>
-      <div className="">
+      <div className="flex flex-col gap-2">
         <Messages
           messages={chat.messages}
           primary={chat.primaryMember}
@@ -49,7 +49,7 @@ export function Chat({ chat, sendFn }: Props) {
         />
       </div>
       <div className="flex items-center m-3 gap-2 flex-1 p-1 bg-bg4/30 rounded-xs shadow-xs shadow-fg4"  >
-        <Button className=" self-end text-md text-bg2">+</Button>
+        <Button className=" text-md text-bg2">+</Button>
         <input
           placeholder=":message"
           value={textValue}
@@ -64,7 +64,7 @@ export function Chat({ chat, sendFn }: Props) {
           focus:bg-fg3/70 focus:placeholder:text-bg2 focus:text-bg1 rounded-xs"
         />
         <Button
-          className=" self-end text-md text-bg2"
+          className=" text-md text-bg2"
           disabled={!textValue?.length}
           onClick={submitText}
         >

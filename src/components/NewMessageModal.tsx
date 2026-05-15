@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Button } from "../ui/button";
-import { Modal } from "../ui/modal";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { Button } from "./ui/button";
+import { Modal } from "./ui/modal";
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import type { Contact } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
-import { ContactList } from "../ContactList/ContactList";
-import { UsersList } from "../UsersList/UsersList";
+import { ContactList } from "./ContactList";
+import { UsersList } from "./UsersList";
 import type { UuidType } from "@/lib/schemas/util.schema";
 
 type Props = {

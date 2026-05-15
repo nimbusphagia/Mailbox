@@ -1,6 +1,6 @@
-import { UserThumbnail } from "../UserThumbnail/UserThumbnail"
+import { UserThumbnail } from "./UserThumbnail"
 import type { SafeUser } from "@/lib/schemas/user.schema"
-import { Button } from "../ui/button"
+import { Button } from "./ui/button"
 import type { UuidType } from "@/lib/schemas/util.schema"
 import { ModalListLayout } from "@/layouts/ModalListLayout"
 

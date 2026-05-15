@@ -1,8 +1,8 @@
 import type { Contact } from "@/lib/schemas/contact.schema"
-import { UserThumbnail } from "../UserThumbnail/UserThumbnail"
+import { UserThumbnail } from "./UserThumbnail"
 import { ModalListLayout } from "@/layouts/ModalListLayout"
 import type { UuidType } from "@/lib/schemas/util.schema"
-import { Checkbox } from "../ui/checkbox"
+import { Checkbox } from "./ui/checkbox"
 
 type Props = {
   contacts: Contact[],
