@@ -1,13 +1,13 @@
 import type { Message } from "@/lib/schemas/message.schema"
 import { MessageComponent } from "./Message"
-import type { SafeUser } from "@/lib/schemas/user.schema"
+import type { SafeUser, ChatUser } from "@/lib/schemas/user.schema"
 import { type RefObject } from "react"
 import { ChatInit } from "./ChatInit"
 
 type Props = {
   messages: Message[],
   primary: SafeUser,
-  secondary: SafeUser,
+  secondary: ChatUser,
   focusRef: RefObject<HTMLDivElement | null>
 }
 export function Messages({ messages, primary, secondary, focusRef }: Props) {

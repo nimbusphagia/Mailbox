@@ -1,8 +1,8 @@
-import { type SafeUser } from "@/lib/schemas/user.schema"
+import { type ChatUser } from "@/lib/schemas/user.schema"
 import { Avatar, AvatarImage } from "./ui/avatar"
 
 type Props = {
-  contact: SafeUser
+  contact: ChatUser
 }
 export function ChatInit({ contact }: Props) {
   return (
@@ -15,7 +15,7 @@ export function ChatInit({ contact }: Props) {
         />
       </Avatar>
       <div className="text-center font-bold">
-        <h3 className="text-[1.5em] text-bg0">{contact.name}</h3>
+        <h3 className="text-[1.5em] text-bg0">{contact.nickname ?? contact.name}</h3>
         <p className="text-sm text-bg2">{"@" + contact.username}</p>
       </div>
     </div>

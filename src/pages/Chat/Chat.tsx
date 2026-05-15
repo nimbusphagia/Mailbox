@@ -35,7 +35,7 @@ export function Chat({ chat, sendFn }: Props) {
       <div className="bg-fg3/92 flex items-center justify-between p-3">
         <UserThumbnail
           imgUrl={chat.secondaryMember?.imgUrl!}
-          fullName={chat.secondaryMember?.name!}
+          fullName={chat.secondaryMember?.nickname ?? chat.secondaryMember.name}
           className="text-[1.2em] text-bg0"
         />
         <div>...</div>

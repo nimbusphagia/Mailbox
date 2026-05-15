@@ -15,3 +15,8 @@ export const SafeUserSchema = UserSchema.omit({
   passwordHash: true,
 });
 export type SafeUser = z.infer<typeof SafeUserSchema>;
+
+export const ChatUserSchema = UserSchema.omit({
+  passwordHash: true,
+}).extend({ nickname: z.string().nullable() });
+export type ChatUser = z.infer<typeof ChatUserSchema>;

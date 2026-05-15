@@ -23,7 +23,7 @@ export function ChatThumbnail({ chat }: Props) {
       </Avatar>
       <div className="flex flex-1 flex-col  ">
         <div className="flex justify-between items-center">
-          <h4 className="text-md text-bg0 font-bold">{otherMember.name}</h4>
+          <h4 className="text-md text-bg0 font-bold">{otherMember.nickname ?? otherMember.name}</h4>
           <p className="text-[0.6em]">{timeAgo(lastMessage?.createdAt ?? chat.createdAt)}</p>
         </div>
         <div className="flex-1 flex items-center">

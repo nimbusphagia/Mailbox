@@ -17,7 +17,6 @@ export async function HomeLoader(): Promise<HomeLoaderReturn> {
       api.get<SafeUser>("api/user/me"),
       api.get<ChatLazy[]>("api/chat"),
     ]);
-
     const result = z.array(ChatLazySchema).safeParse(chats);
     if (!result.success) {
       throw new Response("Invalid data", { status: 500 });

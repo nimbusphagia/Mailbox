@@ -1,5 +1,5 @@
 import type { Message } from "@/lib/schemas/message.schema"
-import type { SafeUser } from "@/lib/schemas/user.schema"
+import type { SafeUser, ChatUser } from "@/lib/schemas/user.schema"
 import { NameTag } from "./ui/NameTag";
 import { useRef, useState, type RefObject } from "react";
 import { formatDate } from "@/lib/utils";
@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/utils";
 type Props = {
   message: Message,
   primary: SafeUser,
-  secondary: SafeUser,
+  secondary: ChatUser,
   reference?: RefObject<HTMLDivElement | null>,
 }
 
@@ -39,7 +39,7 @@ export function MessageComponent({ message, primary, secondary, reference }: Pro
         onClick={handleClick}
       >
         <NameTag
-          name={isPrimary ? primary.name : secondary.name}
+          name={isPrimary ? primary.name : secondary.nickname ?? secondary.name}
           style={isPrimary ? "text-fg1 decoration-fg1/80" : "text-bg1 decoration-bg1/70"}
         />
         <div className="w-full text-pretty ">
