@@ -12,7 +12,7 @@ export function UserThumbnail({ imgUrl, fullName, className }: Props) {
         <AvatarImage src={imgUrl} />
       </Avatar>
       <div>
-        <p className={`text-bg1/90 font-bold text-sm ${className}`}>{fullName}</p>
+        <p className={`text-bg1 font-bold text-md ${className}`}>{fullName}</p>
       </div>
     </div >
   )

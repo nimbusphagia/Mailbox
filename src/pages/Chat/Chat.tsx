@@ -31,20 +31,17 @@ export function Chat({ chat, sendFn }: Props) {
     }
   }
   return (
-    <main className="box-border flex-1 min-h-0 bg-fg3/90 size-full grid grid-rows-[8%_82%_10%] text-bg1">
-      <div className="bg-fg3/92 flex items-center justify-between p-3">
+    <main className="box-border flex-1 min-h-0 bg-fg3/90 size-full grid grid-rows-[8%_80%_10%] text-bg1">
+      <div className="bg-fg3/92 flex items-center justify-between size-full px-3">
         <UserThumbnail
           imgUrl={chat.secondaryMember?.imgUrl!}
           fullName={chat.secondaryMember?.nickname ?? chat.secondaryMember.name}
-          className="text-[1.2em] text-bg0"
         />
         <div>...</div>
       </div>
       <div className="flex flex-col gap-2">
         <Messages
-          messages={chat.messages}
-          primary={chat.primaryMember}
-          secondary={chat.secondaryMember}
+          chat={chat}
           focusRef={focusRef}
         />
       </div>

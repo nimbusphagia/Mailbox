@@ -25,6 +25,7 @@ export type ChatLazy = z.infer<typeof ChatLazySchema>;
 export const ChatSchema = z.object({
   id: UuidSchema,
   isGroup: z.boolean(),
+  createdAt: z.coerce.date(),
   primaryMember: SafeUserSchema,
   secondaryMember: ChatUserSchema,
   messages: z.array(ChatMessageSchema),
