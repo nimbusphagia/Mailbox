@@ -8,12 +8,14 @@ export const HOME_INTENTS = [
   "createChat",
   "addContact",
   "getChat",
+  "getContact",
   "createMessage",
 ] as const;
 
 export const ActionSchema = z.object({
   intent: z.enum(HOME_INTENTS),
   userId: UuidSchema.optional(),
+  contactId: UuidSchema.optional(),
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),
   message: MessageCreateSchema.optional(),

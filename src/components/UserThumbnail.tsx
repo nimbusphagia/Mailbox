@@ -4,10 +4,14 @@ type Props = {
   imgUrl: string,
   fullName: string,
   className?: string
+  showFn: () => void
 }
-export function UserThumbnail({ imgUrl, fullName, className }: Props) {
+export function UserThumbnail({ imgUrl, fullName, className, showFn }: Props) {
   return (
-    <div className="flex items-center gap-3">
+    <div
+      className="flex items-center gap-3 cursor-pointer"
+      onClick={showFn}
+    >
       <Avatar>
         <AvatarImage src={imgUrl} />
       </Avatar>

@@ -8,19 +8,21 @@ import { useEffect, useState } from "react";
 import { NewMessageModal } from "@/components/NewMessageModal";
 import type { ActionReturn } from "./Home.action";
 import type { ErrorMessage } from "@/lib/utils";
-import type { Contact } from "@/lib/schemas/contact.schema";
+import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { ChatType } from "@/lib/schemas/chat.schema";
 import { Welcome } from "@/components/ui/Welcome";
 import type { MessageCreate } from "@/lib/schemas/message.schema";
+import { ContactPage } from "../Contact/Contact";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
   const [openedChat, setOpenedChat] = useState<ChatType | undefined>();
+  const [openedContact, setOpenedContact] = useState<ContactType | null>(null);
   const [showNM, setShowNM] = useState<boolean>(false);
   const [leftFM, setLeftFM] = useState<FMessage | undefined>();
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<ContactType[]>([]);
   const [users, setUsers] = useState<SafeUser[]>([]);
   const fetcher = useFetcher<ActionReturn | ErrorMessage>();
 
@@ -55,13 +57,17 @@ export function Home() {
       setOpenedChat(data.data.chat);
       return;
     }
+    if (data.intent === "getContact") {
+      setOpenedContact(data.data.contact);
+      return;
+    }
   }, [fetcher.data]);
 
   useEffect(() => {
     setTimeout(() => setLeftFM(undefined), 8000);
   }, [leftFM])
 
-  const refreshUsers = (contacts: Contact[], users: SafeUser[]) => {
+  const refreshUsers = (contacts: ContactType[], users: SafeUser[]) => {
     setContacts(contacts);
     const contactUserIds = new Set(contacts.map((c) => c.user?.id || c.isBlocked));
     const filteredUsers = users.filter(
@@ -106,6 +112,12 @@ export function Home() {
       { method: "post", action: "", encType: "application/json" }
     );
   }
+  const getContact = (userId: UuidType) => {
+    fetcher.submit(
+      { intent: "getContact", userId },
+      { method: "post", action: "", encType: "application/json" }
+    );
+  }
   return (
     <RootLayout
       route="home"
@@ -122,10 +134,15 @@ export function Home() {
         }
         main={
           openedChat ?
-            <Chat
-              chat={openedChat}
-              sendFn={createMessage}
-            />
+            (openedContact ?
+              <ContactPage
+                contact={openedContact}
+              /> :
+              <Chat
+                chat={openedChat}
+                sendFn={createMessage}
+                showContact={getContact}
+              />)
             :
             <div className="bg-fg4/68 w-full h-full flex items-center justify-center">
               <Welcome className="text-[30px] text-fg1/80 font-bold select-none" />

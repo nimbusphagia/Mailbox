@@ -1,6 +1,6 @@
 import api from "@/lib/api";
 import type { ChatType } from "@/lib/schemas/chat.schema";
-import type { Contact } from "@/lib/schemas/contact.schema";
+import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ActionSchema } from "@/lib/schemas/action.schema";
 
@@ -13,12 +13,16 @@ import type { AxiosResponse } from "axios";
 import type { ActionFunctionArgs } from "react-router-dom";
 
 export type ActionReturn =
-  | { intent: "getContacts"; data: Contact[] }
-  | { intent: "getUsers"; data: { users: SafeUser[]; contacts: Contact[] } }
+  | { intent: "getContacts"; data: ContactType[] }
+  | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatType } }
   | { intent: "getChat"; data: { chat: ChatType } }
+  | { intent: "getContact"; data: { contact: ContactType } }
   | { intent: "createMessage"; data: { chat: ChatType } }
-  | { intent: "addContact"; data: { users: SafeUser[]; contacts: Contact[] } };
+  | {
+      intent: "addContact";
+      data: { users: SafeUser[]; contacts: ContactType[] };
+    };
 
 export async function HomeAction({
   request,
@@ -30,17 +34,17 @@ export async function HomeAction({
   try {
     switch (intent) {
       case "getContacts": {
-        const response: AxiosResponse<Contact[]> =
-          await api.get<Contact[]>("api/user/contact");
+        const response: AxiosResponse<ContactType[]> =
+          await api.get<ContactType[]>("api/user/contact");
         return { intent, data: response.data };
       }
       case "getUsers": {
         const [usersRes, contactsRes]: [
           AxiosResponse<SafeUser[]>,
-          AxiosResponse<Contact[]>,
+          AxiosResponse<ContactType[]>,
         ] = await Promise.all([
           api.get<SafeUser[]>("api/user"),
-          api.get<Contact[]>("api/user/contact"),
+          api.get<ContactType[]>("api/user/contact"),
         ]);
         return {
           intent,
@@ -52,10 +56,10 @@ export async function HomeAction({
         await api.post("api/user/contact", { userId });
         const [usersRes, contactsRes]: [
           AxiosResponse<SafeUser[]>,
-          AxiosResponse<Contact[]>,
+          AxiosResponse<ContactType[]>,
         ] = await Promise.all([
           api.get<SafeUser[]>("api/user"),
-          api.get<Contact[]>("api/user/contact"),
+          api.get<ContactType[]>("api/user/contact"),
         ]);
         return {
           intent,
@@ -78,6 +82,16 @@ export async function HomeAction({
         return {
           intent,
           data: { chat: response.data },
+        };
+      }
+      case "getContact": {
+        const { userId } = result;
+        const response = await api.get<ContactType>(
+          `api/user/contact/${userId}`,
+        );
+        return {
+          intent,
+          data: { contact: response.data },
         };
       }
       case "createMessage": {

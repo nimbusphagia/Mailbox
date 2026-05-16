@@ -3,16 +3,19 @@ import { Button } from "@/components/ui/button"
 import { UserThumbnail } from "@/components/UserThumbnail"
 import type { ChatType } from "@/lib/schemas/chat.schema"
 import type { MessageCreate } from "@/lib/schemas/message.schema"
+import type { UuidType } from "@/lib/schemas/util.schema"
 import { Mailbox } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 type Props = {
   chat: ChatType,
-  sendFn: (message: MessageCreate) => void
+  sendFn: (message: MessageCreate) => void,
+  showContact: (userId: UuidType) => void,
 }
-export function Chat({ chat, sendFn }: Props) {
+export function Chat({ chat, sendFn, showContact }: Props) {
   const [textValue, setTextValue] = useState<string>("");
   const focusRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     focusRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     focusRef.current?.focus();
@@ -30,12 +33,14 @@ export function Chat({ chat, sendFn }: Props) {
       setTextValue("");
     }
   }
+
   return (
     <main className="box-border flex-1 min-h-0 bg-fg4 size-full grid grid-rows-[8%_80%_10%] text-bg1">
       <div className="bg-fg1/65 flex items-center justify-between size-full px-3">
         <UserThumbnail
           imgUrl={chat.secondaryMember?.imgUrl!}
           fullName={chat.secondaryMember?.nickname ?? chat.secondaryMember.name}
+          showFn={() => showContact(chat.secondaryMember.id)}
         />
         <div>...</div>
       </div>

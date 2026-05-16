@@ -11,4 +11,4 @@ export const ContactSchema = z.object({
   isBlocked: z.boolean(),
 });
 
-export type Contact = z.infer<typeof ContactSchema>;
+export type ContactType = z.infer<typeof ContactSchema>;
