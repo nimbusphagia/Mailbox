@@ -4,7 +4,6 @@ type Props = {
   contact: ContactType | null,
 }
 export function ContactPage({ contact }: Props) {
-  console.log(contact);
   return (
     <div className="size-full">
       <>
