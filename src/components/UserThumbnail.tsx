@@ -4,7 +4,7 @@ type Props = {
   imgUrl: string,
   fullName: string,
   className?: string
-  showFn: () => void
+  showFn?: () => void
 }
 export function UserThumbnail({ imgUrl, fullName, className, showFn }: Props) {
   return (
@@ -13,7 +13,10 @@ export function UserThumbnail({ imgUrl, fullName, className, showFn }: Props) {
       onClick={showFn}
     >
       <Avatar>
-        <AvatarImage src={imgUrl} />
+        <AvatarImage
+          src={imgUrl}
+          className="bg-fg1/50 border-fg0/10 shadow-lg"
+        />
       </Avatar>
       <div>
         <p className={`text-bg1 font-bold text-md ${className}`}>{fullName}</p>

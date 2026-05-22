@@ -16,9 +16,10 @@ export function ChatThumbnail({ chat }: Props) {
     : "This mailbox is empty";
   return (
     <div className="flex items-center max-h-20 overflow-y-hidden gap-2.5 p-3 bg-fg4/30 border-b-2 border-bg3 cursor-pointer hover:bg-fg4/70">
-      <Avatar size="lg">
+      <Avatar size="lg" >
         <AvatarImage
           src={otherMember.imgUrl}
+          className="bg-fg4 border-1 border-fg3"
         />
       </Avatar>
       <div className="flex flex-1 flex-col overflow-x-hidden ">

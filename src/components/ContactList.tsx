@@ -1,11 +1,11 @@
-import type { Contact } from "@/lib/schemas/contact.schema"
+import type { ContactType } from "@/lib/schemas/contact.schema"
 import { UserThumbnail } from "./UserThumbnail"
 import { ModalListLayout } from "@/layouts/ModalListLayout"
 import type { UuidType } from "@/lib/schemas/util.schema"
 import { Checkbox } from "./ui/checkbox"
 
 type Props = {
-  contacts: Contact[],
+  contacts: ContactType[],
   selectFn: (userId: UuidType | null, checked: boolean) => void,
 }
 export function ContactList({ contacts, selectFn }: Props) {

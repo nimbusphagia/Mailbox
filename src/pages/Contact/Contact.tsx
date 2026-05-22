@@ -31,7 +31,7 @@ export function ContactPage({ contact, hideFn, nicknameFn }: Props) {
           <Avatar className="size-fit">
             <AvatarImage
               src={contact?.user?.imgUrl}
-              className="size-35"
+              className="size-35 bg-fg0/10 border-1 border-fg3 shadow-sm"
             />
           </Avatar>
           <div className="text-center font-bold flex flex-col">
