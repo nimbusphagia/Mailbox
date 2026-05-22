@@ -10,8 +10,8 @@ type Props = {
   chat?: ChatType,
   contact?: ContactType | null,
   actions: homeActionsReturn,
-  closeContact: () => void,
-  editNickname: (id: UuidType, nickname: string) => void,
+  closeContact: (id: UuidType) => void,
+  editNickname: (id: UuidType, nickname: string | null) => void,
 }
 export function MainContent({
   chat,
@@ -28,9 +28,8 @@ export function MainContent({
   if (contact) return (
     <ContactPage
       contact={contact}
-      hideFn={closeContact}
+      hideFn={() => closeContact(chat.id)}
       nicknameFn={editNickname}
-
     />
   );
   return (

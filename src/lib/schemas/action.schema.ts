@@ -20,7 +20,11 @@ export const ActionSchema = z.object({
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),
   message: MessageCreateSchema.optional(),
-  nickname: z.string().optional(),
+  nickname: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => (val === "" ? null : val)),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

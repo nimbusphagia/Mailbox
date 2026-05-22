@@ -29,7 +29,7 @@ export function useHomeActions(
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
     createMessage: (message: MessageCreate) =>
       submit({ intent: "createMessage", message }),
-    editNickname: (userId: UuidType, nickname: string) =>
+    editNickname: (userId: UuidType, nickname: string | null) =>
       submit({ intent: "editNickname", userId, nickname }),
   };
 }

@@ -1,7 +1,6 @@
 import { MainLayout } from "@/layouts/MainLayout";
 import { Sidebar } from "../Sidebar/Sidebar";
-import { RootLayout, type FMessage } from "@/layouts/RootLayout";
-import { useLoaderData } from "react-router-dom";
+import { RootLayout, type FMessage } from "@/layouts/RootLayout"; import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { NewMessageModal } from "@/components/NewMessageModal";
 import type { HomeLoaderReturn } from "./Home.loader";
@@ -59,7 +58,7 @@ export function Home() {
             chat={view.chat}
             contact={view.contact}
             actions={actions}
-            closeContact={() => setView((prev) => ({ ...prev, contact: null }))}
+            closeContact={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })) }}
             editNickname={actions.editNickname}
           />}
       >
