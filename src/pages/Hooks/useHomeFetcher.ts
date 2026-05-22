@@ -62,6 +62,10 @@ export function useHomeFetcher({
         const d = data as Extract<ActionReturn, { intent: "getContact" }>;
         onContactOpened(d.data.contact);
       },
+      editNickname: () => {
+        const d = data as Extract<ActionReturn, { intent: "editNickname" }>;
+        onContactOpened(d.data.contact);
+      },
     };
 
     handlers[data.intent as ActionReturn["intent"]]?.();

@@ -15,7 +15,7 @@ type SidebarProps = {
 export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
   const { user, chats } = data;
   return (
-    <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-y-scroll overflow-x-hidden border-r-1 border-fg4/80">
+    <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-y-scroll overflow-x-hidden border-r-2 border-bg4">
       <header className="h-[12%] bg-fg2/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
         <Avatar size="lg">
           <AvatarImage
@@ -37,7 +37,7 @@ export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
       <div className="flex items-center justify-center">
         <input
           placeholder=":search"
-          className="bg-fg4/90 p-1 px-2 text-sm font-bold w-full outline-none 
+          className="bg-fg3/95 p-1 px-2 text-sm font-bold w-full outline-none 
           focus:bg-fg4/70 focus:placeholder:text-bg2 focus:text-bg1"
         />
       </div>

@@ -10,7 +10,7 @@ type Props = {
 export function Messages({ chat, focusRef }: Props) {
   const { messages, primaryMember: primary, secondaryMember: secondary, createdAt } = chat;
   return (
-    <div className=" h-full px-5 pt-4 pb-2 overflow-y-scroll flex flex-col gap-2.5">
+    <div className=" h-full px-5 pt-1 pb-2 overflow-y-scroll flex flex-col gap-2.5">
       <ChatInit
         contact={secondary}
         createdAt={createdAt}

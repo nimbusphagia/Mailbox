@@ -23,9 +23,13 @@ export function useHomeActions(
       submit({ intent: "createChat", contacts: [contactId] }),
     createGroup: (contacts: UuidType[]) =>
       submit({ intent: "createGroup", contacts }),
-    openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),
+    openChat: (chatId: UuidType) => {
+      submit({ intent: "getChat", chatId });
+    },
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
     createMessage: (message: MessageCreate) =>
       submit({ intent: "createMessage", message }),
+    editNickname: (userId: UuidType, nickname: string) =>
+      submit({ intent: "editNickname", userId, nickname }),
   };
 }

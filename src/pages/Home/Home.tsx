@@ -51,10 +51,17 @@ export function Home() {
           <Sidebar
             data={loaderData}
             loadUsers={() => { actions.loadUsers(); setModal((prev) => ({ ...prev, show: true })); }}
-            openChat={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })); }}
+            openChat={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })) }}
           />
         }
-        main={<MainContent chat={view.chat} contact={view.contact} actions={actions} />}
+        main={
+          <MainContent
+            chat={view.chat}
+            contact={view.contact}
+            actions={actions}
+            closeContact={() => setView((prev) => ({ ...prev, contact: null }))}
+            editNickname={actions.editNickname}
+          />}
       >
         {modal.show &&
           <NewMessageModal

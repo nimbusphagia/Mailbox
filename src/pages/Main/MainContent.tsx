@@ -4,23 +4,35 @@ import type { homeActionsReturn } from "../Hooks/useHomeActions";
 import { Welcome } from "@/components/ui/Welcome";
 import { ContactPage } from "../Contact/Contact";
 import { Chat } from "../Chat/Chat";
+import type { UuidType } from "@/lib/schemas/util.schema";
 
 type Props = {
-  chat?: ChatType;
-  contact?: ContactType | null;
-  actions: homeActionsReturn;
+  chat?: ChatType,
+  contact?: ContactType | null,
+  actions: homeActionsReturn,
+  closeContact: () => void,
+  editNickname: (id: UuidType, nickname: string) => void,
 }
 export function MainContent({
   chat,
   contact,
   actions,
+  closeContact,
+  editNickname,
 }: Props) {
   if (!chat) return (
     <div className="bg-fg4/68 w-full h-full flex items-center justify-center">
       <Welcome className="text-[30px] text-fg1/80 font-bold select-none" />
     </div>
   );
-  if (contact) return <ContactPage contact={contact} />;
+  if (contact) return (
+    <ContactPage
+      contact={contact}
+      hideFn={closeContact}
+      nicknameFn={editNickname}
+
+    />
+  );
   return (
     <Chat
       chat={chat}

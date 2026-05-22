@@ -10,6 +10,7 @@ export const HOME_INTENTS = [
   "getChat",
   "getContact",
   "createMessage",
+  "editNickname",
 ] as const;
 
 export const ActionSchema = z.object({
@@ -19,6 +20,7 @@ export const ActionSchema = z.object({
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),
   message: MessageCreateSchema.optional(),
+  nickname: z.string().optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

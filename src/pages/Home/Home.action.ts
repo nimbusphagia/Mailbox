@@ -19,6 +19,7 @@ export type ActionReturn =
   | { intent: "getChat"; data: { chat: ChatType } }
   | { intent: "getContact"; data: { contact: ContactType } }
   | { intent: "createMessage"; data: { chat: ChatType } }
+  | { intent: "editNickname"; data: { contact: ContactType } }
   | {
       intent: "addContact";
       data: { users: SafeUser[]; contacts: ContactType[] };
@@ -102,6 +103,18 @@ export async function HomeAction({
           data: { chat: response.data },
         };
       }
+      case "editNickname": {
+        const { userId, nickname } = result;
+        const response = await api.patch<ContactType>(
+          `api/user/contact/${userId}`,
+          { nickname },
+        );
+        return {
+          intent,
+          data: { contact: response.data },
+        };
+      }
+
       default:
         return { error: "Invalid intent" };
     }

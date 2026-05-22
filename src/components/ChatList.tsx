@@ -11,8 +11,8 @@ export function ChatList({ chats, showFn }: Props) {
     <>
       {chats.map((c) =>
         <div
-          className="h-fit border-b-1 border-bg3"
-          onClick={() => showFn(c.id)}
+          className="h-fit"
+          onClick={() => { showFn(c.id) }}
           key={c.id}
         >
           <ChatThumbnail
@@ -23,6 +23,5 @@ export function ChatList({ chats, showFn }: Props) {
       )
       }
     </>
-
   )
 }
