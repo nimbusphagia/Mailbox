@@ -15,12 +15,26 @@ type Props = {
 export function Chat({ chat, sendFn, showContact }: Props) {
   const [textValue, setTextValue] = useState<string>("");
   const focusRef = useRef<HTMLDivElement>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     focusRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     focusRef.current?.focus();
   }, [chat]);
 
+  useEffect(() => {
+    if (!image) {
+      setPreview(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(image);
+    setPreview(objectUrl);
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [image]);
 
   const submitText = () => {
     if (textValue?.length) {
@@ -33,9 +47,25 @@ export function Chat({ chat, sendFn, showContact }: Props) {
       setTextValue("");
     }
   }
+  const submitImage = () => {
+    if (image) {
+      const message = {
+        chatId: chat.id,
+        type: "IMAGE" as const,
+        content: textValue,
+        image,
+      };
+      sendFn(message);
+      setTextValue("");
+      setImage(null);
+    }
+  }
+  const submitMessage = () => {
+    image ? submitImage() : submitText();
+  }
 
   return (
-    <main className="box-border flex-1 min-h-0 bg-fg4 size-full grid grid-rows-[8%_80%_10%] text-bg1">
+    <main className="relative box-border flex-1 min-h-0 bg-fg4 size-full grid grid-rows-[8%_1fr_auto] text-bg1">
       <div className="bg-fg1/65 flex items-center justify-between size-full px-3">
         <UserThumbnail
           imgUrl={chat.secondaryMember?.imgUrl!}
@@ -44,34 +74,70 @@ export function Chat({ chat, sendFn, showContact }: Props) {
         />
         <div>...</div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 overflow-y-scroll">
         <Messages
           chat={chat}
           focusRef={focusRef}
         />
       </div>
-      <div className="flex items-center m-3 gap-2 flex-1 p-1 bg-bg4/30 rounded-xs shadow-xs shadow-fg4"  >
-        <Button className=" text-md text-bg2">+</Button>
-        <input
-          placeholder=":message"
-          value={textValue}
-          onChange={(e) => setTextValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              submitText();
-            }
-          }}
-          className="p-1 px-3 text-sm font-bold w-full outline-none text-bg1
+      <div className="flex flex-col m-3 gap-2 flex-1 p-1 bg-bg4/30 rounded-xs shadow-xs shadow-fg4"  >
+        <div >
+          <div className="bg-fg3 w-full">
+            {preview && (
+              <div className="relative max-w-[30%] max-h-full p-2 m-auto ">
+                <Button
+                  className="absolute top-1 right-1"
+                  onClick={() => setImage(null)}
+                >x</Button>
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="max-h-full"
+                />
+              </div>
+            )}
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+
+              if (!file) return;
+              setImage(file);
+            }}
+          />
+
+        </div>
+        <div className="flex items-center">
+          <Button
+            className=" text-md text-bg2"
+            onClick={() => fileInputRef.current?.click()}
+          >+</Button>
+          <input
+            className="p-1 px-3 text-sm font-bold w-full outline-none text-bg1
           focus:bg-fg3/70 focus:placeholder:text-bg2 focus:text-bg1 rounded-xs"
-        />
-        <Button
-          className=" text-md text-bg2"
-          disabled={!textValue?.length}
-          onClick={submitText}
-        >
-          <Mailbox className="text-bg0 size-md" />
-        </Button>
+            placeholder=":message"
+            value={textValue}
+            onChange={(e) => setTextValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                submitText();
+              }
+            }}
+          />
+
+          <Button
+            className=" text-md text-bg2"
+            disabled={!(image || textValue.length)}
+            onClick={submitMessage}
+          >
+            <Mailbox className="text-bg0 size-md" />
+          </Button>
+        </div>
       </div>
     </main >
   )

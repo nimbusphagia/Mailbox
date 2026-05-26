@@ -6,7 +6,7 @@ import { ActionSchema } from "@/lib/schemas/action.schema";
 
 import {
   handleAxiosError,
-  SafeParseJSON,
+  SafeParseRequest,
   type ErrorMessage,
 } from "@/lib/utils";
 import type { AxiosResponse } from "axios";
@@ -28,8 +28,7 @@ export type ActionReturn =
 export async function HomeAction({
   request,
 }: ActionFunctionArgs): Promise<ActionReturn | ErrorMessage> {
-  const data = await request.json();
-  const result = SafeParseJSON(ActionSchema, data);
+  const result = await SafeParseRequest(ActionSchema, request);
   if ("error" in result) return result;
   const { intent } = result;
   try {

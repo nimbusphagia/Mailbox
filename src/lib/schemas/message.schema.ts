@@ -29,7 +29,13 @@ const ImageMessageSchema = z.object({
   chatId: UuidSchema,
   type: z.literal("IMAGE"),
   content: z.string().optional(),
-  metadata: NullableJsonValueSchema.nullable(),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size <= 5 * 1024 * 1024, "Max file size is 5MB")
+    .refine(
+      (file) => ["image/png", "image/jpeg", "image/webp"].includes(file.type),
+      "Invalid image type",
+    ),
   replyToId: UuidSchema.nullable().optional(),
 });
 

@@ -30,6 +30,28 @@ export function SafeParseJSON<T extends ZodRawShape>(
   }
   return result.data;
 }
+export async function SafeParseRequest<T extends ZodRawShape>(
+  schema: ZodObject<T>,
+  request: Request,
+): Promise<ErrorMessage | z.infer<ZodObject<T>>> {
+  const contentType = request.headers.get("Content-Type") || "";
+  let data: unknown;
+
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    data = Object.fromEntries(formData);
+  } else {
+    data = await request.json();
+  }
+
+  const result = schema.safeParse(data);
+
+  if (!result.success) {
+    return { error: "Error: " + result.error.issues[0].message};
+  }
+
+  return result.data;
+}
 
 export function handleAxiosError(err: unknown): { error: string } {
   if (isAxiosError(err)) {
