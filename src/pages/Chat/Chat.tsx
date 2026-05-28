@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button"
 import { UserThumbnail } from "@/components/UserThumbnail"
 import type { ChatType } from "@/lib/schemas/chat.schema"
 import type { MessageCreate } from "@/lib/schemas/message.schema"
-import type { UuidType } from "@/lib/schemas/util.schema"
+import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
 import { Mailbox } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 type Props = {
   chat: ChatType,
-  sendFn: (message: MessageCreate) => void,
+  sendFn: (message: MessageCreate, image?: ValidImage) => void,
   showContact: (userId: UuidType) => void,
 }
 export function Chat({ chat, sendFn, showContact }: Props) {
@@ -53,9 +53,8 @@ export function Chat({ chat, sendFn, showContact }: Props) {
         chatId: chat.id,
         type: "IMAGE" as const,
         content: textValue,
-        image,
       };
-      sendFn(message);
+      sendFn(message, image);
       setTextValue("");
       setImage(null);
     }

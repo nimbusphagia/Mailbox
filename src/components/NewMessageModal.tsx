@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Modal } from "./ui/modal";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
-import type { Contact } from "@/lib/schemas/contact.schema";
+import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ContactList } from "./ContactList";
 import { UsersList } from "./UsersList";
@@ -10,7 +10,7 @@ import type { UuidType } from "@/lib/schemas/util.schema";
 
 type Props = {
   hideFn: () => void,
-  contacts: Contact[],
+  contacts: ContactType[],
   users: SafeUser[],
   addContactFn: (userId: UuidType) => void,
   createChatFn: (userId: UuidType) => void

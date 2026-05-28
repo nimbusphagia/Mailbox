@@ -42,9 +42,17 @@ export function MessageComponent({ message, primary, secondary, reference }: Pro
           name={isPrimary ? primary.name : secondary.nickname ?? secondary.name}
           style={isPrimary ? "text-fg1 decoration-fg1/80" : "text-bg1 decoration-bg1/70"}
         />
-        <div className="w-full text-pretty ">
+        <div className="w-full text-pretty">
+          {message.type === 'IMAGE' &&
+            <div className="py-2 ">
+              <img
+                src={message.metadata?.url ?? ""}
+                className="rounded-xs"
+              />
+            </div>
+          }
           <p
-            className={`text-sm text-justify w-fit m-auto font-bold ${isPrimary ? "text-fg1" : "text-bg1"}`}>
+            className={`text-sm  w-full m-auto font-bold ${isPrimary ? "text-fg1 text-right" : "text-bg1 text-left"}`}>
             {message.content}
           </p>
         </div>

@@ -1,5 +1,5 @@
 import z from "zod";
-import { UuidSchema } from "./util.schema";
+import { ImageSchema, UuidSchema } from "./util.schema";
 import { MessageCreateSchema } from "./message.schema";
 
 export const HOME_INTENTS = [
@@ -25,6 +25,7 @@ export const ActionSchema = z.object({
     .optional()
     .nullable()
     .transform((val) => (val === "" ? null : val)),
+  image: ImageSchema.optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

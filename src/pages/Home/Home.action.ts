@@ -5,6 +5,7 @@ import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ActionSchema } from "@/lib/schemas/action.schema";
 
 import {
+  appendObjectToFormData,
   handleAxiosError,
   SafeParseRequest,
   type ErrorMessage,
@@ -95,8 +96,20 @@ export async function HomeAction({
         };
       }
       case "createMessage": {
-        const { message } = result;
-        const response = await api.post<ChatType>("api/chat/message", message);
+        const { message, image } = result;
+        let response;
+
+        if (image instanceof File && message) {
+          const formData = new FormData();
+          appendObjectToFormData(formData, message);
+          formData.append("image", image);
+          response = await api.post<ChatType>("api/chat/message", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+        } else {
+          response = await api.post<ChatType>("api/chat/message", { message });
+        }
+
         return {
           intent,
           data: { chat: response.data },

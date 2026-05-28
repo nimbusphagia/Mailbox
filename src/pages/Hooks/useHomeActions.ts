@@ -1,7 +1,11 @@
 import type { FetcherWithComponents } from "react-router-dom";
 import type { ActionReturn } from "../Home/Home.action";
 import type { ErrorMessage } from "@/lib/utils";
-import { type JsonValue, type UuidType } from "@/lib/schemas/util.schema";
+import {
+  type JsonValue,
+  type UuidType,
+  type ValidImage,
+} from "@/lib/schemas/util.schema";
 import type { MessageCreate } from "@/lib/schemas/message.schema";
 
 export type homeActionsReturn = ReturnType<typeof useHomeActions>;
@@ -31,22 +35,22 @@ export function useHomeActions(
       submit({ intent: "getChat", chatId });
     },
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
-    createMessage: (message: MessageCreate) => {
-      if (message.type === "IMAGE") {
+    createMessage: (message: MessageCreate, image?: ValidImage) => {
+      if (message.type === "IMAGE" && image) {
         const formData = new FormData();
         formData.append("intent", "createMessage");
-        formData.append("chatId", message.chatId);
-        formData.append("type", message.type);
+        formData.append("message[chatId]", message.chatId);
+        formData.append("message[type]", message.type);
         if (message.content) {
-          formData.append("content", message.content);
+          formData.append("message[content]", message.content);
         }
         if (message.replyToId) {
-          formData.append("replyToId", message.replyToId);
+          formData.append("message[replyToId]", message.replyToId);
         }
-        formData.append("image", message.image);
+        formData.append("image", image);
+
         return submitFormData(formData);
       }
-
       return submit({
         intent: "createMessage",
         message,

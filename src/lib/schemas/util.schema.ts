@@ -64,3 +64,20 @@ export const JsonValueSchema: z.ZodType<JsonValue> = z.lazy(() =>
 );
 
 export const NullableJsonValueSchema = z.union([JsonValueSchema, z.null()]);
+export const ImageSchema = z
+  .instanceof(File)
+  .refine((file) => file.size <= 5 * 1024 * 1024, "max file size is 5mb")
+  .refine(
+    (file) => ["image/png", "image/jpeg", "image/webp"].includes(file.type),
+    "invalid image type",
+  );
+export type ValidImage = z.infer<typeof ImageSchema>;
+
+export const ImageMetadataSchema = z.object({
+  url: z.url(),
+  publicId: z.string(),
+  width: z.number(),
+  height: z.number(),
+  format: z.string(),
+});
+export type ImageMetadata = z.infer<typeof ImageMetadataSchema>;

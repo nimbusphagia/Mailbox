@@ -39,7 +39,7 @@ export async function SafeParseRequest<T extends ZodRawShape>(
 
   if (contentType.includes("multipart/form-data")) {
     const formData = await request.formData();
-    data = Object.fromEntries(formData);
+    data = parseFormData(formData);
   } else {
     data = await request.json();
   }
@@ -47,7 +47,7 @@ export async function SafeParseRequest<T extends ZodRawShape>(
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    return { error: "Error: " + result.error.issues[0].message};
+    return { error: "Error: " + result.error.issues[0].message };
   }
 
   return result.data;
@@ -100,3 +100,44 @@ export function formatDate(date: Date, format?: "short" | "long") {
 }
 export const trimSentence = (str: string, num: number) =>
   str.split(" ").slice(0, num).join(" ");
+
+export function parseFormData(formData: FormData): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+
+  for (const [key, value] of formData.entries()) {
+    const bracketMatch = key.match(/^(\w+)\[(\w+)\]$/);
+    if (bracketMatch) {
+      const [, parent, child] = bracketMatch;
+      if (!result[parent]) result[parent] = {};
+      (result[parent] as Record<string, unknown>)[child] = value;
+    } else {
+      result[key] = value;
+    }
+  }
+
+  return result;
+}
+type FormDataValue = string | Blob;
+type FormDataPair = [string, FormDataValue];
+type FormDataPrimitive = string | number | boolean | Blob | null | undefined;
+type FormDataCompatible = Record<string, FormDataPrimitive>;
+
+export function objectToFormDataPairs<T extends FormDataCompatible>(
+  obj: T,
+): FormDataPair[] {
+  return Object.entries(obj)
+    .filter(([, value]) => value !== null && value !== undefined)
+    .map(([key, value]) => {
+      if (value instanceof Blob) return [key, value] as FormDataPair;
+      return [key, String(value)] as FormDataPair;
+    });
+}
+
+export function appendObjectToFormData<T extends FormDataCompatible>(
+  formData: FormData,
+  obj: T,
+): void {
+  objectToFormDataPairs(obj).forEach(([key, value]) =>
+    formData.append(key, value),
+  );
+}
