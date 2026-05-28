@@ -107,9 +107,8 @@ export async function HomeAction({
             headers: { "Content-Type": "multipart/form-data" },
           });
         } else {
-          response = await api.post<ChatType>("api/chat/message", { message });
+          response = await api.post<ChatType>("api/chat/message", message);
         }
-
         return {
           intent,
           data: { chat: response.data },
