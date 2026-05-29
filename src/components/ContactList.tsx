@@ -17,7 +17,7 @@ export function ContactList({ contacts, selectFn }: Props) {
       <>
         {contacts.map((c) =>
           <div
-            className="flex justify-between px-3 py-2 bg-fg4/70"
+            className="flex justify-between items-center px-5 py-2.5 border-b-2 border-bg4"
             key={c.id}
           >
             <UserThumbnail
@@ -25,7 +25,7 @@ export function ContactList({ contacts, selectFn }: Props) {
               fullName={c.user!.name}
             />
             <Checkbox
-              className="border-bg3 border-2 rounded-xs"
+              className="border-bg2 border-2 rounded-xs"
               defaultChecked={false}
               onCheckedChange={(checked) => {
                 selectFn(c.userId, checked as boolean);

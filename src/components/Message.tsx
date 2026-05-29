@@ -52,7 +52,7 @@ export function MessageComponent({ message, primary, secondary, reference }: Pro
             </div>
           }
           <p
-            className={`text-sm  w-full m-auto font-bold ${isPrimary ? "text-fg1 text-right" : "text-bg1 text-left"}`}>
+            className={`text-sm  pl-1 w-full m-auto font-bold ${isPrimary ? "text-fg1" : "text-bg1 "}`}>
             {message.content}
           </p>
         </div>

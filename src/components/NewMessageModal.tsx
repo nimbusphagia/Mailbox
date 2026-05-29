@@ -28,20 +28,24 @@ export function NewMessageModal({ hideFn, contacts, users, addContactFn, createC
   }
   return (
     <Modal>
-      <div className="z-10 flex-1 max-w-[30%] h-[clamp(40%,50%,600px) bg-fg3 px-4 py-2  flex flex-col  rounded-xs shadow-xs shadow-fg4">
-        <div className="flex items-center justify-between ">
-          <Button className="text-bg1 capitalize" onClick={hideFn}>Cancel</Button>
+      <div className="z-10 flex-1 max-w-[33%] h-[clamp(40%,50%,600px) bg-fg2/95  px-4 py-2 flex flex-col rounded-xs shadow-xs shadow-fg4">
+        <div className="flex items-center justify-between *:font-semibold *:lowercase *:text-bg1 ">
+          <Button
+            className=""
+            onClick={hideFn}>
+            Cancel
+          </Button>
           {
             selected.length > 1 ?
               <Button
-                className="text-bg1 capitalize"
+                className=""
                 onClick={() => { createGroupFn(selected) }}
               >
                 New Group
               </Button>
               :
               <Button
-                className="text-bg1 capitalize"
+                className=""
                 disabled={!selected.length}
                 onClick={() => { createChatFn(selected[0]) }}
               >
@@ -49,11 +53,11 @@ export function NewMessageModal({ hideFn, contacts, users, addContactFn, createC
               </Button>
           }
         </div>
-        <div className="w-full m-auto p-2 flex flex-col gap-2">
+        <div className="w-full m-auto p-2 flex flex-col gap-3">
           <ToggleGroup
             variant="outline"
             type="single"
-            className="w-full flex *:uppercase justify-around *:w-[35%] *:rounded-xs"
+            className="w-full flex *:capitalize justify-around pb-1 *:w-[35%] *:rounded-xs *:text-sm"
             value={filter}
             onValueChange={(val: "contacts" | "users") => val && setFilter(val)}
           >
@@ -70,7 +74,7 @@ export function NewMessageModal({ hideFn, contacts, users, addContactFn, createC
           <div className="flex items-center justify-center">
             <input
               placeholder=":search"
-              className="bg-fg4/70 p-1 px-2 text-sm  w-full outline-none border-xs focus:bg-fg4/30 focus:text-bg1"
+              className="bg-fg4/70 p-1 px-2 text-sm  w-full outline-none border-xs rounded-xs focus:bg-fg4/30 focus:text-bg1"
             />
           </div>
 

@@ -18,7 +18,7 @@ export function UsersList({ users, addFn }: Props) {
         <>
           {users.map((u) =>
             <div
-              className="flex justify-between px-3 py-2 bg-fg4/70"
+              className="flex justify-between px-3 py-2 border-b-2 border-bg4"
               key={u.id}
             >
               <UserThumbnail

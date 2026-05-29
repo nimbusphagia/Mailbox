@@ -9,7 +9,7 @@ type Props = {
 export function UserThumbnail({ imgUrl, fullName, className, showFn }: Props) {
   return (
     <div
-      className="flex items-center gap-3 cursor-pointer"
+      className="flex items-center gap-2.5 cursor-pointer"
       onClick={showFn}
     >
       <Avatar>
@@ -19,7 +19,7 @@ export function UserThumbnail({ imgUrl, fullName, className, showFn }: Props) {
         />
       </Avatar>
       <div>
-        <p className={`text-bg1 font-bold text-md ${className}`}>{fullName}</p>
+        <p className={`text-bg1/90 font-bold text-sm ${className}`}>{fullName}</p>
       </div>
     </div >
   )

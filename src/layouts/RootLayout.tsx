@@ -32,9 +32,9 @@ const colorMap: Record<string, string> = {
 };
 export function RootLayout({ children, route, color, right, rLink, left }: PropsWithChildren<Props>) {
   return (
-    <div className="w-screen h-screen grid grid-rows-[1fr_25px] overflow-hidden">
+    <div className="w-screen h-screen grid grid-rows-[1fr] overflow-hidden">
       {children}
-      <footer className="bg-fg4/20 w-full h-full flex justify-between border-t-1 border-fg4/80">
+      <footer className="hidden bg-fg4/20 w-full h-full flex justify-between border-t-1 border-fg4/80">
         <div className="flex-1 flex justify-start items-center font-semibold gap-3">
           <div className={`${bgMap[color]} text-bg1/95 w-20 h-full  flex items-center justify-center `}>
             <p className="uppercase">{route}</p>
