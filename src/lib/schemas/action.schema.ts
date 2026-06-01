@@ -1,11 +1,13 @@
 import z from "zod";
 import { ImageSchema, UuidSchema } from "./util.schema";
 import { MessageCreateSchema } from "./message.schema";
+import { GroupReqSchema } from "./group.schema";
 
 export const HOME_INTENTS = [
   "getUsers",
   "getContacts",
   "createChat",
+  "createGroup",
   "addContact",
   "getChat",
   "getContact",
@@ -20,11 +22,12 @@ export const ActionSchema = z.object({
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),
   message: MessageCreateSchema.optional(),
+  group: GroupReqSchema.optional(),
   nickname: z
     .string()
-    .optional()
     .nullable()
-    .transform((val) => (val === "" ? null : val)),
+    .transform((val) => (val === "" ? null : val))
+    .optional(),
   image: ImageSchema.optional(),
 });
 

@@ -9,13 +9,13 @@ import { useEffect, useRef, useState } from "react"
 
 type Props = {
   chat: ChatType,
-  sendFn: (message: MessageCreate, image?: ValidImage) => void,
+  sendFn: (message: MessageCreate) => void,
   showContact: (userId: UuidType) => void,
 }
 export function Chat({ chat, sendFn, showContact }: Props) {
   const [textValue, setTextValue] = useState<string>("");
   const focusRef = useRef<HTMLDivElement>(null);
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<ValidImage | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -53,8 +53,9 @@ export function Chat({ chat, sendFn, showContact }: Props) {
         chatId: chat.id,
         type: "IMAGE" as const,
         content: textValue,
+        image
       };
-      sendFn(message, image);
+      sendFn(message);
       setTextValue("");
       setImage(null);
     }

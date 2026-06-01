@@ -5,7 +5,6 @@ import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ActionSchema } from "@/lib/schemas/action.schema";
 
 import {
-  appendObjectToFormData,
   handleAxiosError,
   SafeParseRequest,
   type ErrorMessage,
@@ -17,6 +16,7 @@ export type ActionReturn =
   | { intent: "getContacts"; data: ContactType[] }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatType } }
+  | { intent: "createGroup"; data: { chat: ChatType } }
   | { intent: "getChat"; data: { chat: ChatType } }
   | { intent: "getContact"; data: { contact: ContactType } }
   | { intent: "createMessage"; data: { chat: ChatType } }
@@ -30,6 +30,7 @@ export async function HomeAction({
   request,
 }: ActionFunctionArgs): Promise<ActionReturn | ErrorMessage> {
   const result = await SafeParseRequest(ActionSchema, request);
+  console.log(result);
   if ("error" in result) return result;
   const { intent } = result;
   try {
@@ -77,6 +78,23 @@ export async function HomeAction({
           data: { chat: response.data },
         };
       }
+      case "createGroup": {
+        const { group } = result;
+        if (!group) return { error: "Empty body" };
+        let response;
+        const { image, ...data } = group;
+        if (group.image instanceof File) {
+          const formData = new FormData();
+          formData.append("group", JSON.stringify(data));
+          formData.append("image", image);
+          response = await api.post<ChatType>("api/group", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+        } else {
+          response = await api.post<ChatType>("api/group", data);
+        }
+        return { intent, data: { chat: response.data } };
+      }
       case "getChat": {
         const { chatId } = result;
         const response = await api.get<ChatType>(`api/chat/${chatId}`);
@@ -96,13 +114,16 @@ export async function HomeAction({
         };
       }
       case "createMessage": {
-        const { message, image } = result;
+        const { message } = result;
+        console.log(message);
+        if (!message) return { error: "Empty message" };
         let response;
 
-        if (image instanceof File && message) {
+        if (message.type === "IMAGE") {
+          const { image, ...data } = message;
           const formData = new FormData();
-          appendObjectToFormData(formData, message);
-          formData.append("image", image);
+          formData.append("message", JSON.stringify(data));
+          formData.append("image", message.image);
           response = await api.post<ChatType>("api/chat/message", formData, {
             headers: { "Content-Type": "multipart/form-data" },
           });

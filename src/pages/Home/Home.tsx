@@ -10,6 +10,7 @@ import type { ChatType } from "@/lib/schemas/chat.schema";
 import { useHomeFetcher } from "../Hooks/useHomeFetcher";
 import { useHomeActions } from "../Hooks/useHomeActions";
 import { MainContent } from "../Main/MainContent";
+import { Modal } from "@/components/ui/modal";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
@@ -63,14 +64,17 @@ export function Home() {
           />}
       >
         {modal.show &&
-          <NewMessageModal
-            hideFn={() => setModal((prev) => ({ ...prev, show: false }))}
-            contacts={modal.contacts}
-            users={modal.users}
-            addContactFn={actions.addContact}
-            createChatFn={actions.createChat}
-            createGroupFn={actions.createGroup}
-          />}
+          <Modal>
+            <NewMessageModal
+              hideFn={() => setModal((prev) => ({ ...prev, show: false }))}
+              contacts={modal.contacts}
+              users={modal.users}
+              addContactFn={actions.addContact}
+              createChatFn={actions.createChat}
+              createGroupFn={actions.createGroup}
+            />
+          </Modal>
+        }
       </MainLayout>
     </RootLayout>
   );

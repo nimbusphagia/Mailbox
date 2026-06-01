@@ -1,4 +1,4 @@
-import { ImageMetadataSchema, UuidSchema } from "./util.schema";
+import { ImageMetadataSchema, ImageSchema, UuidSchema } from "./util.schema";
 import z from "zod";
 
 export const MessageTypeSchema = z.enum(["TEXT", "IMAGE", "SYSTEM_EVENT"]);
@@ -29,6 +29,7 @@ const ImageMessageSchema = z.object({
   chatId: UuidSchema,
   type: z.literal("IMAGE"),
   content: z.string().optional(),
+  image: ImageSchema,
   replyToId: UuidSchema.nullable().optional(),
 });
 

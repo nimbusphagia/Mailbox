@@ -11,6 +11,8 @@ export function HomeError() {
   if (isRouteErrorResponse(error)) {
     status = error.status;
     message = error.data ?? error.statusText;
+  } else {
+    console.log(error)
   }
 
   return (
