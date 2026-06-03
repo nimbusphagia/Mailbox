@@ -9,7 +9,7 @@ type Props = {
 export function UserThumbnail({ imgUrl, fullName, className, showFn }: Props) {
   return (
     <div
-      className="flex items-center gap-2.5 cursor-pointer"
+      className={`flex items-center gap-2.5 ${showFn ? "cursor-pointer" : ""}`}
       onClick={showFn}
     >
       <Avatar>

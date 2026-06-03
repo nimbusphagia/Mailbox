@@ -2,7 +2,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { RootLayout, type FMessage } from "@/layouts/RootLayout"; import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { NewMessageModal } from "@/components/NewMessageModal";
+import { ChatPrompt } from "../ChatPrompt/ChatPrompt";
 import type { HomeLoaderReturn } from "./Home.loader";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
@@ -10,7 +10,6 @@ import type { ChatType } from "@/lib/schemas/chat.schema";
 import { useHomeFetcher } from "../Hooks/useHomeFetcher";
 import { useHomeActions } from "../Hooks/useHomeActions";
 import { MainContent } from "../Main/MainContent";
-import { Modal } from "@/components/ui/modal";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
@@ -64,16 +63,14 @@ export function Home() {
           />}
       >
         {modal.show &&
-          <Modal>
-            <NewMessageModal
-              hideFn={() => setModal((prev) => ({ ...prev, show: false }))}
-              contacts={modal.contacts}
-              users={modal.users}
-              addContactFn={actions.addContact}
-              createChatFn={actions.createChat}
-              createGroupFn={actions.createGroup}
-            />
-          </Modal>
+          <ChatPrompt
+            hideFn={() => setModal((prev) => ({ ...prev, show: false }))}
+            contacts={modal.contacts}
+            users={modal.users}
+            addContactFn={actions.addContact}
+            createChatFn={actions.createChat}
+            createGroupFn={actions.createGroup}
+          />
         }
       </MainLayout>
     </RootLayout>

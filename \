@@ -8,7 +8,7 @@ export function ModalListLayout({ isEmpty, fbText, children }: PropsWithChildren
   return (
     <div className="bg-bg3 flex flex-col *:flex1 min-h-65 max-h-80 h-fit rounded-sm overflow-y-scroll">
       {isEmpty ? children :
-        <p className="text-center text-sm text-fg2 w-[80%] mb-30 m-auto">
+        <p className="text-center text-sm text-fg2/80 w-[80%] mb-30 m-auto">
           {fbText}
         </p>
       }
