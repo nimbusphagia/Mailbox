@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react"
 
 type Props = {
   chat: ChatType,
-  sendFn: (message: MessageCreate) => void,
+  sendFn: (message: MessageCreate, image?: ValidImage) => void,
   showContact: (userId: UuidType) => void,
 }
 export function Chat({ chat, sendFn, showContact }: Props) {
@@ -53,9 +53,8 @@ export function Chat({ chat, sendFn, showContact }: Props) {
         chatId: chat.id,
         type: "IMAGE" as const,
         content: textValue,
-        image
       };
-      sendFn(message);
+      sendFn(message, image);
       setTextValue("");
       setImage(null);
     }

@@ -30,7 +30,6 @@ export async function HomeAction({
   request,
 }: ActionFunctionArgs): Promise<ActionReturn | ErrorMessage> {
   const result = await SafeParseRequest(ActionSchema, request);
-  console.log(result);
   if ("error" in result) return result;
   const { intent } = result;
   try {
@@ -79,19 +78,21 @@ export async function HomeAction({
         };
       }
       case "createGroup": {
-        const { group } = result;
+        const { group, image } = result;
         if (!group) return { error: "Empty body" };
         let response;
-        const { image, ...data } = group;
-        if (group.image instanceof File) {
+        if (image instanceof File) {
           const formData = new FormData();
-          formData.append("group", JSON.stringify(data));
+          formData.append("group", JSON.stringify(group));
+          for (const [key, value] of Object.entries(group)) {
+            formData.append(key, value as string);
+          }
           formData.append("image", image);
           response = await api.post<ChatType>("api/group", formData, {
             headers: { "Content-Type": "multipart/form-data" },
           });
         } else {
-          response = await api.post<ChatType>("api/group", data);
+          response = await api.post<ChatType>("api/group", group);
         }
         return { intent, data: { chat: response.data } };
       }
@@ -114,16 +115,16 @@ export async function HomeAction({
         };
       }
       case "createMessage": {
-        const { message } = result;
-        console.log(message);
+        const { message, image } = result;
         if (!message) return { error: "Empty message" };
         let response;
 
-        if (message.type === "IMAGE") {
-          const { image, ...data } = message;
+        if (message.type === "IMAGE" && image) {
           const formData = new FormData();
-          formData.append("message", JSON.stringify(data));
-          formData.append("image", message.image);
+          for (const [key, value] of Object.entries(message)) {
+            formData.append(key, value as string);
+          }
+          formData.append("image", image);
           response = await api.post<ChatType>("api/chat/message", formData, {
             headers: { "Content-Type": "multipart/form-data" },
           });

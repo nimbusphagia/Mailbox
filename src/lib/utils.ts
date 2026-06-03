@@ -39,7 +39,6 @@ export async function SafeParseRequest<T extends ZodRawShape>(
 
   if (contentType.includes("multipart/form-data")) {
     const formData = await request.formData();
-    console.log(formData);
     data = await parseFormData(formData);
   } else {
     data = await request.json();

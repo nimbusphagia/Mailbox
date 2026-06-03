@@ -5,7 +5,7 @@ import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ContactList } from "./ContactList";
 import { UsersList } from "./UsersList";
-import type { UuidType } from "@/lib/schemas/util.schema";
+import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
 import type { GroupReq } from "@/lib/schemas/group.schema";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   users: SafeUser[],
   addContactFn: (userId: UuidType) => void,
   createChatFn: (userId: UuidType) => void
-  createGroupFn: (group: GroupReq) => void
+  createGroupFn: (group: GroupReq, image?: ValidImage) => void
 }
 export function NewMessageModal({ hideFn, contacts, users, addContactFn, createChatFn }: Props) {
   const [filter, setFilter] = useState<"contacts" | "users">("contacts");
