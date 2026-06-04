@@ -80,20 +80,15 @@ export async function HomeAction({
       case "createGroup": {
         const { group, image } = result;
         if (!group) return { error: "Empty body" };
-        let response;
-        if (image instanceof File) {
-          const formData = new FormData();
-          formData.append("group", JSON.stringify(group));
-          for (const [key, value] of Object.entries(group)) {
-            formData.append(key, value as string);
-          }
-          formData.append("image", image);
-          response = await api.post<ChatType>("api/group", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-        } else {
-          response = await api.post<ChatType>("api/group", group);
-        }
+
+        const response = await api.post<ChatType>(
+          "api/group",
+          image instanceof File ? { ...group, image } : group,
+          image instanceof File
+            ? { headers: { "Content-Type": "multipart/form-data" } }
+            : undefined,
+        );
+
         return { intent, data: { chat: response.data } };
       }
       case "getChat": {
@@ -117,24 +112,19 @@ export async function HomeAction({
       case "createMessage": {
         const { message, image } = result;
         if (!message) return { error: "Empty message" };
-        let response;
 
-        if (message.type === "IMAGE" && image) {
-          const formData = new FormData();
-          for (const [key, value] of Object.entries(message)) {
-            formData.append(key, value as string);
-          }
-          formData.append("image", image);
-          response = await api.post<ChatType>("api/chat/message", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-        } else {
-          response = await api.post<ChatType>("api/chat/message", message);
-        }
-        return {
-          intent,
-          data: { chat: response.data },
-        };
+        const isImageMessage =
+          message.type === "IMAGE" && image instanceof File;
+
+        const response = await api.post<ChatType>(
+          "api/chat/message",
+          isImageMessage ? { ...message, image } : message,
+          isImageMessage
+            ? { headers: { "Content-Type": "multipart/form-data" } }
+            : undefined,
+        );
+
+        return { intent, data: { chat: response.data } };
       }
       case "editNickname": {
         const { userId, nickname } = result;
