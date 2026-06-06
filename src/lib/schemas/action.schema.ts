@@ -10,6 +10,7 @@ export const HOME_INTENTS = [
   "createGroup",
   "addContact",
   "getChat",
+  "getGroup",
   "getContact",
   "createMessage",
   "editNickname",
@@ -21,6 +22,7 @@ export const ActionSchema = z.object({
   contactId: UuidSchema.optional(),
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),
+  groupId: UuidSchema.optional(),
   message: MessageCreateSchema.optional(),
   group: GroupReqSchema.optional(),
   nickname: z

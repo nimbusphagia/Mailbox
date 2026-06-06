@@ -34,6 +34,7 @@ export function useHomeActions(
     createGroup: (group: GroupReq, image?: ValidImage) =>
       submit({ intent: "createGroup", image, group }),
     openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),
+    openGroup: (groupId: UuidType) => submit({ intent: "getGroup", groupId }),
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
     createMessage: (message: MessageCreate, image?: ValidImage) =>
       submit({ intent: "createMessage", image, message }),

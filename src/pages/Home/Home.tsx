@@ -10,12 +10,13 @@ import type { ChatType } from "@/lib/schemas/chat.schema";
 import { useHomeFetcher } from "../Hooks/useHomeFetcher";
 import { useHomeActions } from "../Hooks/useHomeActions";
 import { MainContent } from "../Main/MainContent";
+import type { GroupRes } from "@/lib/schemas/group.schema";
 
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
 
   const [flash, setFlash] = useState<FMessage | undefined>();
-  const [view, setView] = useState<{ chat?: ChatType; contact?: ContactType | null }>({});
+  const [view, setView] = useState<{ chat?: ChatType | GroupRes; contact?: ContactType | null }>({});
   const [modal, setModal] = useState<{ show: boolean; contacts: ContactType[]; users: SafeUser[] }>({
     show: false, contacts: [], users: [],
   });
@@ -51,11 +52,12 @@ export function Home() {
             data={loaderData}
             loadUsers={() => { actions.loadUsers(); setModal((prev) => ({ ...prev, show: true })); }}
             openChat={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })) }}
+            openGroup={(id) => { actions.openGroup(id); setView((prev) => ({ ...prev, contact: null })) }}
           />
         }
         main={
           <MainContent
-            chat={view.chat}
+            chat={view.chat as ChatType}
             contact={view.contact}
             actions={actions}
             closeContact={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })) }}

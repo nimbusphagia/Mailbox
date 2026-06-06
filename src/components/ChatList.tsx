@@ -1,27 +1,40 @@
 import type { ChatLazy } from "@/lib/schemas/chat.schema";
 import { ChatThumbnail } from "./ChatThumbnail";
-import type { UuidType } from "@/lib/schemas/util.schema";
+import type { ChatEntry, UuidType } from "@/lib/schemas/util.schema";
+import type { GroupLazy } from "@/lib/schemas/group.schema";
+import { useMemo } from "react";
 
 type Props = {
   chats: ChatLazy[],
-  showFn: (chatId: UuidType) => void,
+  groups: GroupLazy[],
+  showChat: (chatId: UuidType) => void,
+  showGroup: (chatId: UuidType) => void,
 }
-export function ChatList({ chats, showFn }: Props) {
+
+export function ChatList({ chats, groups, showChat, showGroup }: Props) {
+  const sorted = useMemo<ChatEntry[]>(() => {
+    const entries: ChatEntry[] = [
+      ...chats.map((c): ChatEntry => ({ type: "dm", data: c })),
+      ...groups.map((g): ChatEntry => ({ type: "group", data: g })),
+    ];
+    return entries.sort((a, b) => {
+      const aDate = a.data.lastMessage?.createdAt ?? a.data.createdAt;
+      const bDate = b.data.lastMessage?.createdAt ?? b.data.createdAt;
+      return new Date(bDate).getTime() - new Date(aDate).getTime();
+    });
+  }, [chats, groups]);
+
   return (
     <>
-      {chats.map((c) =>
+      {sorted.map((entry) => (
         <div
+          key={entry.data.id}
           className="h-fit"
-          onClick={() => { showFn(c.id) }}
-          key={c.id}
+          onClick={() => entry.type === "group" ? showGroup(entry.data.id) : showChat(entry.data.id)}
         >
-          <ChatThumbnail
-            key={c.id}
-            chat={c}
-          />
+          <ChatThumbnail entry={entry} isGroup={entry.type === "group"} />
         </div>
-      )
-      }
+      ))}
     </>
-  )
+  );
 }

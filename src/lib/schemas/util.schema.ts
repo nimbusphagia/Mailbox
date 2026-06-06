@@ -1,4 +1,6 @@
 import z from "zod";
+import type { ChatLazy } from "./chat.schema";
+import type { GroupLazy } from "./group.schema";
 
 export const UuidSchema = z.uuidv7();
 export type UuidType = z.infer<typeof UuidSchema>;
@@ -78,3 +80,7 @@ export const ImageMetadataSchema = z.object({
   format: z.string(),
 });
 export type ImageMetadata = z.infer<typeof ImageMetadataSchema>;
+
+export type ChatEntry =
+  | { type: "dm"; data: ChatLazy }
+  | { type: "group"; data: GroupLazy };

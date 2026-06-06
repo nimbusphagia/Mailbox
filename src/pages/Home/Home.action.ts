@@ -11,6 +11,7 @@ import {
 } from "@/lib/utils";
 import type { AxiosResponse } from "axios";
 import type { ActionFunctionArgs } from "react-router-dom";
+import type { GroupRes } from "@/lib/schemas/group.schema";
 
 export type ActionReturn =
   | { intent: "getContacts"; data: ContactType[] }
@@ -18,6 +19,7 @@ export type ActionReturn =
   | { intent: "createChat"; data: { chat: ChatType } }
   | { intent: "createGroup"; data: { chat: ChatType } }
   | { intent: "getChat"; data: { chat: ChatType } }
+  | { intent: "getGroup"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
   | { intent: "createMessage"; data: { chat: ChatType } }
   | { intent: "editNickname"; data: { contact: ContactType } }
@@ -97,6 +99,14 @@ export async function HomeAction({
         return {
           intent,
           data: { chat: response.data },
+        };
+      }
+      case "getGroup": {
+        const { groupId } = result;
+        const response = await api.get<GroupRes>(`api/group/${groupId}`);
+        return {
+          intent,
+          data: { group: response.data },
         };
       }
       case "getContact": {

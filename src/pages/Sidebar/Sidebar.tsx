@@ -11,9 +11,10 @@ type SidebarProps = {
   data: HomeLoaderReturn,
   loadUsers: () => void,
   openChat: (chatId: UuidType) => void,
+  openGroup: (chatId: UuidType) => void,
 }
-export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
-  const { user, chats } = data;
+export function Sidebar({ data, loadUsers, openChat, openGroup }: SidebarProps) {
+  const { user, chats, groupChats } = data;
   return (
     <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-y-scroll overflow-x-hidden border-r-2 border-bg4">
       <header className="h-[12%] bg-fg2/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
@@ -48,7 +49,9 @@ export function Sidebar({ data, loadUsers, openChat }: SidebarProps) {
           </div> :
           <ChatList
             chats={chats}
-            showFn={openChat}
+            groups={groupChats}
+            showChat={openChat}
+            showGroup={openGroup}
           />
         }
       </main>
