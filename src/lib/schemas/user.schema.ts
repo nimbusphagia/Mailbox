@@ -6,7 +6,7 @@ export const UserSchema = z.object({
   username: UsernameSchema,
   passwordHash: z.string(),
   name: z.string(),
-  imgUrl: z.url().optional(),
+  imgUrl: z.url(),
 });
 
 export type User = z.infer<typeof UserSchema>;
@@ -20,3 +20,8 @@ export const ChatUserSchema = UserSchema.omit({
   passwordHash: true,
 }).extend({ nickname: z.string().nullable() });
 export type ChatUser = z.infer<typeof ChatUserSchema>;
+
+export const ChatMemberSchema = SafeUserSchema.extend({
+  nickname: z.string().nullable(),
+});
+export type ChatMember = z.infer<typeof ChatMemberSchema>;

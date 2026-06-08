@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import type { ChatType } from "@/lib/schemas/chat.schema";
+import type { ChatRes } from "@/lib/schemas/chat.schema";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import { ActionSchema } from "@/lib/schemas/action.schema";
@@ -16,12 +16,12 @@ import type { GroupRes } from "@/lib/schemas/group.schema";
 export type ActionReturn =
   | { intent: "getContacts"; data: ContactType[] }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
-  | { intent: "createChat"; data: { chat: ChatType } }
-  | { intent: "createGroup"; data: { chat: ChatType } }
-  | { intent: "getChat"; data: { chat: ChatType } }
+  | { intent: "createChat"; data: { chat: ChatRes } }
+  | { intent: "createGroup"; data: { chat: ChatRes } }
+  | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
-  | { intent: "createMessage"; data: { chat: ChatType } }
+  | { intent: "createMessage"; data: { chat: ChatRes } }
   | { intent: "editNickname"; data: { contact: ContactType } }
   | {
       intent: "addContact";
@@ -71,7 +71,7 @@ export async function HomeAction({
       }
       case "createChat": {
         const { contacts } = result;
-        const response = await api.post<ChatType>("api/chat", {
+        const response = await api.post<ChatRes>("api/chat", {
           contactId: contacts![0],
         });
         return {
@@ -83,7 +83,7 @@ export async function HomeAction({
         const { group, image } = result;
         if (!group) return { error: "Empty body" };
 
-        const response = await api.post<ChatType>(
+        const response = await api.post<ChatRes>(
           "api/group",
           image instanceof File ? { ...group, image } : group,
           image instanceof File
@@ -95,7 +95,7 @@ export async function HomeAction({
       }
       case "getChat": {
         const { chatId } = result;
-        const response = await api.get<ChatType>(`api/chat/${chatId}`);
+        const response = await api.get<ChatRes>(`api/chat/${chatId}`);
         return {
           intent,
           data: { chat: response.data },
@@ -126,7 +126,7 @@ export async function HomeAction({
         const isImageMessage =
           message.type === "IMAGE" && image instanceof File;
 
-        const response = await api.post<ChatType>(
+        const response = await api.post<ChatRes>(
           "api/chat/message",
           isImageMessage ? { ...message, image } : message,
           isImageMessage

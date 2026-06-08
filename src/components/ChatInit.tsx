@@ -1,21 +1,21 @@
-import { type ChatUser } from "@/lib/schemas/user.schema"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { formatDate, trimSentence } from "@/lib/utils"
 import { useFiglet } from "@/pages/Hooks/useFiglet"
 
 type Props = {
-  contact: ChatUser,
+  title: string,
+  imgUrl: string,
   createdAt: Date
 }
-export function ChatInit({ contact, createdAt }: Props) {
-  const title = contact.nickname ?? contact.name;
+export function ChatInit({ title, imgUrl, createdAt }: Props) {
+  console.log(title)
   const { ascii, loading } = useFiglet(trimSentence(title, 2), { font: "BlurVision ASCII" })
   return (
     <div
       className="flex flex-col gap-5 items-center w-fit max-w-[100%] p-6 bg-fg1/55 rounded-sm m-auto my-6 shadow-md">
       <Avatar className="size-fit">
         <AvatarImage
-          src={contact.imgUrl}
+          src={imgUrl}
           className="size-30 bg-fg1/50 border-fg0/10  shadow-lg"
         />
       </Avatar>

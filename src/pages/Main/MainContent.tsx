@@ -1,13 +1,14 @@
-import type { ChatType } from "@/lib/schemas/chat.schema";
+import type { ChatRes } from "@/lib/schemas/chat.schema";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { homeActionsReturn } from "../Hooks/useHomeActions";
 import { Welcome } from "@/components/ui/Welcome";
 import { ContactPage } from "../Contact/Contact";
 import { Chat } from "../Chat/Chat";
 import type { UuidType } from "@/lib/schemas/util.schema";
+import type { GroupRes } from "@/lib/schemas/group.schema";
 
 type Props = {
-  chat?: ChatType,
+  chat?: ChatRes | GroupRes,
   contact?: ContactType | null,
   actions: homeActionsReturn,
   closeContact: (id: UuidType) => void,

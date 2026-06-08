@@ -26,7 +26,6 @@ export async function HomeLoader(): Promise<HomeLoaderReturn> {
       z.array(ChatLazySchema).safeParse(chats),
       z.array(GroupLazySchema).safeParse(groupChats),
     ];
-    console.log(parsedGroups);
     if (!parsedChats.success || !parsedGroups.success) {
       throw new Response("Invalid data", { status: 500 });
     }

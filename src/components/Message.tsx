@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/utils";
 type Props = {
   message: Message,
   primary: SafeUser,
-  secondary: ChatUser,
+  secondary: ChatUser | null,
   reference?: RefObject<HTMLDivElement | null>,
 }
 
@@ -39,7 +39,7 @@ export function MessageComponent({ message, primary, secondary, reference }: Pro
         onClick={handleClick}
       >
         <NameTag
-          name={isPrimary ? primary.name : secondary.nickname ?? secondary.name}
+          name={isPrimary ? primary.name : (secondary ? secondary.nickname ?? secondary.name : "User")}
           style={isPrimary ? "text-fg1 decoration-fg1/80" : "text-bg1 decoration-bg1/70"}
         />
         <div className="w-full text-pretty">

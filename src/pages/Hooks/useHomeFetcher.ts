@@ -4,14 +4,15 @@ import type { ErrorMessage } from "@/lib/utils";
 import type { ActionReturn } from "../Home/Home.action";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
-import type { ChatType } from "@/lib/schemas/chat.schema";
+import type { ChatRes } from "@/lib/schemas/chat.schema";
+import type { GroupRes } from "@/lib/schemas/group.schema";
 
 interface UseHomeFetcherProps {
   onError: (message: string) => void;
   onMessage: (message: string) => void;
   onRefreshUsers: (contacts: ContactType[], users: SafeUser[]) => void;
-  onChatOpened: (chat: ChatType) => void;
-  onChatCreated: (chat: ChatType) => void;
+  onChatOpened: (chat: ChatRes | GroupRes) => void;
+  onChatCreated: (chat: ChatRes) => void;
   onContactOpened: (contact: ContactType) => void;
 }
 
@@ -53,6 +54,10 @@ export function useHomeFetcher({
       getChat: () => {
         const d = data as Extract<ActionReturn, { intent: "getChat" }>;
         onChatOpened(d.data.chat);
+      },
+      getGroup: () => {
+        const d = data as Extract<ActionReturn, { intent: "getGroup" }>;
+        onChatOpened(d.data.group);
       },
       createMessage: () => {
         const d = data as Extract<ActionReturn, { intent: "createMessage" }>;

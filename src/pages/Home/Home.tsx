@@ -6,7 +6,7 @@ import { ChatPrompt } from "../ChatPrompt/ChatPrompt";
 import type { HomeLoaderReturn } from "./Home.loader";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
-import type { ChatType } from "@/lib/schemas/chat.schema";
+import type { ChatRes } from "@/lib/schemas/chat.schema";
 import { useHomeFetcher } from "../Hooks/useHomeFetcher";
 import { useHomeActions } from "../Hooks/useHomeActions";
 import { MainContent } from "../Main/MainContent";
@@ -16,7 +16,7 @@ export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
 
   const [flash, setFlash] = useState<FMessage | undefined>();
-  const [view, setView] = useState<{ chat?: ChatType | GroupRes; contact?: ContactType | null }>({});
+  const [view, setView] = useState<{ chat?: ChatRes | GroupRes; contact?: ContactType | null }>({});
   const [modal, setModal] = useState<{ show: boolean; contacts: ContactType[]; users: SafeUser[] }>({
     show: false, contacts: [], users: [],
   });
@@ -57,7 +57,7 @@ export function Home() {
         }
         main={
           <MainContent
-            chat={view.chat as ChatType}
+            chat={view.chat}
             contact={view.contact}
             actions={actions}
             closeContact={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })) }}

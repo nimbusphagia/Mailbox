@@ -1,14 +1,15 @@
 import { Messages } from "@/components/Messages"
 import { Button } from "@/components/ui/button"
 import { UserThumbnail } from "@/components/UserThumbnail"
-import type { ChatType } from "@/lib/schemas/chat.schema"
+import type { ChatRes } from "@/lib/schemas/chat.schema"
+import type { GroupRes } from "@/lib/schemas/group.schema"
 import type { MessageCreate } from "@/lib/schemas/message.schema"
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
 import { Mailbox } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 type Props = {
-  chat: ChatType,
+  chat: ChatRes | GroupRes,
   sendFn: (message: MessageCreate, image?: ValidImage) => void,
   showContact: (userId: UuidType) => void,
 }
@@ -18,6 +19,9 @@ export function Chat({ chat, sendFn, showContact }: Props) {
   const [image, setImage] = useState<ValidImage | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isGroup = (chat: ChatRes | GroupRes): chat is GroupRes => chat.isGroup === true;
+  const groupChat = isGroup(chat) ? chat : null;
+  const directChat = isGroup(chat) ? null : chat;
 
   useEffect(() => {
     focusRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -67,15 +71,22 @@ export function Chat({ chat, sendFn, showContact }: Props) {
     <main className="relative box-border flex-1 min-h-0 bg-fg4 size-full grid grid-rows-[8%_1fr_auto] text-bg1">
       <div className="bg-fg1/65 flex items-center justify-between size-full px-3">
         <UserThumbnail
-          imgUrl={chat.secondaryMember?.imgUrl!}
-          fullName={chat.secondaryMember?.nickname ?? chat.secondaryMember.name}
-          showFn={() => showContact(chat.secondaryMember.id)}
+          imgUrl={groupChat ? groupChat.imgUrl : directChat!.secondaryMember?.imgUrl}
+          fullName={groupChat ? groupChat.name : directChat!.secondaryMember.nickname ?? directChat!.secondaryMember.name}
+          showFn={() => groupChat ? null : showContact(directChat!.secondaryMember.id)}
         />
         <div>...</div>
       </div>
       <div className="flex flex-col gap-2 overflow-y-scroll">
         <Messages
-          chat={chat}
+          isGroup={isGroup(chat)}
+          title={groupChat?.name}
+          imgUrl={groupChat?.imgUrl}
+          messages={chat.messages}
+          primary={chat.primaryMember}
+          secondary={directChat?.secondaryMember ?? null}
+          secondaryMembers={groupChat?.secondaryMembers ?? []}
+          createdAt={chat.createdAt}
           focusRef={focusRef}
         />
       </div>

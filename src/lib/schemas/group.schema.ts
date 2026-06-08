@@ -1,7 +1,7 @@
 import z from "zod";
 import { UuidSchema } from "./util.schema";
-import { ChatMemberSchema } from "./chat.schema";
 import { ChatMessageSchema } from "./message.schema";
+import { SafeUserSchema } from "./user.schema";
 
 export const GroupReqSchema = z.object({
   id: UuidSchema.optional(),
@@ -11,18 +11,20 @@ export const GroupReqSchema = z.object({
 
 export type GroupReq = z.infer<typeof GroupReqSchema>;
 
-export const GroupResSchema = z.object({
+export const GroupResponseSchema = z.object({
   id: UuidSchema,
-  name: z.string().nullable(),
-  imgUrl: z.url().nullable(),
-  createdById: UuidSchema.nullable(),
-  createdAt: z.date(),
+  name: z.string().min(1),
+  imgUrl: z.url(),
   isGroup: z.boolean(),
-  members: z.array(ChatMemberSchema),
+  createdAt: z.date(),
+  primaryMember: SafeUserSchema,
+  secondaryMembers: z.array(
+    SafeUserSchema.extend({ nickname: z.string().nullable() }),
+  ),
   messages: z.array(ChatMessageSchema),
 });
 
-export type GroupRes = z.infer<typeof GroupResSchema>;
+export type GroupRes = z.infer<typeof GroupResponseSchema>;
 
 export const GroupLazySchema = z.object({
   id: UuidSchema,
