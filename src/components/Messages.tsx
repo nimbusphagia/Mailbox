@@ -1,7 +1,7 @@
 import { MessageComponent } from "./Message"
 import { useMemo, type RefObject } from "react"
 import { ChatInit } from "./ChatInit"
-import type { ChatMember, ChatUser, SafeUser } from "@/lib/schemas/user.schema"
+import type { ChatMember, SafeUser } from "@/lib/schemas/user.schema"
 import type { Message } from "@/lib/schemas/message.schema"
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   secondaryMembers: ChatMember[],
   createdAt: Date,
   focusRef: RefObject<HTMLDivElement | null>,
-  replyFn: (m: Message, u?: ChatUser) => void,
+  replyFn: (m: Message, name: string) => void,
 }
 export function Messages({ isGroup, title, imgUrl, messages, primary, secondary, secondaryMembers, createdAt, focusRef, replyFn }: Props) {
   const memberMap = useMemo(() =>

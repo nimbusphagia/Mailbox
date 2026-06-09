@@ -4,7 +4,6 @@ import { UserThumbnail } from "@/components/UserThumbnail"
 import type { ChatRes } from "@/lib/schemas/chat.schema"
 import type { GroupRes } from "@/lib/schemas/group.schema"
 import type { Message, MessageCreate } from "@/lib/schemas/message.schema"
-import type { ChatUser } from "@/lib/schemas/user.schema"
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
 import { ChevronDown, Image, Mailbox } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
@@ -20,13 +19,14 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
   const focusRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<ValidImage | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [replying, setReplying] = useState<{ message: Message, user?: ChatUser } | null>(null);
+  const [replying, setReplying] = useState<{ message: Message, userName: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isGroup = (chat: ChatRes | GroupRes): chat is GroupRes => chat.isGroup === true;
   const groupChat = isGroup(chat) ? chat : null;
   const directChat = isGroup(chat) ? null : chat;
 
   useEffect(() => {
+    setReplying(null);
     focusRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     focusRef.current?.focus();
   }, [chat]);
@@ -49,6 +49,7 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
         chatId: chat.id,
         type: "TEXT" as const,
         content: textValue,
+        replyToId: replying?.message.id,
       };
       sendFn(message);
       setTextValue("");
@@ -60,6 +61,7 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
         chatId: chat.id,
         type: "IMAGE" as const,
         content: textValue,
+        replyToId: replying?.message.id,
       };
       sendFn(message, image);
       setTextValue("");
@@ -98,7 +100,7 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
           secondaryMembers={groupChat?.secondaryMembers ?? []}
           createdAt={chat.createdAt}
           focusRef={focusRef}
-          replyFn={(message: Message, user?: ChatUser) => setReplying({ message, user })}
+          replyFn={(message: Message, userName: string) => setReplying({ message, userName })}
         />
       </div>
       <div className="flex flex-col m-3 mt-1 gap-2 flex-1 p-0 bg-bg3/20 rounded-sm shadow-xs shadow-fg4"  >
@@ -128,20 +130,20 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
               >
                 <ChevronDown />
               </Button>
-              <div className="bg-fg2 p-[0.5em] max-w-full flex justify-between">
+              <div className="bg-fg2 p-[0.5em] max-w-full max-h-[100px] flex justify-between">
                 <div className="border-l-2 border-bg3 pl-1.5 flex flex-col gap-0.5">
                   <p
                     className="font-bold text-sm"
-                  >{replying.user?.nickname ?? replying.user?.name ?? "Unknown User"}
+                  >{replying.userName}
                   </p>
                   <p
                     className="text-xs font-semibold"
-                  >{replying.message.content?.trim() ? replying.message.content : "Image"}
+                  >{replying.message.content?.trim() ? replying.message.content : "Photo"}
                   </p>
                 </div>
 
                 {replying.message.type === "IMAGE" &&
-                  <div className="max-w-[35%]">
+                  <div className="max-w-[180px] max-h-[150px]">
                     <img
                       src={replying.message.metadata?.url}
                       alt="Preview"

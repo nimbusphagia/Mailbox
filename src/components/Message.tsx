@@ -10,7 +10,7 @@ type Props = {
   primary: SafeUser,
   secondary: ChatUser | null,
   reference?: RefObject<HTMLDivElement | null>,
-  replyFn: (m: Message, u?: ChatUser) => void,
+  replyFn: (m: Message, name: string) => void,
 }
 
 export function MessageComponent({ message, primary, secondary, reference, replyFn }: Props) {
@@ -39,10 +39,16 @@ export function MessageComponent({ message, primary, secondary, reference, reply
         onMouseLeave={() => setShowMore(false)}
       >
         {isPrimary && showMore
-          && <Ellipsis
-            className="cursor-pointer self-center size-[1.1em] text-bg3/90 hover:text-bg2"
-            onClick={() => null}
-          />
+          && <>
+            <Ellipsis
+              className="cursor-pointer self-center size-[1.1em] text-bg3/90 hover:text-bg2"
+              onClick={() => null}
+            />
+            <Reply
+              className="cursor-pointer self-center size-[1.1em] text-bg3/90 hover:text-bg2"
+              onClick={() => replyFn(message, primary.name)}
+            />
+          </>
         }
         <div
           className={`
@@ -56,6 +62,34 @@ export function MessageComponent({ message, primary, secondary, reference, reply
             name={isPrimary ? primary.name : (secondary ? secondary.nickname ?? secondary.name : "User")}
             style={isPrimary ? "text-fg1 decoration-fg1/80" : "text-bg1 decoration-bg1/70"}
           />
+          {message.replyTo && (
+            <div className="relative bg-fg3 w-full rounded-t-sm">
+              <div className="max-size-full p-2">
+                <div className="bg-fg2 p-[0.5em] max-w-full max-h-[100px] flex justify-between">
+                  <div className="border-l-2 border-bg3 pl-1.5 flex flex-col gap-0.5">
+                    <p
+                      className="font-bold text-sm"
+                    >{message.replyTo.sender.nickname ?? message.replyTo.sender.name ?? "Unknown user"}
+                    </p>
+                    <p
+                      className="text-xs font-semibold"
+                    >{message.replyTo.content?.trim() ? message.replyTo.content : "Photo"}
+                    </p>
+                  </div>
+
+                  {message.replyTo.type === "IMAGE" &&
+                    <div className="max-w-[180px] max-h-[150px]">
+                      <img
+                        src={message.replyTo.metadata?.url}
+                        alt="Preview"
+                        className="max-h-full"
+                      />
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          )}
           <div className="w-full text-pretty">
             {message.type === 'IMAGE' &&
               <div className="py-2 ">
@@ -77,7 +111,7 @@ export function MessageComponent({ message, primary, secondary, reference, reply
           <>
             <Reply
               className="cursor-pointer self-center size-[1.1em] text-bg3/90 hover:text-bg2"
-              onClick={() => replyFn(message, secondary ?? undefined)}
+              onClick={() => replyFn(message, secondary?.nickname ?? secondary?.name ?? "Unkown User")}
             />
             <Ellipsis
               className="cursor-pointer self-center size-[1.1em] text-bg3/90 hover:text-bg2"

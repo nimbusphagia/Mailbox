@@ -1,8 +1,23 @@
+import { ChatMemberSchema } from "./user.schema";
 import { ImageMetadataSchema, UuidSchema } from "./util.schema";
 import z from "zod";
 
 export const MessageTypeSchema = z.enum(["TEXT", "IMAGE", "SYSTEM_EVENT"]);
 export type MessageType = z.infer<typeof MessageTypeSchema>;
+
+export const ReplySchema = z.object({
+  id: UuidSchema,
+  chatId: UuidSchema,
+  senderId: UuidSchema.nullable(),
+  sender: ChatMemberSchema,
+  content: z.string().nullable(),
+  type: MessageTypeSchema,
+  metadata: ImageMetadataSchema.nullable().optional(),
+  createdAt: z.coerce.date(),
+  isRead: z.boolean(),
+});
+
+export type Reply = z.infer<typeof ReplySchema>;
 
 export const ChatMessageSchema = z.object({
   id: UuidSchema,
@@ -12,7 +27,8 @@ export const ChatMessageSchema = z.object({
   type: MessageTypeSchema,
   metadata: ImageMetadataSchema.nullable().optional(),
   createdAt: z.coerce.date(),
-  replyToId: UuidSchema.nullable(),
+  replyToId: UuidSchema.nullable().optional(),
+  replyTo: ReplySchema.optional(),
   isRead: z.boolean(),
 });
 
