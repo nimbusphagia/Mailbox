@@ -21,7 +21,7 @@ export type ActionReturn =
   | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
-  | { intent: "createMessage"; data: { chat: ChatRes } }
+  | { intent: "createMessage"; data: { chat: ChatRes | GroupRes } }
   | { intent: "editNickname"; data: { contact: ContactType } }
   | {
       intent: "addContact";
@@ -126,7 +126,7 @@ export async function HomeAction({
         const isImageMessage =
           message.type === "IMAGE" && image instanceof File;
 
-        const response = await api.post<ChatRes>(
+        const response = await api.post<ChatRes|GroupRes>(
           "api/chat/message",
           isImageMessage ? { ...message, image } : message,
           isImageMessage

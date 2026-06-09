@@ -11,9 +11,10 @@ import { useEffect, useRef, useState } from "react"
 type Props = {
   chat: ChatRes | GroupRes,
   sendFn: (message: MessageCreate, image?: ValidImage) => void,
-  showContact: (userId: UuidType) => void,
+  getContact: (userId: UuidType) => void,
+  showInfo: () => void,
 }
-export function Chat({ chat, sendFn, showContact }: Props) {
+export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
   const [textValue, setTextValue] = useState<string>("");
   const focusRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<ValidImage | null>(null);
@@ -73,7 +74,15 @@ export function Chat({ chat, sendFn, showContact }: Props) {
         <UserThumbnail
           imgUrl={groupChat ? groupChat.imgUrl : directChat!.secondaryMember?.imgUrl}
           fullName={groupChat ? groupChat.name : directChat!.secondaryMember.nickname ?? directChat!.secondaryMember.name}
-          showFn={() => groupChat ? null : showContact(directChat!.secondaryMember.id)}
+          showFn={() => {
+            if (groupChat) {
+              showInfo();
+            } else {
+              getContact(directChat!.secondaryMember.id)
+              showInfo()
+            }
+          }
+          }
         />
         <div>...</div>
       </div>

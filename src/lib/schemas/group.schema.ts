@@ -3,6 +3,9 @@ import { UuidSchema } from "./util.schema";
 import { ChatMessageSchema } from "./message.schema";
 import { SafeUserSchema } from "./user.schema";
 
+export const GroupRoleSchema = z.enum(["MEMBER", "ADMIN", "OWNER"]);
+export type GroupRole = z.infer<typeof GroupRoleSchema>;
+
 export const GroupReqSchema = z.object({
   id: UuidSchema.optional(),
   name: z.string().min(1),
@@ -17,9 +20,15 @@ export const GroupResponseSchema = z.object({
   imgUrl: z.url(),
   isGroup: z.boolean(),
   createdAt: z.date(),
-  primaryMember: SafeUserSchema,
+  createdBy: SafeUserSchema.nullable(),
+  primaryMember: SafeUserSchema.extend({
+    role: z.enum(["MEMBER", "ADMIN", "OWNER"]),
+  }),
   secondaryMembers: z.array(
-    SafeUserSchema.extend({ nickname: z.string().nullable() }),
+    SafeUserSchema.extend({
+      nickname: z.string().nullable(),
+      role: GroupRoleSchema,
+    }),
   ),
   messages: z.array(ChatMessageSchema),
 });
@@ -35,3 +44,9 @@ export const GroupLazySchema = z.object({
   lastMessage: ChatMessageSchema.optional(),
 });
 export type GroupLazy = z.infer<typeof GroupLazySchema>;
+
+export const GroupMemberSchema = SafeUserSchema.extend({
+  nickname: z.string().nullable().optional(),
+  role: GroupRoleSchema,
+});
+export type GroupMember = z.infer<typeof GroupMemberSchema>;

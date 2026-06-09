@@ -6,8 +6,9 @@ type Props = {
   name: string,
   className?: string,
   avatarClassname?: string,
+  titleClassname?: string,
 }
-export function PillAvatar({ imgUrl, name, className, avatarClassname, children }: PropsWithChildren<Props>) {
+export function PillAvatar({ imgUrl, name, className, avatarClassname, titleClassname, children }: PropsWithChildren<Props>) {
   return (
     <div
       className={`relative flex gap-2 items-center bg-fg4/90 p-2 px-4.5 rounded-md shadow-sm ${className}`}
@@ -15,7 +16,7 @@ export function PillAvatar({ imgUrl, name, className, avatarClassname, children 
       <UserThumbnail
         imgUrl={imgUrl}
         fullName={name}
-        className="text-bg1 text-[0.8rem]"
+        className={`text-bg1 text-[0.8rem] ${titleClassname}`}
         avatarClassname={avatarClassname}
       />
       {children}
