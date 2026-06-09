@@ -8,7 +8,6 @@ type Props = {
   createdAt: Date
 }
 export function ChatInit({ title, imgUrl, createdAt }: Props) {
-  console.log(title)
   const { ascii, loading } = useFiglet(trimSentence(title, 2), { font: "BlurVision ASCII" })
   return (
     <div

@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button"
 import { UserThumbnail } from "@/components/UserThumbnail"
 import type { ChatRes } from "@/lib/schemas/chat.schema"
 import type { GroupRes } from "@/lib/schemas/group.schema"
-import type { MessageCreate } from "@/lib/schemas/message.schema"
+import type { Message, MessageCreate } from "@/lib/schemas/message.schema"
+import type { ChatUser } from "@/lib/schemas/user.schema"
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
-import { Mailbox } from "lucide-react"
+import { ChevronDown, Image, Mailbox } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 type Props = {
@@ -19,6 +20,7 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
   const focusRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<ValidImage | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [replying, setReplying] = useState<{ message: Message, user?: ChatUser } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isGroup = (chat: ChatRes | GroupRes): chat is GroupRes => chat.isGroup === true;
   const groupChat = isGroup(chat) ? chat : null;
@@ -84,7 +86,6 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
           }
           }
         />
-        <div>...</div>
       </div>
       <div className="flex flex-col gap-2 overflow-y-scroll">
         <Messages
@@ -97,65 +98,104 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
           secondaryMembers={groupChat?.secondaryMembers ?? []}
           createdAt={chat.createdAt}
           focusRef={focusRef}
+          replyFn={(message: Message, user?: ChatUser) => setReplying({ message, user })}
         />
       </div>
-      <div className="flex flex-col m-3 gap-2 flex-1 p-1 bg-bg4/30 rounded-xs shadow-xs shadow-fg4"  >
-        <div >
-          <div className="bg-fg3 w-full">
-            {preview && (
-              <div className="relative max-w-[30%] max-h-full p-2 m-auto ">
-                <Button
-                  className="absolute top-1 right-1"
-                  onClick={() => setImage(null)}
-                >x</Button>
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="max-h-full"
-                />
-              </div>
-            )}
+      <div className="flex flex-col m-3 mt-1 gap-2 flex-1 p-0 bg-bg3/20 rounded-sm shadow-xs shadow-fg4"  >
+        {preview && (
+          <div className="relative bg-fg3 w-full rounded-t-sm">
+            <Button
+              className="absolute top-1 right-1 text-bg3 hover:text-bg2"
+              onClick={() => setImage(null)}
+            >
+              <ChevronDown />
+            </Button>
+            <div className="max-w-[30%] max-h-full p-2 m-auto ">
+              <img
+                src={preview}
+                alt="Preview"
+                className="max-h-full"
+              />
+            </div>
           </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
+        )}
+        {replying && (
+          <div className="relative bg-fg3 w-full rounded-t-sm">
+            <div className="max-size-full p-2">
+              <Button
+                className="absolute top-1 right-1 text-bg3 hover:text-bg2"
+                onClick={() => setReplying(null)}
+              >
+                <ChevronDown />
+              </Button>
+              <div className="bg-fg2 p-[0.5em] max-w-full flex justify-between">
+                <div className="border-l-2 border-bg3 pl-1.5 flex flex-col gap-0.5">
+                  <p
+                    className="font-bold text-sm"
+                  >{replying.user?.nickname ?? replying.user?.name ?? "Unknown User"}
+                  </p>
+                  <p
+                    className="text-xs font-semibold"
+                  >{replying.message.content?.trim() ? replying.message.content : "Image"}
+                  </p>
+                </div>
 
-              if (!file) return;
-              setImage(file);
-            }}
-          />
+                {replying.message.type === "IMAGE" &&
+                  <div className="max-w-[35%]">
+                    <img
+                      src={replying.message.metadata?.url}
+                      alt="Preview"
+                      className="max-h-full"
+                    />
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="flex flex-col m-2 gap-2 flex-1 p-0"  >
+          <div className="flex items-center">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
 
-        </div>
-        <div className="flex items-center">
-          <Button
-            className=" text-md text-bg2"
-            onClick={() => fileInputRef.current?.click()}
-          >+</Button>
-          <input
-            className="p-1 px-3 text-sm font-bold w-full outline-none text-bg1
+                if (!file) return;
+                setImage(file);
+              }}
+            />
+
+            <Button
+              className=" text-md text-bg2 w-fit flex items-center justify-center"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Image className="w-[1.2em]" />
+            </Button>
+            <input
+              className="p-1 px-3 text-sm font-bold w-full outline-none text-bg1
           focus:bg-fg3/70 focus:placeholder:text-bg2 focus:text-bg1 rounded-xs"
-            placeholder=":message"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                submitText();
-              }
-            }}
-          />
+              placeholder=":message"
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  submitText();
+                }
+              }}
+            />
 
-          <Button
-            className=" text-md text-bg2"
-            disabled={!(image || textValue.length)}
-            onClick={submitMessage}
-          >
-            <Mailbox className="text-bg0 size-md" />
-          </Button>
+            <Button
+              className=" text-md text-bg2"
+              disabled={!(image || textValue.length)}
+              onClick={submitMessage}
+            >
+              <Mailbox className="text-bg0 size-md" />
+            </Button>
+          </div>
         </div>
       </div>
     </main >

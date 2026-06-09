@@ -20,7 +20,7 @@ export function GroupPage({ group, hideFn, titleFn }: Props) {
   const activeRole = group.primaryMember.role;
 
   return (
-    <div className="relative size-full flex flex-col gap-3 items-center p-8 py-4 bg-fg2/80 ">
+    <div className="relative size-full flex flex-col gap-3 items-center p-8 py-4 bg-fg2/80 overflow-y-scroll">
       <Button
         className="cursor-pointer text-bg1 absolute inset-3 inset-y-4 size-[1.2em] p-2"
         onClick={hideFn}
