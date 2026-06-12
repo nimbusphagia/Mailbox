@@ -6,7 +6,7 @@ import { ContactPage } from "../ChatInfo/Contact";
 import { Chat } from "../Chat/Chat";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { GroupRes } from "@/lib/schemas/group.schema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GroupPage } from "../ChatInfo/Group";
 
 type Props = {
@@ -25,6 +25,10 @@ export function MainContent({
 }: Props) {
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
+  useEffect(() => {
+    setShowInfo(false);
+  }, [chat]);
+
   if (!chat) return (
     <div className="bg-fg4/68 w-full h-full flex items-center justify-center">
       <Welcome className="text-[30px] text-fg1/80 font-bold select-none" />
@@ -33,6 +37,7 @@ export function MainContent({
   if (contact && showInfo) return (
     <ContactPage
       contact={contact}
+      images={chat.messages.filter(m => m.type === "IMAGE").map(m => m.metadata!.url ?? null)}
       hideFn={() => closeContact(chat.id)}
       nicknameFn={editNickname}
     />
@@ -40,6 +45,7 @@ export function MainContent({
   if (chat.isGroup && showInfo) return (
     <GroupPage
       group={chat as GroupRes}
+      images={chat.messages.filter(m => m.type === "IMAGE").map(m => m.metadata!.url ?? null)}
       hideFn={() => setShowInfo(false)}
       titleFn={editNickname}
     />

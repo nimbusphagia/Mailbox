@@ -7,6 +7,7 @@ export const ChatLazySchema = z.object({
   id: UuidSchema,
   createdAt: z.coerce.date(),
   isGroup: z.boolean(),
+  isArchived: z.boolean(),
   otherMember: ChatUserSchema,
   lastMessage: ChatMessageSchema.optional(),
 });

@@ -1,4 +1,4 @@
-import { SquarePlus, Package } from "lucide-react"
+import { SquarePlus, Package, MessagesSquare } from "lucide-react"
 import { AvatarImage } from "@/components/ui/avatar";
 import { Avatar } from "@/components/ui/avatar";
 import type { HomeLoaderReturn } from "../Home/Home.loader";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChatList } from "@/components/ChatList";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import { LogoVar2 } from "@/components/ui/logo3";
+import { useState } from "react";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -14,7 +15,9 @@ type SidebarProps = {
   openGroup: (chatId: UuidType) => void,
 }
 export function Sidebar({ data, loadUsers, openChat, openGroup }: SidebarProps) {
-  const { user, chats, groupChats } = data;
+  const { user, chats, groups, archived } = data;
+  const [showArchive, setShowArchive] = useState<boolean>(false);
+
   return (
     <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-y-scroll overflow-x-hidden border-r-2 border-bg4">
       <header className="h-[12%] bg-fg2/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
@@ -30,8 +33,15 @@ export function Sidebar({ data, loadUsers, openChat, openGroup }: SidebarProps) 
           <Button type="button" className="px-1.5" onClick={loadUsers}>
             <SquarePlus strokeWidth={2} className="text-bg1 size-[1.5em]" />
           </Button>
-          <Button className="px-1.5">
-            <Package strokeWidth={2} className="text-bg1 size-[1.5em]" />
+          <Button
+            className="px-1.5"
+            onClick={() => setShowArchive(!showArchive)}
+          >
+            {
+              showArchive ?
+                <MessagesSquare strokeWidth={2} className="text-bg1 size-[1.5em]" /> :
+                <Package strokeWidth={2} className="text-bg1 size-[1.5em]" />
+            }
           </Button>
         </div>
       </header>
@@ -48,8 +58,8 @@ export function Sidebar({ data, loadUsers, openChat, openGroup }: SidebarProps) 
             <p className="text-sm text-bg1">No mail exchanged yet</p>
           </div> :
           <ChatList
-            chats={chats}
-            groups={groupChats}
+            chats={showArchive ? archived.chats : chats}
+            groups={showArchive ? archived.groups : groups}
             showChat={openChat}
             showGroup={openGroup}
           />

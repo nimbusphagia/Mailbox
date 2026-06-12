@@ -6,31 +6,54 @@ import z from "zod";
 import { ChatLazySchema } from "@/lib/schemas/chat.schema";
 import { redirect } from "react-router-dom";
 import { GroupLazySchema, type GroupLazy } from "@/lib/schemas/group.schema";
-
+export type ArchivedChats = {
+  chats: ChatLazy[];
+  groups: GroupLazy[];
+};
 export type HomeLoaderReturn = {
   user: SafeUser;
   chats: ChatLazy[];
-  groupChats: GroupLazy[];
+  groups: GroupLazy[];
+  archived: ArchivedChats;
 };
 
 export async function HomeLoader(): Promise<HomeLoaderReturn> {
   try {
-    const [{ data: user }, { data: chats }, { data: groupChats }] =
-      await Promise.all([
-        api.get<SafeUser>("api/user/me"),
-        api.get<ChatLazy[]>("api/chat"),
-        api.get<GroupLazy[]>("api/group"),
-      ]);
+    const [
+      { data: user },
+      { data: chats },
+      { data: groupChats },
+      { data: archivedChats },
+      { data: archivedGroups },
+    ] = await Promise.all([
+      api.get<SafeUser>("api/user/me"),
+      api.get<ChatLazy[]>("api/chat"),
+      api.get<GroupLazy[]>("api/group"),
+      api.get<ChatLazy[]>("api/chat?archived=true"),
+      api.get<GroupLazy[]>("api/group?archived=true"),
+    ]);
 
-    const [parsedChats, parsedGroups] = [
+    const [parsedChats, parsedGroups, parsedArchChats, parsedArchGroups] = [
       z.array(ChatLazySchema).safeParse(chats),
       z.array(GroupLazySchema).safeParse(groupChats),
+      z.array(ChatLazySchema).safeParse(archivedChats),
+      z.array(GroupLazySchema).safeParse(archivedGroups),
     ];
-    if (!parsedChats.success || !parsedGroups.success) {
+    if (
+      !parsedChats.success ||
+      !parsedGroups.success ||
+      !parsedArchChats.success ||
+      !parsedArchGroups.success
+    ) {
       throw new Response("Invalid data", { status: 500 });
     }
 
-    return { user, chats: parsedChats.data, groupChats: parsedGroups.data };
+    return {
+      user,
+      chats: parsedChats.data,
+      groups: parsedGroups.data,
+      archived: { chats: parsedArchChats.data, groups: parsedArchGroups.data },
+    };
   } catch (err) {
     if (axios.isAxiosError(err)) {
       if (err.response?.status === 401) throw redirect("/login");

@@ -11,13 +11,15 @@ import { MemberPill } from "./components/MemberPill";
 
 type Props = {
   group: GroupRes,
+  images: string[],
   hideFn: () => void,
   titleFn: (id: UuidType, title: string) => void,
 }
-export function GroupPage({ group, hideFn, titleFn }: Props) {
+export function GroupPage({ group, images, hideFn, titleFn }: Props) {
   const { ascii, loading } = useFiglet(trimSentence(group.name, 2), { font: "BlurVision ASCII" });
   const [title, setTitle] = useState<string>(group.name);
   const activeRole = group.primaryMember.role;
+  const [showMedia, setShowMedia] = useState<boolean>(false);
 
   return (
     <div className="relative size-full flex flex-col gap-3 items-center p-8 py-4 bg-fg2/80 overflow-y-scroll">
@@ -66,11 +68,29 @@ export function GroupPage({ group, hideFn, titleFn }: Props) {
                 />
             }
           </div>
-          <div className="flex  justify-between text-sm *:text-bg2 *:p-1">
-            <Button className="font-bold capitalize">
-              <Image />
-              Shared media
+          <div className="flex flex-col items-start gap-1! text-sm *:text-bg2 *:p-1">
+            <Button
+              className="font-bold flex items-center gap-1 text-bg1! capitalize"
+              onClick={() => setShowMedia(!showMedia)}
+            >
+              <Image className="size-[1rem]" />
+              Files
             </Button>
+            {
+              showMedia &&
+              <div className="grid grid-cols-3 w-full gap-2 p-3! bg-bg3/22 rounded-sm">
+                {images.map(url =>
+                  <div
+                    key={url}
+                    className="size-full rounded-xs overflow-hidden">
+                    <img
+                      src={url}
+                      className="object-center size-full"
+                    />
+                  </div>
+                )}
+              </div>
+            }
           </div>
         </div>
         <div className="flex  flex-col text-sm *:text-bg2 p-6 gap-5">

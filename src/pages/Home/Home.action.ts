@@ -126,7 +126,7 @@ export async function HomeAction({
         const isImageMessage =
           message.type === "IMAGE" && image instanceof File;
 
-        const response = await api.post<ChatRes|GroupRes>(
+        const response = await api.post<ChatRes | GroupRes>(
           "api/chat/message",
           isImageMessage ? { ...message, image } : message,
           isImageMessage

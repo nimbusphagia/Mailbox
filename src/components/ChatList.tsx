@@ -26,15 +26,23 @@ export function ChatList({ chats, groups, showChat, showGroup }: Props) {
 
   return (
     <>
-      {sorted.map((entry) => (
-        <div
-          key={entry.data.id}
-          className="h-fit"
-          onClick={() => entry.type === "group" ? showGroup(entry.data.id) : showChat(entry.data.id)}
-        >
-          <ChatThumbnail entry={entry} isGroup={entry.type === "group"} />
-        </div>
-      ))}
+      {
+        sorted.length ?
+          sorted.map((entry) => (
+            <div
+              key={entry.data.id}
+              className="h-fit"
+              onClick={() => entry.type === "group" ? showGroup(entry.data.id) : showChat(entry.data.id)}
+            >
+              <ChatThumbnail entry={entry} isGroup={entry.type === "group"} />
+            </div>
+          ))
+
+          :
+          <div className="h-full flex flex-col items-center justify-center">
+            <p className="text-sm text-bg1">There's nothing to look here.</p>
+          </div>
+      }
     </>
   );
 }

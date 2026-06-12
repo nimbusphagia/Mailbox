@@ -39,6 +39,7 @@ export const GroupLazySchema = z.object({
   id: UuidSchema,
   createdAt: z.coerce.date(),
   isGroup: z.boolean(),
+  isArchived: z.boolean(),
   name: z.string().min(1),
   imgUrl: z.url().optional(),
   lastMessage: ChatMessageSchema.optional(),
