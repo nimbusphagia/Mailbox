@@ -1,7 +1,7 @@
 import { useFetcher } from "react-router-dom";
 import { useEffect } from "react";
 import type { ErrorMessage } from "@/lib/utils";
-import type { ActionReturn } from "../Home/Home.action";
+import type { ActionReturn } from "../Home.action";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import type { ChatRes } from "@/lib/schemas/chat.schema";

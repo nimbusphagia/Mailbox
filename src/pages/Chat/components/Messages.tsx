@@ -13,29 +13,32 @@ type Props = {
   secondary: ChatMember | null,
   secondaryMembers: ChatMember[],
   createdAt: Date,
-  focusRef: RefObject<HTMLDivElement | null>,
+  scrollRef: RefObject<HTMLDivElement | null>,
   replyFn: (m: Message, name: string) => void,
 }
-export function Messages({ isGroup, title, imgUrl, messages, primary, secondary, secondaryMembers, createdAt, focusRef, replyFn }: Props) {
+export function Messages({ isGroup, title, imgUrl, messages, primary, secondary, secondaryMembers, createdAt, scrollRef, replyFn }: Props) {
   const memberMap = useMemo(() =>
     new Map(secondaryMembers.map((m) => [m.id, m])),
     [secondaryMembers]
   );
 
   return (
-    <div className="h-full px-5 pt-1 pb-2 overflow-y-scroll flex flex-col gap-2.5">
+    <div
+      className="h-full px-5 pt-1 pb-2 overflow-y-scroll flex flex-col gap-2.5 
+      [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      ref={scrollRef}
+    >
       <ChatInit
         title={isGroup ? title! : secondary?.nickname ?? secondary?.name!}
         imgUrl={isGroup ? imgUrl! : secondary?.imgUrl!}
         createdAt={createdAt}
       />
-      {messages.map((m, i) => (
+      {messages.map((m) => (
         <MessageComponent
           key={m.id}
           message={m}
           primary={primary}
           secondary={isGroup ? memberMap.get(m.senderId!) ?? null : secondary}
-          reference={i === messages.length - 1 ? focusRef : undefined}
           replyFn={replyFn}
         />
       ))}

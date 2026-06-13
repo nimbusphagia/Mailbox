@@ -28,8 +28,8 @@ export function ChatThumbnail({ entry, onClick }: Props) {
 
   return (
     <div
-      className="flex items-center gap-3 px-3 py-2 m-1 bg-fg2 
-    rounded-md cursor-pointer hover:bg-fg1/80 border-bg3 border-[1px] 
+      className="flex items-center gap-3 px-3 py-2 m-1 bg-fg1/20 
+    rounded-md cursor-pointer hover:bg-fg1/80 hover:border-bg3 border-fg4 border-[1px] 
       shadow-sm"
       onClick={onClick}
     >

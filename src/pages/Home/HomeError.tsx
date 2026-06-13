@@ -16,7 +16,7 @@ export function HomeError() {
   }
 
   return (
-    <RootLayout route="error" color="red">
+    <RootLayout >
       <ErrorComponent status={status} message={message} />
     </RootLayout>
   );

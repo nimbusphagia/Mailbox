@@ -1,5 +1,5 @@
 import type { FetcherWithComponents } from "react-router-dom";
-import type { ActionReturn } from "../Home/Home.action";
+import type { ActionReturn } from "../Home.action";
 import type { ErrorMessage } from "@/lib/utils";
 import { type UuidType, type ValidImage } from "@/lib/schemas/util.schema";
 import type { MessageCreate } from "@/lib/schemas/message.schema";

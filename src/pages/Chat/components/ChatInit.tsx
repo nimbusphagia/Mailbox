@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from "./ui/avatar"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { formatDate, trimSentence } from "@/lib/utils"
 import { useFiglet } from "@/pages/Hooks/useFiglet"
 
@@ -11,7 +11,7 @@ export function ChatInit({ title, imgUrl, createdAt }: Props) {
   const { ascii, loading } = useFiglet(trimSentence(title, 2), { font: "BlurVision ASCII" })
   return (
     <div
-      className="flex flex-col gap-5 items-center w-fit max-w-[100%] p-6 bg-fg1/55 rounded-sm m-auto my-6 shadow-md">
+      className="flex flex-col gap-5 items-center w-fit max-w-[100%] p-6 bg-fg0 rounded-sm m-auto my-6 shadow-md">
       <Avatar className="size-fit">
         <AvatarImage
           src={imgUrl}
