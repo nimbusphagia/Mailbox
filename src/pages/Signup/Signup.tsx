@@ -7,6 +7,7 @@ import type { ErrorMessage } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { LogoRandom } from "@/components/LogoRandom";
 import { ColorCard } from "@/components/ColorCard";
+import { Signature } from "@/components/Signature";
 
 export function SignupPage() {
   const actionData = useActionData() as ErrorMessage | undefined;
@@ -94,15 +95,7 @@ export function SignupPage() {
           </Form>
         </ColorCard>
         <footer className="flex items-end">
-          <p className="pb-[15px]">Made by
-            <a
-              href="https://github.com/nimbusphagia"
-              target="_blank"
-              className="pl-2 font-bold hover:text-bg2"
-            >
-              Nimbusphagia
-            </a>
-          </p>
+          <Signature />
         </footer>
       </div>
     </RootLayout>

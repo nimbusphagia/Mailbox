@@ -40,7 +40,7 @@ export function ChatList({ chats, groups, showChat, showGroup }: Props) {
 
           :
           <div className="h-full flex flex-col items-center justify-center">
-            <p className="text-sm text-bg1">There's nothing to look here.</p>
+            <p className="text-xs text-bg2">This is empty</p>
           </div>
       }
     </>

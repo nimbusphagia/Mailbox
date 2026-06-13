@@ -16,6 +16,7 @@ export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
 
   const [flash, setFlash] = useState<string | undefined>();
+  const [showSB, setShowSB] = useState<boolean>(true);
   const [view, setView] = useState<{ chat?: ChatRes | GroupRes; contact?: ContactType | null }>({});
   const [modal, setModal] = useState<{ show: boolean; contacts: ContactType[]; users: SafeUser[] }>({
     show: false, contacts: [], users: [],
@@ -47,12 +48,15 @@ export function Home() {
   return (
     <RootLayout >
       <MainLayout
+        className={!showSB ? "grid grid-cols-[auto_1fr]" : "grid grid-cols-[25vw_1fr]"}
         aside={
           <Sidebar
             data={loaderData}
             loadUsers={() => { actions.loadUsers(); setModal((prev) => ({ ...prev, show: true })); }}
             openChat={(id) => { actions.openChat(id); setView((prev) => ({ ...prev, contact: null })) }}
             openGroup={(id) => { actions.openGroup(id); setView((prev) => ({ ...prev, contact: null })) }}
+            toggleSidebar={() => setShowSB(!showSB)}
+            isHidden={!showSB}
           />
         }
         main={

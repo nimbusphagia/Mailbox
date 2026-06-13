@@ -1,13 +1,14 @@
 import type { ChatRes } from "@/lib/schemas/chat.schema";
 import type { ContactType } from "@/lib/schemas/contact.schema";
 import type { homeActionsReturn } from "../Hooks/useHomeActions";
-import { Welcome } from "@/components/ui/Welcome";
 import { ContactPage } from "../ChatInfo/Contact";
 import { Chat } from "../Chat/Chat";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { GroupRes } from "@/lib/schemas/group.schema";
 import { useEffect, useState } from "react";
 import { GroupPage } from "../ChatInfo/Group";
+import { LogoRandom } from "@/components/LogoRandom";
+import { Signature } from "@/components/Signature";
 
 type Props = {
   chat?: ChatRes | GroupRes,
@@ -30,8 +31,13 @@ export function MainContent({
   }, [chat]);
 
   if (!chat) return (
-    <div className="bg-fg4/68 w-full h-full flex items-center justify-center">
-      <Welcome className="text-[30px] text-fg1/80 font-bold select-none" />
+    <div className="w-full h-full flex items-center justify-center py-5 pl-2 pr-5">
+      <div className="relative border-[1px] border-bg3 rounded-sm flex flex-col items-center justify-center size-full">
+        <LogoRandom className="text-[0.8em]! text-bg3! font-black!" />
+        <div className="absolute bottom-0">
+          <Signature />
+        </div>
+      </div>
     </div>
   );
   if (contact && showInfo) return (
