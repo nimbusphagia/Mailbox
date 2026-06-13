@@ -1,4 +1,4 @@
-import { SquarePlus, Package, MessagesSquare, CircleUser, MoveDiagonal2 } from "lucide-react"
+import { SquarePlus, Package, MessagesSquare, CircleUser, MoveDiagonal2, UserCog } from "lucide-react"
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
 import { ChatList } from "@/components/ChatList";
@@ -37,10 +37,7 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, toggleSidebar, i
             >
               <MoveDiagonal2 />
             </Button>
-            <Button
-              onClick={() => null}>
-              <CircleUser />
-            </Button>
+
             <Button
               onClick={() => setShowArchive(false)}
             >
@@ -50,6 +47,10 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, toggleSidebar, i
               onClick={() => setShowArchive(true)}
             >
               <Package />
+            </Button>
+            <Button
+              onClick={() => null}>
+              <UserCog />
             </Button>
             <Button
               onClick={loadUsers}>
@@ -63,7 +64,9 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, toggleSidebar, i
           focus:bg-fg4/70 focus:placeholder:text-bg1 focus:text-bg1 rounded-sm"
             />
           </div>
-          <main className="flex-1 flex flex-col text-center overflow-scroll bg-fg2 border-1 border-bg3">
+          <main className="flex-1 flex flex-col text-center overflow-scroll 
+          bg-fg3 border-bg3 py-1 px-0.5
+          [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <ChatList
               chats={showArchive ? archived.chats : chats}
               groups={showArchive ? archived.groups : groups}

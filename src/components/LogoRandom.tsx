@@ -6,7 +6,7 @@ type Props = {
   className?: string,
 }
 export function LogoRandom({ className }: Props) {
-  const styles = ["Chiseled", "DiamFont", "Flower Power", "Patorjk's Cheese", "Lil Devil", "Patorjk-HeX", "Shaded Blocky", "Slant Relief", "Small Isometric1", "Sweet", "Sub-Zero", "Train", "Varsity", "Wet Letter", "ANSI Shadow", "Bloody", "Delta Corps Priest 1", "Elite", "Stronger Than All", "Rebel", "Bolger", "Caligraphy2"]
+  const styles = ["Chiseled", "DiamFont", "Flower Power", "Patorjk's Cheese", "Lil Devil", "Patorjk-HeX", "Shaded Blocky", "Slant Relief", "Small Isometric1", "Sweet", "Sub-Zero", "Train", "Varsity", "Wet Letter", "ANSI Shadow", "Bloody", "Delta Corps Priest 1", "Elite", "Stronger Than All", "Rebel", "Bolger", "Caligraphy2", "Alpha"]
   const random = useMemo(() => randomFromRange(0, styles.length - 1), []);
   const { ascii, loading } = useFiglet("MailBox", { font: styles[random] });
   return (

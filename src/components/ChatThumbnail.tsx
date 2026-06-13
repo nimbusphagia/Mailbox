@@ -6,9 +6,10 @@ import type { ChatEntry } from "@/lib/schemas/util.schema";
 type Props = {
   entry: ChatEntry,
   isGroup: boolean,
+  onClick?: () => void
 };
 
-export function ChatThumbnail({ entry }: Props) {
+export function ChatThumbnail({ entry, onClick }: Props) {
   const { type, data } = entry;
 
   const displayName = type === "dm"
@@ -26,17 +27,22 @@ export function ChatThumbnail({ entry }: Props) {
     : "This mailbox is empty";
 
   return (
-    <div className="flex items-center max-h-20 overflow-y-hidden gap-2.5 p-3 bg-fg4/30 border-b-2 border-bg3 cursor-pointer hover:bg-fg4/70">
-      <Avatar size="lg">
-        <AvatarImage src={avatarSrc} className="bg-fg4 border-1 border-fg3" />
+    <div
+      className="flex items-center gap-3 px-3 py-2 m-1 bg-fg2 
+    rounded-md cursor-pointer hover:bg-fg1/80 border-bg3 border-[1px] 
+      shadow-sm"
+      onClick={onClick}
+    >
+      <Avatar className="w-[18%] h-auto">
+        <AvatarImage src={avatarSrc} className="bg-fg4" />
       </Avatar>
-      <div className="flex flex-1 flex-col overflow-x-hidden">
-        <div className="flex justify-between items-center">
-          <h4 className="text-md text-bg0 font-bold">{displayName}</h4>
-          <p className="text-[0.6em]">{timeAgo(data.lastMessage?.createdAt ?? data.createdAt)}</p>
+      <div className="flex flex-1 flex-col gap-[0.1em] overflow-x-hidden">
+        <div className="flex justify-between items-center ">
+          <h4 className="text-sm text-bg1 font-bold text-left truncate max-w-[65%]">{displayName}</h4>
+          <p className="text-[0.55em]">{timeAgo(data.lastMessage?.createdAt ?? data.createdAt)}</p>
         </div>
         <div className="flex items-center">
-          <p className="text-xs text-bg2 font-bold text-left line-clamp-2">{message}</p>
+          <p className="text-[0.65em] text-bg3 font-normal text-left line-clamp-2">{message}</p>
         </div>
       </div>
     </div>

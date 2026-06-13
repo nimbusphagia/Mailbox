@@ -29,13 +29,11 @@ export function ChatList({ chats, groups, showChat, showGroup }: Props) {
       {
         sorted.length ?
           sorted.map((entry) => (
-            <div
-              key={entry.data.id}
-              className="h-fit"
+            <ChatThumbnail
+              entry={entry}
+              isGroup={entry.type === "group"}
               onClick={() => entry.type === "group" ? showGroup(entry.data.id) : showChat(entry.data.id)}
-            >
-              <ChatThumbnail entry={entry} isGroup={entry.type === "group"} />
-            </div>
+              key={entry.data.id} />
           ))
 
           :
