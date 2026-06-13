@@ -1,6 +1,6 @@
 import { MainLayout } from "@/layouts/MainLayout";
 import { Sidebar } from "../Sidebar/Sidebar";
-import { RootLayout, type FMessage } from "@/layouts/RootLayout"; import { useLoaderData } from "react-router-dom";
+import { RootLayout } from "@/layouts/RootLayout"; import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChatPrompt } from "../ChatPrompt/ChatPrompt";
 import type { HomeLoaderReturn } from "./Home.loader";
@@ -15,7 +15,7 @@ import type { GroupRes } from "@/lib/schemas/group.schema";
 export function Home() {
   const loaderData = useLoaderData<HomeLoaderReturn>();
 
-  const [flash, setFlash] = useState<FMessage | undefined>();
+  const [flash, setFlash] = useState<string | undefined>();
   const [view, setView] = useState<{ chat?: ChatRes | GroupRes; contact?: ContactType | null }>({});
   const [modal, setModal] = useState<{ show: boolean; contacts: ContactType[]; users: SafeUser[] }>({
     show: false, contacts: [], users: [],
@@ -28,8 +28,8 @@ export function Home() {
   }, [flash]);
 
   const fetcher = useHomeFetcher({
-    onError: (message) => setFlash({ message, color: "red" }),
-    onMessage: (message) => setFlash({ message }),
+    onError: (message) => setFlash(message),
+    onMessage: (message) => setFlash(message),
     onRefreshUsers: (contacts, users) => {
       const contactUserIds = new Set(contacts.map((c) => c.user?.id || c.isBlocked));
       const filteredUsers = users.filter(
@@ -45,7 +45,7 @@ export function Home() {
   const actions = useHomeActions(fetcher);
 
   return (
-    <RootLayout route="home" color="blue" left={flash}>
+    <RootLayout >
       <MainLayout
         aside={
           <Sidebar

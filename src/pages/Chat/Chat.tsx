@@ -5,7 +5,7 @@ import type { ChatRes } from "@/lib/schemas/chat.schema"
 import type { GroupRes } from "@/lib/schemas/group.schema"
 import type { Message, MessageCreate } from "@/lib/schemas/message.schema"
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
-import { ChevronDown, Image, Mailbox } from "lucide-react"
+import { ChevronDown, Image, SendHorizontal } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 type Props = {
@@ -195,7 +195,7 @@ export function Chat({ chat, sendFn, getContact, showInfo }: Props) {
               disabled={!(image || textValue.length)}
               onClick={submitMessage}
             >
-              <Mailbox className="text-bg0 size-md" />
+              <SendHorizontal className="text-bg0 size-[1rem]" />
             </Button>
           </div>
         </div>

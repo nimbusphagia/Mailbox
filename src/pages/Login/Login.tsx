@@ -1,19 +1,19 @@
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, useActionData, useSearchParams } from "react-router-dom";
-import { Logo } from "@/components/ui/logo";
-import { RootLayout, type FMessage } from "@/layouts/RootLayout";
-import type { ErrorMessage } from "@/lib/utils";
+import { Form, Link, useActionData, useSearchParams } from "react-router-dom";
+import { RootLayout } from "@/layouts/RootLayout";
+import { type ErrorMessage } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { LogoRandom } from "@/components/LogoRandom";
+import { ColorCard } from "@/components/ColorCard";
 
 export function LoginPage() {
   const actionData = useActionData() as ErrorMessage | undefined;
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const [fMessage, setFMessage] = useState<FMessage | undefined>(() => {
+  const [message, setMessage] = useState<string | undefined>(() => {
     return searchParams.get('registered')
-      ? { message: "User registered successfully.", color: "black" }
+      ? "User registered successfully."
       : undefined;
   });
 
@@ -25,54 +25,93 @@ export function LoginPage() {
 
   useEffect(() => {
     if (actionData?.error) {
-      setFMessage({ message: actionData.error, color: "red" });
+      setMessage(actionData.error);
     }
   }, [actionData]);
 
   return (
     <RootLayout
-      route="login"
-      color="black"
-      right={{ message: "Don't have an account yet? " }}
-      rLink={{
-        src: "/signup",
-        message: "Signup",
-      }}
-      left={fMessage}
     >
-      <div className="bg-bg3 flex justify-center w-full h-full ">
-        <Form
-          className=" bg-bg4 px-12 pt-7 pb-4 rounded-xs shadow-xs shadow-fg4 flex flex-col gap-4 text-fg1 m-auto "
-          method="post"
-          action=""
+      <div className="bg-fg1 flex flex-col items-center w-full h-full ">
+        <ColorCard>
+          <Form
+            className="flex flex-col justify-center gap-5 rounded-xs border-[1px] border-fg0 p-2"
+            method="post"
+            action=""
+          >
+            <header
+              className="w-full flex items-center justify-center 
+            p-5 pb-1"
+            >
+              <LogoRandom className="min-w-[150px] text-black!" />
+            </header>
+            <FieldGroup
+              className="w-full flex flex-col items-center
+             *:px-[10%]"
+            >
+              <Field
+                orientation="horizontal"
+                className="">
+                <FieldLabel
+                  htmlFor="username">
+                  Username:</FieldLabel>
+                <Input
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder="@your_username"
+                  required
+                />
+              </Field>
+
+              <Field
+                orientation="horizontal"
+                className="">
+                <FieldLabel
+                  htmlFor="password">
+                  Password:</FieldLabel>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="*********"
+                  required
+                />
+              </Field>
+            </FieldGroup>
+            <div className="flex flex-col gap-4 w-full items-center self-center p-3 min-h-[50px]">
+              <Button
+                type="submit"
+                className="text-fg0! text-[0.8em]!"
+              >Sign in</Button>
+              <p
+                className="text-xs text-fg1 flex"
+              >Don't have an account yet?
+                <Link
+                  to="/signup"
+                  className="block pl-2 font-bold
+                  underline decoration-[0.12em] 
+                  hover:text-fg0  hover:font-black
+                  "
+                >Register</Link>
+
+              </p>
+            </div>
+          </Form>
+        </ColorCard>
+        <footer
+          className="flex items-end"
         >
-          <Logo />
-          <FieldGroup className="w-full m-auto ">
-            <Field orientation="horizontal" className="w-[90%] m-auto">
-              <FieldLabel htmlFor="username">Username</FieldLabel>
-              <Input
-                id="username"
-                name="username"
-                type="text"
-                placeholder="@your_username"
-                required
-              />
-            </Field>
+          <p className="text-sm pb-[15px]">Made by
+            <a
+              href="https://github.com/nimbusphagia"
+              target="_blank"
+              className=" pl-2 font-bold hover:text-bg2"
+            >Nimbusphagia</a>
 
-            <Field orientation="horizontal" className="w-[90%] m-auto">
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="*********"
-                required
-              />
-            </Field>
-            <Button type="submit" className="self-end px-7 mt-2">Login</Button>
-          </FieldGroup>
-        </Form>
+          </p>
 
+        </footer>
       </div>
 
     </RootLayout >

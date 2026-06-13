@@ -1,12 +1,10 @@
-import { SquarePlus, Package, MessagesSquare } from "lucide-react"
-import { AvatarImage } from "@/components/ui/avatar";
-import { Avatar } from "@/components/ui/avatar";
+import { SquarePlus, Package, MessagesSquare, SquareUserRound } from "lucide-react"
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
 import { ChatList } from "@/components/ChatList";
 import type { UuidType } from "@/lib/schemas/util.schema";
-import { LogoVar2 } from "@/components/ui/logo3";
 import { useState } from "react";
+import { LogoRandom } from "@/components/LogoRandom";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -20,19 +18,19 @@ export function Sidebar({ data, loadUsers, openChat, openGroup }: SidebarProps) 
 
   return (
     <aside className="flex flex-col bg-fg4/80 text-bg1 font-semibold overflow-y-scroll overflow-x-hidden border-r-2 border-bg4">
-      <header className="h-[12%] bg-fg2/90 p-3 grid grid-cols-[10%_1fr_auto] text-center items-center *:flex *:items-center">
-        <Avatar size="lg">
-          <AvatarImage
-            src={user.imgUrl}
-          />
-        </Avatar>
+      <header className="h-[12%] bg-fg2/90 p-3 grid grid-cols-[1fr_auto] text-center items-center *:flex *:items-center">
+
         <div className="self-center justify-center">
-          <LogoVar2 className="text-[0.255rem] text-bg1" />
+          <LogoRandom className="text-[0.4rem]! text-bg1!" />
         </div>
-        <div className="justify-around gap-0.5">
-          <Button type="button" className="px-1.5" onClick={loadUsers}>
-            <SquarePlus strokeWidth={2} className="text-bg1 size-[1.5em]" />
+        <div className="justify-around gap-1.5">
+          <Button
+            type="button"
+            className=""
+            onClick={() => null}>
+            <SquareUserRound strokeWidth={2} className="text-bg1 size-fit" />
           </Button>
+
           <Button
             className="px-1.5"
             onClick={() => setShowArchive(!showArchive)}
@@ -52,7 +50,18 @@ export function Sidebar({ data, loadUsers, openChat, openGroup }: SidebarProps) 
           focus:bg-fg4/70 focus:placeholder:text-bg2 focus:text-bg1"
         />
       </div>
-      <main className="flex-1 flex flex-col text-center max-w-full max-h-full overflow-scroll">
+      <main className=" relative flex-1 flex flex-col text-center max-w-full max-h-full overflow-scroll">
+        <Button
+          type="button"
+          className="absolute bottom-3 right-3 h-fit p-1.5 rounded-sm bg-fg2/80 shadow-lg
+hover:bg-fg2
+          "
+          onClick={loadUsers}>
+          <SquarePlus
+            strokeWidth={2}
+            className="text-bg0 size-[1.5em]" />
+        </Button>
+
         {chats.length === 0 ?
           <div className="h-full flex flex-col items-center justify-center">
             <p className="text-sm text-bg1">No mail exchanged yet</p>
