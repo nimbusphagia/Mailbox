@@ -21,9 +21,12 @@ export function useHomeNavigation(
   loaderData: HomeLoaderReturn,
   { onError, onMessage }: NavigationCallbacks,
 ) {
+  const [userInfo, setUserInfo] = useState<SafeUser | null>(loaderData.user);
   const [activeChat, setActiveChat] = useState<ChatRes | GroupRes | null>(null);
   const [activeContact, setActiveContact] = useState<ContactType | null>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [showUserInfo, setShowUserInfo] = useState(false);
+  const emptyMain = !activeChat && !showUserInfo && !showInfo;
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState<ModalData>({
     contacts: [],
@@ -34,13 +37,27 @@ export function useHomeNavigation(
   const closeModal = () => setShowModal(false);
   const closeInfo = () => setShowInfo(false);
 
+  const clearMain = () => {
+    setActiveChat(null);
+    setActiveContact(null);
+    setShowInfo(false);
+    setShowUserInfo(false);
+    closeModal();
+  };
+
   const fetcher = useHomeFetcher({
-    onChatOpened: (chat) => setActiveChat(chat),
-    onChatCreated: (chat) => {
+    onChatOpened: (chat) => {
+      clearMain();
       setActiveChat(chat);
-      closeModal();
     },
-    onContactOpened: (contact) => setActiveContact(contact),
+    onChatCreated: (chat) => {
+      clearMain();
+      setActiveChat(chat);
+    },
+    onContactOpened: (contact) => {
+      setShowInfo(true);
+      setActiveContact(contact);
+    },
     onRefreshUsers: (contacts, users) => {
       const contactUserIds = new Set(
         contacts.map((c) => c.user?.id || c.isBlocked),
@@ -51,42 +68,46 @@ export function useHomeNavigation(
       setModalData({ contacts, users: filtered });
       openModal();
     },
+    onProfileOpened: (user) => {
+      clearMain();
+      setShowUserInfo(true);
+      setUserInfo(user);
+    },
     onError,
     onMessage,
   });
-
   const actions = useHomeActions(fetcher);
+
+  const showProfile = () => {
+    actions.getMe();
+  };
 
   const openChat = (id: UuidType) => {
     actions.openChat(id);
-    setActiveContact(null);
-    setShowInfo(false);
   };
 
   const openGroup = (id: UuidType) => {
     actions.openGroup(id);
-    setActiveContact(null);
-    setShowInfo(false);
   };
 
   const closeChat = () => {
     setActiveChat(null);
-    setShowInfo(false);
   };
 
   const openContact = (id: UuidType) => {
     actions.getContact(id);
-    setShowInfo(true);
   };
 
   const closeContact = (chatId: UuidType) => {
     actions.openChat(chatId);
-    setActiveContact(null);
   };
 
   return {
+    showProfile,
     activeChat,
     activeContact,
+    userInfo,
+    showUserInfo,
     showInfo,
     setShowInfo,
     closeInfo,
@@ -100,5 +121,7 @@ export function useHomeNavigation(
     closeContact,
     openModal,
     closeModal,
+    emptyMain,
+    isLoading: fetcher.state !== "idle" && !emptyMain,
   };
 }

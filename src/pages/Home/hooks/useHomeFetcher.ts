@@ -14,6 +14,7 @@ interface UseHomeFetcherProps {
   onChatOpened: (chat: ChatRes | GroupRes) => void;
   onChatCreated: (chat: ChatRes) => void;
   onContactOpened: (contact: ContactType) => void;
+  onProfileOpened: (user: SafeUser) => void;
 }
 
 export function useHomeFetcher({
@@ -23,6 +24,7 @@ export function useHomeFetcher({
   onChatOpened,
   onChatCreated,
   onContactOpened,
+  onProfileOpened,
 }: UseHomeFetcherProps) {
   const fetcher = useFetcher<ActionReturn | ErrorMessage>();
 
@@ -37,6 +39,10 @@ export function useHomeFetcher({
     }
 
     const handlers: Partial<Record<ActionReturn["intent"], () => void>> = {
+      getMe: () => {
+        const d = data as Extract<ActionReturn, { intent: "getMe" }>;
+        onProfileOpened(d.data.user);
+      },
       getUsers: () => {
         const d = data as Extract<ActionReturn, { intent: "getUsers" }>;
         onRefreshUsers(d.data.contacts, d.data.users);

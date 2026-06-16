@@ -1,5 +1,6 @@
-import { Avatar } from "./ui/avatar"
-import { AvatarImage } from "./ui/avatar"
+import {
+  Avatar, AvatarImage
+} from "@/components/ui/avatar";
 import { timeAgo } from "@/lib/utils";
 import type { ChatEntry } from "@/lib/schemas/util.schema";
 

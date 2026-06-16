@@ -1,34 +1,13 @@
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, Link, useActionData, useSearchParams } from "react-router-dom";
-import { type ErrorMessage } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { Form, Link } from "react-router-dom";
 import { LogoRandom } from "@/components/LogoRandom";
 import { ColorCard } from "@/components/ColorCard";
 import { Signature } from "@/components/Signature";
 import { MainLayout } from "@/layouts/MainLayout";
 
 export function LoginPage() {
-  const actionData = useActionData() as ErrorMessage | undefined;
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [message, setMessage] = useState<string | undefined>(() => {
-    return searchParams.get('registered')
-      ? "User registered successfully."
-      : undefined;
-  });
-
-  useEffect(() => {
-    if (searchParams.get('registered')) {
-      setSearchParams({});
-    }
-  }, []);
-
-  useEffect(() => {
-    if (actionData?.error) {
-      setMessage(actionData.error);
-    }
-  }, [actionData]);
 
   return (
     <MainLayout

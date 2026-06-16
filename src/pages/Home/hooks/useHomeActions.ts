@@ -27,6 +27,7 @@ export function useHomeActions(
   };
 
   return {
+    getMe: () => submit({ intent: "getMe" }),
     loadUsers: () => submit({ intent: "getUsers" }),
     addContact: (userId: UuidType) => submit({ intent: "addContact", userId }),
     createChat: (contactId: UuidType) =>

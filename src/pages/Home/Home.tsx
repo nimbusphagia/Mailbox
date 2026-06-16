@@ -31,10 +31,13 @@ export function Home() {
         loadUsers={() => nav.actions.loadUsers()}
         openChat={nav.openChat}
         openGroup={nav.openGroup}
+        openProfile={nav.showProfile}
         toggleSidebar={() => setShowSB((prev) => !prev)}
         isHidden={!showSB}
       />
       <MainContent
+        user={nav.userInfo}
+        showProfile={nav.showUserInfo}
         chat={nav.activeChat ?? undefined}
         contact={nav.activeContact}
         showInfo={nav.showInfo}
@@ -43,6 +46,8 @@ export function Home() {
         closeChat={nav.closeChat}
         closeInfo={nav.closeInfo}
         editNickname={nav.actions.editNickname}
+        isLoading={nav.isLoading}
+        isEmpty={nav.emptyMain}
       />
       {nav.showModal && (
         <ChatPrompt

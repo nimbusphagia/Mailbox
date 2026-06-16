@@ -4,6 +4,7 @@ import { MessageCreateSchema } from "./message.schema";
 import { GroupReqSchema } from "./group.schema";
 
 export const HOME_INTENTS = [
+  "getMe",
   "getUsers",
   "getContacts",
   "createChat",

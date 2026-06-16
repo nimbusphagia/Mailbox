@@ -14,6 +14,7 @@ import type { ActionFunctionArgs } from "react-router-dom";
 import type { GroupRes } from "@/lib/schemas/group.schema";
 
 export type ActionReturn =
+  | { intent: "getMe"; data: { user: SafeUser } }
   | { intent: "getContacts"; data: ContactType[] }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatRes } }
@@ -36,6 +37,13 @@ export async function HomeAction({
   const { intent } = result;
   try {
     switch (intent) {
+      case "getMe": {
+        const response = await api.get<SafeUser>(`api/user/me`);
+        return {
+          intent,
+          data: { user: response.data },
+        };
+      }
       case "getContacts": {
         const response: AxiosResponse<ContactType[]> =
           await api.get<ContactType[]>("api/user/contact");

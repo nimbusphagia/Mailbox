@@ -1,19 +1,20 @@
 import { SquarePlus, Package, MessagesSquare, MoveDiagonal2, UserCog } from "lucide-react"
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
-import { ChatList } from "@/components/ChatList";
+import { ChatList } from "./components/ChatList";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import { useState } from "react";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
   loadUsers: () => void,
+  openProfile: () => void,
   openChat: (chatId: UuidType) => void,
   openGroup: (chatId: UuidType) => void,
   toggleSidebar: () => void,
   isHidden: boolean,
 }
-export function Sidebar({ data, loadUsers, openChat, openGroup, toggleSidebar, isHidden }: SidebarProps) {
+export function Sidebar({ data, loadUsers, openChat, openGroup, openProfile, toggleSidebar, isHidden }: SidebarProps) {
   const { chats, groups, archived } = data;
   const [showArchive, setShowArchive] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, toggleSidebar, i
               <Package />
             </Button>
             <Button
-              onClick={() => null}>
+              onClick={openProfile}>
               <UserCog />
             </Button>
             <Button
