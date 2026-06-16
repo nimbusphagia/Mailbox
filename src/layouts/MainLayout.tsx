@@ -1,17 +1,15 @@
-import type { PropsWithChildren, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
 type MainLayoutProps = {
-  aside: ReactNode,
-  main: ReactNode,
-  className: string,
+  className?: string,
 }
 
-export function MainLayout({ aside, main, children, className }: PropsWithChildren<MainLayoutProps>) {
+export function MainLayout({ children, className }: PropsWithChildren<MainLayoutProps>) {
   return (
-    <div className={`bg-fg1 relative overflow-hidden ${className}`}>
-      {aside}
-      {main}
-      {children}
+    <div className="w-screen h-screen grid grid-rows-[1fr] overflow-hidden">
+      <div className={`bg-fg1 relative overflow-hidden ${className}`}>
+        {children}
+      </div>
     </div>
   );
 }

@@ -45,7 +45,14 @@ function MessageActions({ isPrimary, onReply, onMore }: {
   const reply = <Reply className={`${iconBase} ${color}`} onClick={onReply} />
   const more = <Ellipsis className={`${iconBase} ${color}`} onClick={onMore} />
 
-  return isPrimary ? <>{more}{reply}</> : <>{reply}{more}</>
+  return (
+    <div className={`flex gap-2`}>
+      {
+        isPrimary ?
+          <>{more}{reply}</>
+          : <>{reply}{more}</>
+      }
+    </div>)
 }
 
 function MessageBody({ message, isPrimary }: { message: Message; isPrimary: boolean }) {
@@ -73,8 +80,6 @@ export function MessageComponent({ message, primary, secondary, reference, reply
   const detailsHidden = "max-h-0 opacity-0 py-0"
   const bubbleBase = "w-fit max-w-[62%] py-1 px-4 pb-2 rounded-md bg-fg2/30 shadow-xs border-[1px] border-fg3 text-sm flex flex-col gap-1 font-medium cursor-pointer hover:bg-fg2/40 hover:border-bg3/50"
 
-
-
   const senderName = isPrimary
     ? primary.name
     : secondary?.nickname ?? secondary?.name ?? "Unknown User"
@@ -100,7 +105,7 @@ export function MessageComponent({ message, primary, secondary, reference, reply
         onMouseEnter={() => setShowMore(true)}
         onMouseLeave={() => setShowMore(false)}
       >
-        {showMore && (
+        {showMore && isPrimary && (
           <MessageActions
             isPrimary={isPrimary}
             onReply={() => replyFn(message, senderName)}
@@ -118,6 +123,14 @@ export function MessageComponent({ message, primary, secondary, reference, reply
           {message.replyTo && <ReplyPreview replyTo={message.replyTo} />}
           <MessageBody message={message} isPrimary={isPrimary} />
         </div>
+        {showMore && !isPrimary && (
+          <MessageActions
+            isPrimary={isPrimary}
+            onReply={() => replyFn(message, senderName)}
+            onMore={() => null}
+          />
+        )}
+
       </div>
 
       <div

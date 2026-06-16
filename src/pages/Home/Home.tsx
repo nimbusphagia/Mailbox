@@ -1,5 +1,4 @@
 import { MainLayout } from "@/layouts/MainLayout"
-import { RootLayout } from "@/layouts/RootLayout"
 import { Sidebar } from "../Sidebar/Sidebar"
 import { ChatPrompt } from "../ChatPrompt/ChatPrompt"
 import { MainContent } from "../Main/MainContent"
@@ -25,43 +24,36 @@ export function Home() {
   })
 
   return (
-    <RootLayout>
-      <MainLayout
-        className={showSB ? "grid grid-cols-[25vw_1fr]" : "grid grid-cols-[auto_1fr]"}
-        aside={
-          <Sidebar
-            data={loaderData}
-            loadUsers={() => nav.actions.loadUsers()}
-            openChat={nav.openChat}
-            openGroup={nav.openGroup}
-            toggleSidebar={() => setShowSB((prev) => !prev)}
-            isHidden={!showSB}
-          />
-        }
-        main={
-          <MainContent
-            chat={nav.activeChat ?? undefined}
-            contact={nav.activeContact}
-            showInfo={nav.showInfo}
-            onShowInfo={() => nav.setShowInfo(true)}
-            actions={nav.actions}
-            closeChat={nav.closeChat}
-            closeInfo={nav.closeInfo}
-            editNickname={nav.actions.editNickname}
-          />
-        }
-      >
-        {nav.showModal && (
-          <ChatPrompt
-            hideFn={nav.closeModal}
-            contacts={nav.modalData.contacts}
-            users={nav.modalData.users}
-            addContactFn={nav.actions.addContact}
-            createChatFn={nav.actions.createChat}
-            createGroupFn={nav.actions.createGroup}
-          />
-        )}
-      </MainLayout>
-    </RootLayout>
+    <MainLayout
+      className={showSB ? "grid grid-cols-[25vw_1fr]" : "grid grid-cols-[auto_1fr]"}>
+      <Sidebar
+        data={loaderData}
+        loadUsers={() => nav.actions.loadUsers()}
+        openChat={nav.openChat}
+        openGroup={nav.openGroup}
+        toggleSidebar={() => setShowSB((prev) => !prev)}
+        isHidden={!showSB}
+      />
+      <MainContent
+        chat={nav.activeChat ?? undefined}
+        contact={nav.activeContact}
+        showInfo={nav.showInfo}
+        onShowInfo={() => nav.setShowInfo(true)}
+        actions={nav.actions}
+        closeChat={nav.closeChat}
+        closeInfo={nav.closeInfo}
+        editNickname={nav.actions.editNickname}
+      />
+      {nav.showModal && (
+        <ChatPrompt
+          hideFn={nav.closeModal}
+          contacts={nav.modalData.contacts}
+          users={nav.modalData.users}
+          addContactFn={nav.actions.addContact}
+          createChatFn={nav.actions.createChat}
+          createGroupFn={nav.actions.createGroup}
+        />
+      )}
+    </MainLayout>
   )
 }

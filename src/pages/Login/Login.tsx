@@ -2,12 +2,12 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, Link, useActionData, useSearchParams } from "react-router-dom";
-import { RootLayout } from "@/layouts/RootLayout";
 import { type ErrorMessage } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { LogoRandom } from "@/components/LogoRandom";
 import { ColorCard } from "@/components/ColorCard";
 import { Signature } from "@/components/Signature";
+import { MainLayout } from "@/layouts/MainLayout";
 
 export function LoginPage() {
   const actionData = useActionData() as ErrorMessage | undefined;
@@ -31,7 +31,7 @@ export function LoginPage() {
   }, [actionData]);
 
   return (
-    <RootLayout
+    <MainLayout
     >
       <div className="bg-fg1 flex flex-col items-center w-full h-full ">
         <ColorCard>
@@ -107,6 +107,6 @@ export function LoginPage() {
         </footer>
       </div>
 
-    </RootLayout >
+    </MainLayout >
   )
 }

@@ -3,10 +3,11 @@ import { useFiglet } from "@/pages/Hooks/useFiglet";
 import { useEffect, useMemo, useRef } from "react";
 
 type Props = {
+  minSize?: string,
   className?: string,
 }
-export function LogoRandom({ className }: Props) {
-  const styles = ["Chiseled", "DiamFont", "Flower Power", "Patorjk's Cheese", "Lil Devil", "Patorjk-HeX", "Shaded Blocky", "Slant Relief", "Small Isometric1", "Sweet", "Sub-Zero", "Train", "Varsity", "Wet Letter", "ANSI Shadow", "Bloody", "Delta Corps Priest 1", "Elite", "Stronger Than All", "Rebel", "Bolger", "Caligraphy2", "Alpha"]
+export function LogoRandom({ minSize, className }: Props) {
+  const styles = ["Chiseled", "DiamFont", "Flower Power", "Patorjk's Cheese", "Lil Devil", "Shaded Blocky", "Slant Relief", "Small Isometric1", "Sweet", "Sub-Zero", "Train", "Varsity", "Wet Letter", "ANSI Shadow", "Bloody", "Delta Corps Priest 1", "Elite", "Stronger Than All", "Rebel", "Bolger", "Caligraphy2", "Alpha"]
   const random = useMemo(() => randomFromRange(0, styles.length - 1), [])
   const { ascii, loading } = useFiglet("MailBox", { font: styles[random] })
   const containerRef = useRef<HTMLDivElement>(null)
@@ -18,7 +19,7 @@ export function LogoRandom({ className }: Props) {
     const pre = preRef.current
 
     const fit = () => {
-      pre.style.fontSize = "10px"
+      pre.style.fontSize = minSize ?? "9px";
       const scaleX = container.clientWidth / pre.scrollWidth
       const scaleY = container.clientHeight / pre.scrollHeight
       const scale = Math.min(scaleX, scaleY, 1)

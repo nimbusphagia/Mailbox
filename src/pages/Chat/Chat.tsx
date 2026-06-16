@@ -37,12 +37,21 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
 
   useEffect(() => {
     setReplying(null)
-    const frame = requestAnimationFrame(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-      }
+
+    const el = scrollRef.current
+    if (!el) return
+
+    const observer = new ResizeObserver(() => {
+      el.scrollTop = el.scrollHeight
     })
-    return () => cancelAnimationFrame(frame)
+    observer.observe(el)
+
+    const timeout = setTimeout(() => observer.disconnect(), 300)
+
+    return () => {
+      observer.disconnect()
+      clearTimeout(timeout)
+    }
   }, [chat.messages])
 
   const handleShowInfo = () => {

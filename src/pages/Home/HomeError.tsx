@@ -1,5 +1,5 @@
 import { ErrorComponent } from "@/components/Error";
-import { RootLayout } from "@/layouts/RootLayout";
+import { MainLayout } from "@/layouts/MainLayout";
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
 
 export function HomeError() {
@@ -16,8 +16,8 @@ export function HomeError() {
   }
 
   return (
-    <RootLayout >
+    <MainLayout >
       <ErrorComponent status={status} message={message} />
-    </RootLayout>
+    </MainLayout>
   );
 }
