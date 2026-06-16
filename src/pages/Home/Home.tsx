@@ -38,6 +38,7 @@ export function Home() {
       <MainContent
         user={nav.userInfo}
         showProfile={nav.showUserInfo}
+        hideProfile={nav.hideProfile}
         chat={nav.activeChat ?? undefined}
         contact={nav.activeContact}
         showInfo={nav.showInfo}

@@ -15,6 +15,7 @@ export const HOME_INTENTS = [
   "getContact",
   "createMessage",
   "editNickname",
+  "logout",
 ] as const;
 
 export const ActionSchema = z.object({

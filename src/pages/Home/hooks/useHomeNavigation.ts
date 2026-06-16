@@ -81,7 +81,10 @@ export function useHomeNavigation(
   const showProfile = () => {
     actions.getMe();
   };
-
+  const hideProfile = () => {
+    setShowUserInfo(false);
+    setUserInfo(null);
+  };
   const openChat = (id: UuidType) => {
     actions.openChat(id);
   };
@@ -104,6 +107,7 @@ export function useHomeNavigation(
 
   return {
     showProfile,
+    hideProfile,
     activeChat,
     activeContact,
     userInfo,

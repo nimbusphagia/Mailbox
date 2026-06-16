@@ -20,6 +20,7 @@ type Props = {
   actions: homeActionsReturn,
   showInfo: boolean,
   showProfile: boolean,
+  hideProfile: () => void,
   onShowInfo: () => void,
   closeInfo: () => void,
   closeChat: () => void,
@@ -32,19 +33,17 @@ export function MainContent({
   actions,
   user,
   showProfile,
+  hideProfile,
   showInfo,
   onShowInfo,
   closeInfo,
   closeChat,
   editNickname,
-  isLoading,
+  //isLoading,
   isEmpty
 }: Props) {
-  if (isLoading) return (
-    <h1>LOADING</h1>
-  )
   if (isEmpty) return (
-    <div className="w-full h-full flex items-center justify-center py-5 pl-2 pr-5">
+    <div className="w-full h-full flex items-center justify-center pt-5 p-4 pl-2">
       <div className="relative border-[1px] border-bg3 rounded-sm flex flex-col items-center justify-center size-full">
         <LogoRandom className="text-[0.8em]! text-bg3! font-black!" />
         <div className="absolute bottom-0">
@@ -56,6 +55,8 @@ export function MainContent({
   if (user && showProfile) return (
     <ProfilePage
       user={user}
+      closeFn={hideProfile}
+      handleLogout={actions.logout}
     />
   )
   if (chat) {

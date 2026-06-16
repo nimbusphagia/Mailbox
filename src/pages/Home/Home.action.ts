@@ -10,7 +10,7 @@ import {
   type ErrorMessage,
 } from "@/lib/utils";
 import type { AxiosResponse } from "axios";
-import type { ActionFunctionArgs } from "react-router-dom";
+import { redirect, type ActionFunctionArgs } from "react-router-dom";
 import type { GroupRes } from "@/lib/schemas/group.schema";
 
 export type ActionReturn =
@@ -31,7 +31,7 @@ export type ActionReturn =
 
 export async function HomeAction({
   request,
-}: ActionFunctionArgs): Promise<ActionReturn | ErrorMessage> {
+}: ActionFunctionArgs): Promise<ActionReturn | ErrorMessage | Response> {
   const result = await SafeParseRequest(ActionSchema, request);
   if ("error" in result) return result;
   const { intent } = result;
@@ -155,7 +155,10 @@ export async function HomeAction({
           data: { contact: response.data },
         };
       }
-
+      case "logout": {
+        await api.post("auth/logout");
+        return redirect("/login");
+      }
       default:
         return { error: "Invalid intent" };
     }

@@ -41,6 +41,7 @@ export function useHomeActions(
       submit({ intent: "createMessage", image, message }),
     editNickname: (userId: UuidType, nickname: string | null) =>
       submit({ intent: "editNickname", userId, nickname }),
+    logout: () => submit({ intent: "logout" }),
   };
 }
 

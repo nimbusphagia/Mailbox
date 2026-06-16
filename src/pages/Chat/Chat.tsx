@@ -61,14 +61,19 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
 
   return (
     <main className="relative box-border flex-1 min-h-0 size-full grid grid-rows-[8%_1fr_auto] text-bg1 py-2">
-      <div className="flex items-center px-3 gap-3 *:bg-fg2 *:rounded-sm *:px-2 *:py-1 *:border-[0.01em] *:border-fg3 *:text-bg1">
-        <Button onClick={closeChat} className="size-[2em] rounded-[100%]!">
+      <div className="flex items-center px-2 gap-2 *:bg-fg2 *:rounded-sm
+      *:px-2 *:py-1 *:border-[0.01em] *:border-fg3 *:text-bg1">
+        <Button
+          onClick={closeChat}
+          className="size-[1.8em] rounded-[100%]!">
           <ArrowLeft />
         </Button>
         <UserThumbnail
           imgUrl={groupChat ? groupChat.imgUrl : directChat!.secondaryMember?.imgUrl}
           fullName={groupChat ? groupChat.name : (directChat!.secondaryMember.nickname ?? directChat!.secondaryMember.name)}
-          className="text-bg0! gap-5!"
+          className="gap-2!"
+          textClassName="text-bg0! text-sm"
+          avatarClassname="size-[1.8em] "
           showFn={handleShowInfo}
         />
       </div>

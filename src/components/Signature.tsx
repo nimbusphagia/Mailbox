@@ -1,7 +1,7 @@
 
 export function Signature() {
   return (
-    <p className="text-sm pb-[15px]">Made by
+    <p className="text-xs pb-[15px]">Made by
       <a
         href="https://github.com/nimbusphagia"
         target="_blank"
