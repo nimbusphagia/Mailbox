@@ -41,7 +41,8 @@ export function ProfilePage({ user, closeFn, handleLogout }: Props) {
         </div>
       </header>
       <div
-        className="relative border-1 border-fg4 h-full pt-0 p-5  flex flex-col items-center justify-around"
+        className="relative border-1 border-fg4 h-full pt-0 p-5
+        bg-fg2/30 flex flex-col items-center justify-around"
       >
         <div className="flex flex-col items-center -mb-18">
           <Avatar
@@ -54,7 +55,7 @@ export function ProfilePage({ user, closeFn, handleLogout }: Props) {
         </div>
         <FieldGroup
           className="w-[60%] mx-auto flex flex-col items-center  
-          *:px-[10%] [&_*]:text-bg2!"
+          *:px-[10%] [&_*]:text-bg1/80!"
         >
           <Field orientation="horizontal">
             <FieldLabel htmlFor="name">Name</FieldLabel>
