@@ -3,7 +3,7 @@ import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { Button } from "@/components/ui/button";
 import { ChatList } from "./components/ChatList";
 import type { UuidType } from "@/lib/schemas/util.schema";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -16,8 +16,31 @@ type SidebarProps = {
 }
 export function Sidebar({ data, loadUsers, openChat, openGroup, openProfile, toggleSidebar, isHidden }: SidebarProps) {
   const { chats, groups, archived } = data;
+  const [query, setQuery] = useState<string>("");
   const [showArchive, setShowArchive] = useState<boolean>(false);
 
+  const filteredChats = useMemo(() => {
+    const search = query.trim().toLowerCase();
+
+    if (!search) {
+      return {
+        chats: showArchive ? archived.chats : chats,
+        groups: showArchive ? archived.groups : groups,
+      };
+    }
+
+    return {
+      chats: (showArchive ? archived.chats : chats).filter(chat =>
+        (chat.otherMember.nickname ?? chat.otherMember.username)
+          .toLowerCase()
+          .includes(search)
+      ),
+
+      groups: (showArchive ? archived.groups : groups).filter(group =>
+        group.name.toLowerCase().includes(search)
+      ),
+    };
+  }, [query, showArchive, chats, groups, archived]);
   return (
     <>
       {isHidden ?
@@ -61,6 +84,8 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, openProfile, tog
           <div className="flex items-center justify-center">
             <input
               placeholder="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               className="bg-fg2 py-1.5 px-3 text-bg1 text-xs font-normal 
               w-full outline-none border-fg4 border-[1px] focus:bg-fg4/70 
               focus:placeholder:text-bg1 focus:text-bg1 rounded-sm"
@@ -70,12 +95,11 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, openProfile, tog
           bg-fg2 border-fg4 border-[1px] py-1 px-0.5
           [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <ChatList
-              chats={showArchive ? archived.chats : chats}
-              groups={showArchive ? archived.groups : groups}
+              chats={filteredChats.chats}
+              groups={filteredChats.groups}
               showChat={openChat}
               showGroup={openGroup}
-            />
-          </main>
+            />          </main>
         </aside >
       }
     </>

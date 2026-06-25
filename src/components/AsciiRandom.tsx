@@ -4,12 +4,14 @@ import { useEffect, useMemo, useRef } from "react";
 
 type Props = {
   text: string,
-  minSize?: string,
   className?: string,
+  containerCN?: string,
 }
-export function AsciiRandom({ text, minSize, className }: Props) {
+export function AsciiRandom({ text, className, containerCN }: Props) {
   const styles = ["Chiseled", "DiamFont", "Flower Power", "Patorjk's Cheese", "Lil Devil", "Shaded Blocky", "Slant Relief", "Small Isometric1", "Sweet", "Sub-Zero", "Train", "Varsity", "Wet Letter", "ANSI Shadow", "Bloody", "Delta Corps Priest 1", "Elite", "Stronger Than All", "Rebel", "Bolger", "Caligraphy2", "Alpha"]
   const random = useMemo(() => randomFromRange(0, styles.length - 1), [])
+
+
   const { ascii, loading } = useFiglet(text, { font: styles[random] })
   const containerRef = useRef<HTMLDivElement>(null)
   const preRef = useRef<HTMLPreElement>(null)
@@ -20,11 +22,11 @@ export function AsciiRandom({ text, minSize, className }: Props) {
     const pre = preRef.current
 
     const fit = () => {
-      pre.style.fontSize = minSize ?? "9px";
+      pre.style.fontSize = "100px";
       const scaleX = container.clientWidth / pre.scrollWidth
       const scaleY = container.clientHeight / pre.scrollHeight
       const scale = Math.min(scaleX, scaleY, 1)
-      pre.style.fontSize = `${10 * scale}px`
+      pre.style.fontSize = `${100 * scale}px`
     }
 
     fit()
@@ -34,7 +36,7 @@ export function AsciiRandom({ text, minSize, className }: Props) {
   }, [loading, ascii])
 
   return (
-    <div ref={containerRef} className="w-full h-full flex items-center justify-center overflow-hidden">
+    <div ref={containerRef} className={`w-full h-full flex items-center justify-center overflow-hidden ${containerCN}`}>
       <pre
         ref={preRef}
         className={`select-none text-[10px] text-fg0 font-black leading-none ${className}`}

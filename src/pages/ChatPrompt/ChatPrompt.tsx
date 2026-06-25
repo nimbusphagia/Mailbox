@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { ContactType } from "@/lib/schemas/contact.schema";
@@ -21,6 +21,7 @@ type Props = {
   createGroupFn: (group: GroupReq, image?: ValidImage) => void
 }
 export function ChatPrompt({ hideFn, contacts, users, addContactFn, createChatFn, createGroupFn }: Props) {
+  const [query, setQuery] = useState<string>("");
   const [filter, setFilter] = useState<"contacts" | "users">("contacts");
   const [selected, setSelected] = useState<UuidType[]>([]);
   const [showGF, setShowGF] = useState<boolean>(false);
@@ -72,7 +73,27 @@ export function ChatPrompt({ hideFn, contacts, users, addContactFn, createChatFn
     hideFn();
   }
 
+  const filteredContacts = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return contacts;
 
+    return contacts.filter(c =>
+      (c.nickname ?? c.user?.name ?? "")
+        .toLowerCase()
+        .includes(q)
+    );
+  }, [contacts, query]);
+
+  const filteredUsers = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return users;
+
+    return users.filter(u =>
+      (u.name ?? "")
+        .toLowerCase()
+        .includes(q)
+    );
+  }, [users, query]);
   return (
     <Modal>
       <div className="translate-x-1/4 z-10">
@@ -173,18 +194,20 @@ export function ChatPrompt({ hideFn, contacts, users, addContactFn, createChatFn
                 >Find</ToggleGroupItem>
               </ToggleGroup>
               <Input
-                placeholder=":search"
+                placeholder="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 className="border-2 border-fg1 text-left text-md bg-bg2/95 rounded-sm text-fg1 placeholder:text-fg1/70 focus:bg-bg2"
               />
 
               {filter === "contacts" ?
                 <ContactList
-                  contacts={contacts}
+                  contacts={filteredContacts}
                   selectFn={selectContact}
                 />
                 :
                 <UsersList
-                  users={users}
+                  users={filteredUsers}
                   addFn={addContactFn}
                 />
               }

@@ -3,7 +3,7 @@ import type { SafeUser, ChatUser } from "@/lib/schemas/user.schema"
 import { NameTag } from "@/components/ui/NameTag"
 import { useRef, useState, type RefObject } from "react"
 import { formatDate } from "@/lib/utils"
-import { Ellipsis, Reply } from "lucide-react"
+import { Reply } from "lucide-react"
 
 type Props = {
   message: Message
@@ -34,23 +34,26 @@ function ReplyPreview({ replyTo }: { replyTo: NonNullable<Message["replyTo"]> })
   )
 }
 
-function MessageActions({ isPrimary, onReply, onMore }: {
+function MessageActions({ isPrimary, onReply, /*onMore*/ }: {
   isPrimary: boolean
   onReply: () => void
-  onMore: () => void
+  //onMore: () => void
 }) {
   const iconBase = "cursor-pointer self-center size-[1.1em]"
   const color = isPrimary ? "text-bg3 hover:text-bg1" : "text-bg3/90 hover:text-bg2"
 
   const reply = <Reply className={`${iconBase} ${color}`} onClick={onReply} />
-  const more = <Ellipsis className={`${iconBase} ${color}`} onClick={onMore} />
+  //const more = <Ellipsis className={`${iconBase} ${color}`} onClick={onMore} />
 
   return (
     <div className={`flex gap-2`}>
       {
+        reply
+        /*
         isPrimary ?
           <>{more}{reply}</>
           : <>{reply}{more}</>
+          */
       }
     </div>)
 }
@@ -109,7 +112,7 @@ export function MessageComponent({ message, primary, secondary, reference, reply
           <MessageActions
             isPrimary={isPrimary}
             onReply={() => replyFn(message, senderName)}
-            onMore={() => null}
+          //onMore={() => null}
           />
         )}
         <div
@@ -127,7 +130,7 @@ export function MessageComponent({ message, primary, secondary, reference, reply
           <MessageActions
             isPrimary={isPrimary}
             onReply={() => replyFn(message, senderName)}
-            onMore={() => null}
+          //onMore={() => null}
           />
         )}
 

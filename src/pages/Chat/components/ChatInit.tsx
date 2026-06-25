@@ -1,6 +1,6 @@
+import { AsciiRandom } from "@/components/AsciiRandom"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { formatDate, trimSentence } from "@/lib/utils"
-import { useFiglet } from "@/pages/Hooks/useFiglet"
+import { formatDate } from "@/lib/utils"
 
 type Props = {
   title: string,
@@ -8,21 +8,25 @@ type Props = {
   createdAt: Date
 }
 export function ChatInit({ title, imgUrl, createdAt }: Props) {
-  const { ascii, loading } = useFiglet(trimSentence(title, 2), { font: "BlurVision ASCII" })
   return (
-    <div
-      className="flex flex-col gap-5 items-center w-fit max-w-[100%] p-6 bg-fg0 rounded-sm m-auto my-6 shadow-md">
-      <Avatar className="size-fit">
-        <AvatarImage
-          src={imgUrl}
-          className="size-30 bg-fg1/50 border-fg0/10  shadow-lg"
+    <div className="flex flex-col gap-4 w-fit max-w-[80%] p-5 m-auto my-4">
+      <div
+        className="flex flex-col gap-4 items-center p-5 bg-fg1 
+      border-[1px] border-fg0 rounded-sm shadow-sm">
+        <Avatar className="size-fit">
+          <AvatarImage
+            src={imgUrl}
+            className="size-25 bg-fg1/50 border-fg0/10  shadow-lg"
+          />
+        </Avatar>
+        <AsciiRandom
+          text={title}
+          className="text-bg2!"
+          containerCN=" min-w-[250px] max-w-[500px] max-h-[50px]"
         />
-      </Avatar>
+      </div>
       <div className="text-center font-bold flex flex-col gap-1">
-        <pre className="select-none text-[0.25em] text-bg0 font-black leading-none">
-          {loading ? title : ascii}
-        </pre>
-        <p className="font-normal text-xs text-bg1/90">{"Created on " + formatDate(new Date(createdAt), "long")}</p>
+        <p className="font-semibold text-xs text-bg3">{"Created on " + formatDate(new Date(createdAt), "long")}</p>
       </div>
     </div>
   )
