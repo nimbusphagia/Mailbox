@@ -1,11 +1,11 @@
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { ChatList } from "./components/ChatList";
 import { useMemo, useState } from "react";
-import { ChatPrompt } from "../ChatPrompt/ChatPrompt";
+import { Contacts } from "../Contacts/Contacts";
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation";
 import { CollapsedSidebar } from "./components/CollapsedSidebar";
 import { SidebarHeader } from "./components/SidebarHeader";
-import { SidebarSearchInput } from "./components/SidebarSearchInput";
+import { SidebarMainLayout } from "@/layouts/SidebarMainLayout";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -44,16 +44,36 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
     };
   }, [query, showArchive, chats, groups, archived]);
 
+  const filteredUsers = useMemo(() => {
+    const search = query.trim().toLowerCase();
+    if (!search) {
+      return {
+        contacts: allUsers.contacts,
+        users: allUsers.users,
+      }
+    }
+    return {
+      contacts: allUsers.contacts.filter(contact =>
+        (contact.nickname ?? contact.user?.name)?.toLowerCase().includes(search)
+      ),
+      users: allUsers.users.filter((user =>
+        (user.name ?? user.username).toLowerCase().includes(search)
+      ))
+    }
+  }, [query, allUsers])
   const openContacts = () => {
     loadUsers();
+    setQuery("");
     setShowContacts(true);
   }
   const closeContacts = () => {
     unloadAllUsers();
+    setQuery("");
     setShowContacts(false)
   }
   const openChatList = (regular: boolean) => {
-    showContacts ? closeContacts() : setShowArchive(!regular)
+    if (showContacts) closeContacts();
+    setShowArchive(!regular)
   }
 
   return (
@@ -61,27 +81,25 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
       {isHidden ?
         <CollapsedSidebar toggleSidebar={toggleSidebar} />
         :
-        <aside className="flex flex-col  overflow-x-hidden m-2 *:rounded-sm *:m-2">
+        <aside className="flex flex-col m-2 overflow-hidden">
           <SidebarHeader
             toggleSidebar={toggleSidebar}
             showProfile={showProfile}
             openChatList={openChatList}
             openContacts={openContacts}
           />
-          <SidebarSearchInput query={query} onChange={setQuery} />
-          <main className="flex-1 flex flex-col text-center overflow-scroll 
-          bg-fg2 border-fg4 border-[1px] py-1 px-0.5
-          [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            {
+          <SidebarMainLayout
+            query={query}
+            onChange={setQuery}
+            children={
               showContacts ?
-                <ChatPrompt
-                  contacts={allUsers.contacts}
-                  users={allUsers.users}
+                <Contacts
+                  contacts={filteredUsers.contacts}
+                  users={filteredUsers.users}
                   addContactFn={addContact}
                   createChatFn={createChat}
                   createGroupFn={createGroup}
                 />
-
                 :
                 <ChatList
                   chats={filteredChats.chats}
@@ -90,7 +108,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
                   showGroup={openGroup}
                 />
             }
-          </main>
+          />
         </aside >
       }
     </>

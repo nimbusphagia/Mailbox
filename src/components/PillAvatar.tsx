@@ -11,12 +11,12 @@ type Props = {
 export function PillAvatar({ imgUrl, name, className, avatarClassname, titleClassname, children }: PropsWithChildren<Props>) {
   return (
     <div
-      className={`relative flex gap-2 items-center bg-transparent p-1.5 px-4.5 rounded-sm border-1 border-fg4 ${className}`}
+      className={`relative flex gap-2 items-center bg-transparent p-1 px-3 rounded-sm border-1 border-fg4 ${className}`}
     >
       <UserThumbnail
         imgUrl={imgUrl}
         fullName={name}
-        className={`text-bg1 text-xs ${titleClassname}`}
+        textClassName={`text-bg1 text-xs ${titleClassname}`}
         avatarClassname={avatarClassname}
       />
       {children}

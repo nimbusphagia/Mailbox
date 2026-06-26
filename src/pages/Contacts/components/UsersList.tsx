@@ -2,7 +2,7 @@ import { UserThumbnail } from "@/components/UserThumbnail"
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { Button } from "@/components/ui/button"
 import type { UuidType } from "@/lib/schemas/util.schema"
-import { ModalListLayout } from "@/layouts/ModalListLayout"
+import { ContactListLayout } from "@/layouts/ContactListLayout"
 
 type Props = {
   users: SafeUser[],
@@ -10,9 +10,9 @@ type Props = {
 }
 export function UsersList({ users, addFn }: Props) {
   return (
-    <ModalListLayout
+    <ContactListLayout
       isEmpty={!!users.length}
-      fbText="You've added all available users in MailBox, congrats!"
+      fbText="This is empty."
     >
       {
         <>
@@ -38,6 +38,6 @@ export function UsersList({ users, addFn }: Props) {
 
         </>
       }
-    </ModalListLayout>
+    </ContactListLayout>
   )
 }

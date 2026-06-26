@@ -1,4 +1,4 @@
-import { SquarePlus, Package, MessagesSquare, MoveDiagonal2, UserCog } from "lucide-react";
+import { Package, MessagesSquare, MoveDiagonal2, UserCog, NotebookTabs } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -10,8 +10,8 @@ type Props = {
 
 export function SidebarHeader({ toggleSidebar, showProfile, openChatList, openContacts }: Props) {
   return (
-    <header className="max-h-fit flex items-center justify-between *:text-bg1 
-   *:size-[2.5em] [&>button>*]:size-full *:rounded-full">
+    <header className="max-h-fit flex items-center justify-between rounded-sm m-2
+    *:text-bg1 *:size-[2.5em] [&>button>*]:size-full *:rounded-full">
       <Button
         onClick={toggleSidebar}
       >
@@ -34,7 +34,7 @@ export function SidebarHeader({ toggleSidebar, showProfile, openChatList, openCo
 
       <Button
         onClick={openContacts}>
-        <SquarePlus />
+        <NotebookTabs />
       </Button>
     </header>
   )

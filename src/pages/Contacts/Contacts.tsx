@@ -3,7 +3,7 @@ import type { ContactType } from "@/lib/schemas/contact.schema";
 import { type SafeUser } from "@/lib/schemas/user.schema";
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
 import type { GroupReq } from "@/lib/schemas/group.schema";
-import { ContactSearchPanel } from "./components/ContactSearchPanel";
+import { UsersPanel } from "./components/UsersPanel";
 import { GroupCreateForm } from "./components/GroupCreateForm";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   createGroupFn: (group: GroupReq, image?: ValidImage) => void
 }
 
-export function ChatPrompt({ contacts, users, addContactFn, createChatFn, createGroupFn }: Props) {
+export function Contacts({ contacts, users, addContactFn, createChatFn, createGroupFn }: Props) {
   const [selected, setSelected] = useState<UuidType[]>([]);
   const [showGF, setShowGF] = useState<boolean>(false);
   const [groupMembers, setGroupMembers] = useState<ContactType[]>([]);
@@ -42,7 +42,7 @@ export function ChatPrompt({ contacts, users, addContactFn, createChatFn, create
   }
 
   return (
-    <div className="w-full">
+    <>
       {showGF ?
         <GroupCreateForm
           members={groupMembers}
@@ -52,7 +52,7 @@ export function ChatPrompt({ contacts, users, addContactFn, createChatFn, create
           onCreate={handleCreate}
         />
         :
-        <ContactSearchPanel
+        <UsersPanel
           contacts={contacts}
           users={users}
           selected={selected}
@@ -65,6 +65,6 @@ export function ChatPrompt({ contacts, users, addContactFn, createChatFn, create
           }}
         />
       }
-    </div>
+    </>
   )
 }
