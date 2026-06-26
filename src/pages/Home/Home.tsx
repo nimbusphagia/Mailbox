@@ -1,6 +1,5 @@
 import { MainLayout } from "@/layouts/MainLayout"
 import { Sidebar } from "../Sidebar/Sidebar"
-import { ChatPrompt } from "../ChatPrompt/ChatPrompt"
 import { MainContent } from "../Main/MainContent"
 import { useHomeNavigation } from "./hooks/useHomeNavigation"
 import type { HomeLoaderReturn } from "./Home.loader"
@@ -28,10 +27,7 @@ export function Home() {
       className={showSB ? "grid grid-cols-[25vw_1fr]" : "grid grid-cols-[auto_1fr]"}>
       <Sidebar
         data={loaderData}
-        loadUsers={() => nav.actions.loadUsers()}
-        openChat={nav.openChat}
-        openGroup={nav.openGroup}
-        openProfile={nav.showProfile}
+        nav={nav}
         toggleSidebar={() => setShowSB((prev) => !prev)}
         isHidden={!showSB}
       />
@@ -50,16 +46,6 @@ export function Home() {
         isLoading={nav.isLoading}
         isEmpty={nav.emptyMain}
       />
-      {nav.showModal && (
-        <ChatPrompt
-          hideFn={nav.closeModal}
-          contacts={nav.modalData.contacts}
-          users={nav.modalData.users}
-          addContactFn={nav.actions.addContact}
-          createChatFn={nav.actions.createChat}
-          createGroupFn={nav.actions.createGroup}
-        />
-      )}
     </MainLayout>
   )
 }

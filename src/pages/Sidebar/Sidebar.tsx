@@ -1,21 +1,23 @@
-import { SquarePlus, Package, MessagesSquare, MoveDiagonal2, UserCog } from "lucide-react"
 import type { HomeLoaderReturn } from "../Home/Home.loader";
-import { Button } from "@/components/ui/button";
 import { ChatList } from "./components/ChatList";
-import type { UuidType } from "@/lib/schemas/util.schema";
 import { useMemo, useState } from "react";
+import { ChatPrompt } from "../ChatPrompt/ChatPrompt";
+import type { NavigationReturn } from "../Home/hooks/useHomeNavigation";
+import { CollapsedSidebar } from "./components/CollapsedSidebar";
+import { SidebarHeader } from "./components/SidebarHeader";
+import { SidebarSearchInput } from "./components/SidebarSearchInput";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
-  loadUsers: () => void,
-  openProfile: () => void,
-  openChat: (chatId: UuidType) => void,
-  openGroup: (chatId: UuidType) => void,
+  nav: NavigationReturn,
   toggleSidebar: () => void,
   isHidden: boolean,
 }
-export function Sidebar({ data, loadUsers, openChat, openGroup, openProfile, toggleSidebar, isHidden }: SidebarProps) {
+export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const { chats, groups, archived } = data;
+  const { loadUsers, addContact, createChat, createGroup } = nav.actions;
+  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile } = nav;
+  const [showContacts, setShowContacts] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [showArchive, setShowArchive] = useState<boolean>(false);
 
@@ -41,68 +43,56 @@ export function Sidebar({ data, loadUsers, openChat, openGroup, openProfile, tog
       ),
     };
   }, [query, showArchive, chats, groups, archived]);
+
+  const openContacts = () => {
+    loadUsers();
+    setShowContacts(true);
+  }
+  const closeContacts = () => {
+    unloadAllUsers();
+    setShowContacts(false)
+  }
+  const openChatList = (regular: boolean) => {
+    showContacts ? closeContacts() : setShowArchive(!regular)
+  }
+
   return (
     <>
       {isHidden ?
-        <div className="max-h-fit flex items-start pl-2 pr-1 mt-4 justify-between 
-      *:text-bg1 *:size-[2.5em] [&>button>*]:size-full *:rounded-full">
-          <Button
-            onClick={toggleSidebar}
-          >
-            <MoveDiagonal2 />
-          </Button>
-        </div>
+        <CollapsedSidebar toggleSidebar={toggleSidebar} />
         :
         <aside className="flex flex-col  overflow-x-hidden m-2 *:rounded-sm *:m-2">
-          <header className="max-h-fit flex items-center justify-between *:text-bg1 
-         *:size-[2.5em] [&>button>*]:size-full *:rounded-full">
-            <Button
-              onClick={toggleSidebar}
-            >
-              <MoveDiagonal2 />
-            </Button>
-
-            <Button
-              onClick={() => setShowArchive(false)}
-            >
-              <MessagesSquare />
-            </Button>
-            <Button
-              onClick={() => setShowArchive(true)}
-            >
-              <Package />
-            </Button>
-            <Button
-              onClick={openProfile}>
-              <UserCog />
-            </Button>
-            <Button
-              onClick={loadUsers}>
-              <SquarePlus />
-            </Button>
-          </header>
-          <div className="flex items-center justify-center">
-            <input
-              placeholder="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="bg-fg2 py-1.5 px-3 text-bg1 text-xs font-normal 
-              w-full outline-none border-fg4 border-[1px] focus:bg-fg4/70 
-              focus:placeholder:text-bg1 focus:text-bg1 rounded-sm"
-            />
-          </div>
+          <SidebarHeader
+            toggleSidebar={toggleSidebar}
+            showProfile={showProfile}
+            openChatList={openChatList}
+            openContacts={openContacts}
+          />
+          <SidebarSearchInput query={query} onChange={setQuery} />
           <main className="flex-1 flex flex-col text-center overflow-scroll 
           bg-fg2 border-fg4 border-[1px] py-1 px-0.5
           [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <ChatList
-              chats={filteredChats.chats}
-              groups={filteredChats.groups}
-              showChat={openChat}
-              showGroup={openGroup}
-            />          </main>
+            {
+              showContacts ?
+                <ChatPrompt
+                  contacts={allUsers.contacts}
+                  users={allUsers.users}
+                  addContactFn={addContact}
+                  createChatFn={createChat}
+                  createGroupFn={createGroup}
+                />
+
+                :
+                <ChatList
+                  chats={filteredChats.chats}
+                  groups={filteredChats.groups}
+                  showChat={openChat}
+                  showGroup={openGroup}
+                />
+            }
+          </main>
         </aside >
       }
     </>
   )
 }
-

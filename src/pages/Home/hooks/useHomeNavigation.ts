@@ -8,7 +8,7 @@ import type { UuidType } from "@/lib/schemas/util.schema";
 import type { HomeLoaderReturn } from "../Home.loader";
 import { useState } from "react";
 
-type ModalData = { contacts: ContactType[]; users: SafeUser[] };
+export type AllUsers = { contacts: ContactType[]; users: SafeUser[] };
 
 type NavigationCallbacks = {
   onError: (msg: string) => void;
@@ -27,14 +27,11 @@ export function useHomeNavigation(
   const [showInfo, setShowInfo] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const emptyMain = !activeChat && !showUserInfo && !showInfo;
-  const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState<ModalData>({
+  const [allUsers, setAllUsers] = useState<AllUsers>({
     contacts: [],
     users: [],
   });
 
-  const openModal = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
   const closeInfo = () => setShowInfo(false);
 
   const clearMain = () => {
@@ -42,7 +39,6 @@ export function useHomeNavigation(
     setActiveContact(null);
     setShowInfo(false);
     setShowUserInfo(false);
-    closeModal();
   };
 
   const fetcher = useHomeFetcher({
@@ -65,8 +61,7 @@ export function useHomeNavigation(
       const filtered = users.filter(
         (u) => u.id !== loaderData.user.id && !contactUserIds.has(u.id),
       );
-      setModalData({ contacts, users: filtered });
-      openModal();
+      setAllUsers({ contacts, users: filtered });
     },
     onProfileOpened: (user) => {
       clearMain();
@@ -104,6 +99,9 @@ export function useHomeNavigation(
   const closeContact = (chatId: UuidType) => {
     actions.openChat(chatId);
   };
+  const unloadAllUsers = () => {
+    setAllUsers({ contacts: [], users: [] });
+  };
 
   return {
     showProfile,
@@ -115,16 +113,14 @@ export function useHomeNavigation(
     showInfo,
     setShowInfo,
     closeInfo,
-    showModal,
-    modalData,
+    allUsers,
+    unloadAllUsers,
     actions,
     openChat,
     openGroup,
     openContact,
     closeChat,
     closeContact,
-    openModal,
-    closeModal,
     emptyMain,
     isLoading: fetcher.state !== "idle" && !emptyMain,
   };
