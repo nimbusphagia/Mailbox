@@ -21,8 +21,9 @@ type Props = {
 export function GroupCreateForm({ members, profilePictures, onUnselectMember, onReturn, onCreate, selected }: Props) {
   const [groupName, setGroupName] = useState<string>("");
   const [showPicker, setShowPicker] = useState<boolean>(false);
-  const [selectedAsset, setSelectedAsset] = useState<ProfilePicture | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<ProfilePicture | null>(profilePictures[0]);
   const { image: groupImage, setImage: setGroupImage, preview, setPreviewUrl, inputRef: fileInputRef } = useImagePreview();
+  const defaultImageUrl = profilePictures[0].url;
 
 
   const submitCreate = () => {
@@ -30,9 +31,9 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
     const group: GroupReq = { name: groupName, members: selected };
 
     if (groupImage) {
-      onCreate(group, groupImage); // new upload
+      onCreate(group, groupImage);
     } else if (selectedAsset) {
-      onCreate(group, undefined, selectedAsset); // existing asset reference
+      onCreate(group, undefined, selectedAsset);
     } else {
       onCreate(group);
     }
@@ -52,7 +53,7 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
        min-h-[100px] h-[5em] mx-auto aspect-square rounded-full m-2 overflow-hidden
         bg-fg1/65 flex justify-center`}>
             <img
-              src={preview ?? "https://res.cloudinary.com/dlsa973vu/image/upload/v1782611648/gato_2_pye1ik.png"}
+              src={preview ?? defaultImageUrl}
               alt="Preview"
               className="w-full h-full object-cover object-center"
             />
@@ -84,7 +85,11 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
               className="m-auto aspect-square p-2 rounded-full 
             size-fit bg-fg1! border-bg3 opacity-[0.5] hover:opacity-[1]
             "
-              onClick={() => setGroupImage(null)}
+              onClick={() => {
+                setPreviewUrl(defaultImageUrl)
+                setGroupImage(null);
+              }
+              }
             >
               <Trash2
                 className=" h-[1em] aspect-square text-bg3"
