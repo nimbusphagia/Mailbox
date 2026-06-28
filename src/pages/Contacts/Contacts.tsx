@@ -14,9 +14,10 @@ type Props = {
   createChatFn: (userId: UuidType) => void
   createGroupFn: (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) => void
   profilePictures: ProfilePicture[],
+  showSearchbar: (value: boolean) => void,
 }
 
-export function Contacts({ contacts, users, profilePictures, addContactFn, createChatFn, createGroupFn }: Props) {
+export function Contacts({ contacts, users, profilePictures, addContactFn, createChatFn, createGroupFn, showSearchbar }: Props) {
   const [selected, setSelected] = useState<UuidType[]>([]);
   const [showGF, setShowGF] = useState<boolean>(false);
   const [groupMembers, setGroupMembers] = useState<ContactType[]>([]);
@@ -29,6 +30,7 @@ export function Contacts({ contacts, users, profilePictures, addContactFn, creat
   }
 
   const cleanSelection = () => {
+    showSearchbar(true);
     setShowGF(false);
     setSelected([]);
   }
@@ -64,6 +66,7 @@ export function Contacts({ contacts, users, profilePictures, addContactFn, creat
           selectContact={selectContact}
           onStartGroup={() => {
             setGroupMembers(contacts.filter(c => c.userId && selected.includes(c.userId)));
+            showSearchbar(false);
             setShowGF(true);
           }}
         />

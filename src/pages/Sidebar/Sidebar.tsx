@@ -20,6 +20,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const [showContacts, setShowContacts] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [showArchive, setShowArchive] = useState<boolean>(false);
+  const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
 
   const filteredChats = useMemo(() => {
     const search = query.trim().toLowerCase();
@@ -98,6 +99,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
           <SidebarMainLayout
             query={query}
             onChange={setQuery}
+            search={showSearchbar}
             children={
               showContacts ?
                 <Contacts
@@ -107,6 +109,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
                   createChatFn={createChat}
                   createGroupFn={createGroup}
                   profilePictures={assets.profilePictures}
+                  showSearchbar={(val: boolean) => setShowSearchbar(val)}
                 />
                 :
                 <ChatList
