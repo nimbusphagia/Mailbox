@@ -57,6 +57,11 @@ export function useHomeFetcher({
         onMessage("Created new chat.");
         onChatCreated(d.data.chat);
       },
+      createGroup: () => {
+        const d = data as Extract<ActionReturn, { intent: "createGroup" }>;
+        onMessage("Created new group chat.");
+        onChatCreated(d.data.chat);
+      },
       getChat: () => {
         const d = data as Extract<ActionReturn, { intent: "getChat" }>;
         onChatOpened(d.data.chat);

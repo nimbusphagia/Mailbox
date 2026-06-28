@@ -88,16 +88,25 @@ export async function HomeAction({
         };
       }
       case "createGroup": {
-        const { group, image } = result;
+        const { group, image, asset } = result;
         if (!group) return { error: "Empty body" };
 
-        const response = await api.post<ChatRes>(
-          "api/group",
-          image instanceof File ? { ...group, image } : group,
-          image instanceof File
-            ? { headers: { "Content-Type": "multipart/form-data" } }
-            : undefined,
-        );
+        let response;
+
+        if (image instanceof File) {
+          response = await api.post<ChatRes>(
+            "api/group",
+            { ...group, image },
+            { headers: { "Content-Type": "multipart/form-data" } },
+          );
+        } else if (asset) {
+          response = await api.post<ChatRes>("api/group", {
+            ...group,
+            asset,
+          });
+        } else {
+          response = await api.post<ChatRes>("api/group", group);
+        }
 
         return { intent, data: { chat: response.data } };
       }

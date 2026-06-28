@@ -5,16 +5,18 @@ import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
 import type { GroupReq } from "@/lib/schemas/group.schema";
 import { UsersPanel } from "./components/UsersPanel";
 import { GroupCreateForm } from "./components/GroupCreateForm";
+import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 
 type Props = {
   contacts: ContactType[],
   users: SafeUser[],
   addContactFn: (userId: UuidType) => void,
   createChatFn: (userId: UuidType) => void
-  createGroupFn: (group: GroupReq, image?: ValidImage) => void
+  createGroupFn: (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) => void
+  profilePictures: ProfilePicture[],
 }
 
-export function Contacts({ contacts, users, addContactFn, createChatFn, createGroupFn }: Props) {
+export function Contacts({ contacts, users, profilePictures, addContactFn, createChatFn, createGroupFn }: Props) {
   const [selected, setSelected] = useState<UuidType[]>([]);
   const [showGF, setShowGF] = useState<boolean>(false);
   const [groupMembers, setGroupMembers] = useState<ContactType[]>([]);
@@ -36,8 +38,8 @@ export function Contacts({ contacts, users, addContactFn, createChatFn, createGr
     setGroupMembers(groupMembers.filter(m => m.userId !== userId))
   }
 
-  const handleCreate = (group: GroupReq, image?: ValidImage) => {
-    createGroupFn(group, image);
+  const handleCreate = (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) => {
+    createGroupFn(group, image, asset);
     cleanSelection();
   }
 
@@ -50,6 +52,7 @@ export function Contacts({ contacts, users, addContactFn, createChatFn, createGr
           onUnselectMember={unselectMember}
           onReturn={cleanSelection}
           onCreate={handleCreate}
+          profilePictures={profilePictures}
         />
         :
         <UsersPanel

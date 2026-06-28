@@ -2,6 +2,7 @@ import z from "zod";
 import { ImageSchema, UuidSchema } from "./util.schema";
 import { MessageCreateSchema } from "./message.schema";
 import { GroupReqSchema } from "./group.schema";
+import { ProfilePictureSchema } from "./assets.schema";
 
 export const HOME_INTENTS = [
   "getMe",
@@ -33,6 +34,7 @@ export const ActionSchema = z.object({
     .transform((val) => (val === "" ? null : val))
     .optional(),
   image: ImageSchema.optional(),
+  asset: ProfilePictureSchema.optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

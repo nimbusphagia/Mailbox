@@ -1,6 +1,6 @@
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { ChatList } from "./components/ChatList";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Contacts } from "../Contacts/Contacts";
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation";
 import { CollapsedSidebar } from "./components/CollapsedSidebar";
@@ -14,9 +14,9 @@ type SidebarProps = {
   isHidden: boolean,
 }
 export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
-  const { chats, groups, archived } = data;
+  const { chats, groups, archived, assets } = data;
   const { loadUsers, addContact, createChat, createGroup } = nav.actions;
-  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile } = nav;
+  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile, activeChat } = nav;
   const [showContacts, setShowContacts] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [showArchive, setShowArchive] = useState<boolean>(false);
@@ -52,6 +52,8 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
         users: allUsers.users,
       }
     }
+
+
     return {
       contacts: allUsers.contacts.filter(contact =>
         (contact.nickname ?? contact.user?.name)?.toLowerCase().includes(search)
@@ -61,20 +63,25 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
       ))
     }
   }, [query, allUsers])
+
   const openContacts = () => {
     loadUsers();
     setQuery("");
     setShowContacts(true);
   }
   const closeContacts = () => {
+    setShowContacts(false)
     unloadAllUsers();
     setQuery("");
-    setShowContacts(false)
   }
   const openChatList = (regular: boolean) => {
     if (showContacts) closeContacts();
     setShowArchive(!regular)
   }
+
+  useEffect(() => {
+    if (activeChat) closeContacts();
+  }, [activeChat]);
 
   return (
     <>
@@ -99,6 +106,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
                   addContactFn={addContact}
                   createChatFn={createChat}
                   createGroupFn={createGroup}
+                  profilePictures={assets.profilePictures}
                 />
                 :
                 <ChatList

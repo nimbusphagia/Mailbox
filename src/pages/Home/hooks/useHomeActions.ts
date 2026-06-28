@@ -5,6 +5,7 @@ import { type UuidType, type ValidImage } from "@/lib/schemas/util.schema";
 import type { MessageCreate } from "@/lib/schemas/message.schema";
 import type { GroupReq } from "@/lib/schemas/group.schema";
 import type { Action } from "@/lib/schemas/action.schema";
+import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 
 export type homeActionsReturn = ReturnType<typeof useHomeActions>;
 
@@ -32,8 +33,11 @@ export function useHomeActions(
     addContact: (userId: UuidType) => submit({ intent: "addContact", userId }),
     createChat: (contactId: UuidType) =>
       submit({ intent: "createChat", contacts: [contactId] }),
-    createGroup: (group: GroupReq, image?: ValidImage) =>
-      submit({ intent: "createGroup", image, group }),
+    createGroup: (
+      group: GroupReq,
+      image?: ValidImage,
+      asset?: ProfilePicture,
+    ) => submit({ intent: "createGroup", image, asset, group }),
     openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),
     openGroup: (groupId: UuidType) => submit({ intent: "getGroup", groupId }),
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),

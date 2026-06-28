@@ -7,21 +7,21 @@ export function useImagePreview() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!image) {
-      setPreview(null);
-      return;
-    }
+    if (!image) return;
     const objectUrl = URL.createObjectURL(image);
     setPreview(objectUrl);
-    return () => {
-      URL.revokeObjectURL(objectUrl);
-    };
+    return () => URL.revokeObjectURL(objectUrl);
   }, [image]);
+
+  const setPreviewUrl = (url: string | null) => {
+    setImage(null);
+    setPreview(url);
+  };
 
   const reset = () => {
     setImage(null);
     setPreview(null);
   };
 
-  return { image, setImage, preview, inputRef, reset };
+  return { image, setImage, preview, setPreviewUrl, inputRef, reset };
 }
