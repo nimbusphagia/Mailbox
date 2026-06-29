@@ -10,6 +10,7 @@ import { LogoRandom } from "@/components/LogoRandom"
 import { Signature } from "@/components/Signature"
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { ProfilePage } from "../Profile/Profile"
+import type { ProfilePicture } from "@/lib/schemas/assets.schema"
 
 type Props = {
   isLoading: boolean,
@@ -17,6 +18,7 @@ type Props = {
   chat?: ChatRes | GroupRes | null,
   contact?: ContactType | null,
   user?: SafeUser | null,
+  profilePictures: ProfilePicture[]
   actions: homeActionsReturn,
   showInfo: boolean,
   showProfile: boolean,
@@ -32,6 +34,7 @@ export function MainContent({
   contact,
   actions,
   user,
+  profilePictures,
   showProfile,
   hideProfile,
   showInfo,
@@ -57,6 +60,7 @@ export function MainContent({
       user={user}
       closeFn={hideProfile}
       handleLogout={actions.logout}
+      profilePictures={profilePictures}
     />
   )
   if (chat) {
@@ -73,6 +77,7 @@ export function MainContent({
       <GroupPage
         group={chat as GroupRes}
         images={chat.messages.filter(m => m.type === "IMAGE").map(m => m.metadata!.url ?? null)}
+        profilePictures={profilePictures}
         hideFn={closeInfo}
         titleFn={editNickname}
       />

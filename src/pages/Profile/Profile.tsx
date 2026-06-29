@@ -1,22 +1,31 @@
 import type { SafeUser } from "@/lib/schemas/user.schema"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, DoorOpen, UserRoundPen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Signature } from "@/components/Signature"
 import { useState } from "react"
+import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor"
+import type { ProfilePicture } from "@/lib/schemas/assets.schema"
+import { ProfilePictureComponent } from "@/components/ProfilePicture"
+import { PicturePicker } from "@/components/PicturePicker"
 
 type Props = {
   user: SafeUser,
+  profilePictures: ProfilePicture[],
   closeFn: () => void,
   handleLogout: () => void,
 }
-export function ProfilePage({ user, closeFn, handleLogout }: Props) {
+export function ProfilePage({ user, profilePictures, closeFn, handleLogout }: Props) {
   const [name, setName] = useState<string>(user.name);
   const [username, setUsername] = useState<string>(user.username);
+  const picture = useProfilePictureEditor(profilePictures, user.imgUrl);
 
-
+  function cancelPictureChange() {
+    picture.onDelete();
+    picture.togglePicker();
+  }
+  function submitCreate() { }
 
   return (
     <div
@@ -41,20 +50,39 @@ export function ProfilePage({ user, closeFn, handleLogout }: Props) {
         </div>
       </header>
       <div
-        className="relative border-1 border-fg4 h-full pt-0 p-5
-        bg-fg2/30 flex flex-col items-center justify-around"
+        className="relative border-1 border-fg4 h-full pt-12 pb-18 
+        bg-fg2/30 flex flex-col items-center justify-between gap-5"
       >
-        <div className="flex flex-col items-center -mb-18">
-          <Avatar
-            className="size-[130px] border-1 border-bg3! shadow-md"
-          >
-            <AvatarImage
-              src={user.imgUrl} />
-          </Avatar>
+        <div className="w-[35%] flex flex-col gap-2 ">
+          <ProfilePictureComponent
+            imgUrl={picture.imgUrl}
+            fileInputRef={picture.inputRef}
+            handlePicker={picture.togglePicker}
+            handlePreview={picture.onFileSelected}
+            handleDelete={picture.onDelete}
+          />
+          {picture.showPicker &&
+            <>
+              <PicturePicker
+                pictures={profilePictures}
+                onPictureClick={picture.onAssetPicked}
+                onCameraClick={picture.openFilePicker}
+                cols={6}
+              />
+              <div className="flex justify-between mt-auto *:text-xs *:rounded-sm py-1">
+                <Button
+                  onClick={cancelPictureChange}
+                  className="text-bg3">Cancel</Button>
+                <Button
+                  onClick={submitCreate}
+                  className="text-bg4 border-bg4!">Confirm</Button>
+              </div>
+            </>
+          }
 
         </div>
         <FieldGroup
-          className="w-[60%] mx-auto flex flex-col items-center  
+          className="flex-1 max-h-[50%] w-[60%] mt-0 mx-auto flex flex-col items-center  
           *:px-[10%] [&_*]:text-bg1/80!"
         >
           <Field orientation="horizontal">
@@ -81,7 +109,7 @@ export function ProfilePage({ user, closeFn, handleLogout }: Props) {
           </Field>
         </FieldGroup>
         <div
-          className=" *:text-sm *:text-bg3 *:underline *:decoration-[0.1em] flex flex-col gap-2 items-center"
+          className="*:text-sm *:text-bg3 *:underline *:decoration-[0.1em] flex flex-col gap-2 items-center"
         >
           <Button
             onClick={handleLogout}

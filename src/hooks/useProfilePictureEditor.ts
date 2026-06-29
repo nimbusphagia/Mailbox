@@ -2,14 +2,20 @@ import { useState } from "react";
 import { useImagePreview } from "@/hooks/useImagePreview";
 import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 
-export function useProfilePictureEditor(profilePictures: ProfilePicture[]) {
+export function useProfilePictureEditor(
+  profilePictures: ProfilePicture[],
+  defaultUrl?: string,
+) {
   const [showPicker, setShowPicker] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<ProfilePicture | null>(
-    profilePictures[0],
+    defaultUrl ? null : profilePictures[0],
   );
   const { image, setImage, preview, setPreviewUrl, inputRef } =
     useImagePreview();
   const defaultImage = profilePictures[0];
+
+  const resetUrl = defaultUrl ?? defaultImage.url;
+  const resetAsset = defaultUrl ? null : defaultImage;
 
   const togglePicker = () => setShowPicker((p) => !p);
 
@@ -26,8 +32,8 @@ export function useProfilePictureEditor(profilePictures: ProfilePicture[]) {
   };
 
   const onDelete = () => {
-    setPreviewUrl(defaultImage.url);
-    setSelectedAsset(defaultImage);
+    setPreviewUrl(resetUrl);
+    setSelectedAsset(resetAsset);
     setImage(null);
   };
 
@@ -37,7 +43,7 @@ export function useProfilePictureEditor(profilePictures: ProfilePicture[]) {
     showPicker,
     togglePicker,
     inputRef,
-    imgUrl: preview ?? defaultImage.url,
+    imgUrl: preview ?? resetUrl,
     image,
     selectedAsset,
     onFileSelected,

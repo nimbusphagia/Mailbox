@@ -10,17 +10,23 @@ import { MemberPill } from "./components/MemberPill";
 import { ChatInfoLayout } from "@/layouts/ChatInfoLayout";
 import { UserThumbnail } from "@/components/UserThumbnail";
 import { AsciiRandom } from "@/components/AsciiRandom";
+import { ProfilePictureComponent } from "@/components/ProfilePicture";
+import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor";
+import type { ProfilePicture } from "@/lib/schemas/assets.schema";
+import { PicturePicker } from "@/components/PicturePicker";
 
 type Props = {
   group: GroupRes,
   images: string[],
+  profilePictures: ProfilePicture[],
   hideFn: () => void,
   titleFn: (id: UuidType, title: string) => void,
 }
-export function GroupPage({ group, images, hideFn, titleFn }: Props) {
+export function GroupPage({ group, profilePictures, images, hideFn, titleFn }: Props) {
   const [title, setTitle] = useState<string>(group.name);
   const activeRole = group.primaryMember.role;
   const [showMedia, setShowMedia] = useState<boolean>(false);
+  const picture = useProfilePictureEditor(profilePictures);
 
   function GroupLabel() {
     return (
@@ -39,13 +45,40 @@ export function GroupPage({ group, images, hideFn, titleFn }: Props) {
       label={GroupLabel()}
       backFn={hideFn}
     >
-      <div className="flex flex-col gap-5 items-center p-3 ">
-        <Avatar className="size-fit">
-          <AvatarImage
-            src={group.imgUrl}
-            className="h-23 bg-fg0/10 border-1 border-fg3 shadow-sm"
-          />
-        </Avatar>
+      <div className=" w-full flex flex-col gap-2 items-center p-3 ">
+        {group.primaryMember.role === "OWNER" ?
+          <div className="w-[50%] flex flex-col gap-2 ">
+            <ProfilePictureComponent
+              imgUrl={picture.imgUrl}
+              fileInputRef={picture.inputRef}
+              handlePicker={picture.togglePicker}
+              handlePreview={picture.onFileSelected}
+              handleDelete={picture.onDelete}
+            />
+            {picture.showPicker &&
+              <>
+                <PicturePicker
+                  pictures={profilePictures}
+                  onPictureClick={picture.onAssetPicked}
+                  onCameraClick={picture.openFilePicker}
+                  cols={6}
+                />
+                <div className="flex justify-between mt-auto *:text-xs *:rounded-sm py-1">
+                  <Button
+                    className="text-bg3">Cancel</Button>
+                  <Button
+                    className="text-bg4 border-bg4!">Confirm</Button>
+                </div>
+              </>
+            }
+          </div>
+          : <Avatar className="size-fit">
+            <AvatarImage
+              src={group.imgUrl}
+              className="h-23 bg-fg0/10 border-1 border-fg3 shadow-sm"
+            />
+          </Avatar>
+        }
         <div className="h-25 font-bold flex flex-col gap-2 py-2 items-center">
           <AsciiRandom
             text={title}

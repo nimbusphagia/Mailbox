@@ -32,6 +32,7 @@ export function Home() {
         isHidden={!showSB}
       />
       <MainContent
+        profilePictures={loaderData.assets.profilePictures}
         user={nav.userInfo}
         showProfile={nav.showUserInfo}
         hideProfile={nav.hideProfile}
