@@ -12,6 +12,7 @@ interface UseHomeFetcherProps {
   onMessage: (message: string) => void;
   onRefreshUsers: (contacts: ContactType[], users: SafeUser[]) => void;
   onChatOpened: (chat: ChatRes | GroupRes) => void;
+  onChatClosed: () => void;
   onChatCreated: (chat: ChatRes) => void;
   onContactOpened: (contact: ContactType) => void;
   onProfileOpened: (user: SafeUser) => void;
@@ -22,6 +23,7 @@ export function useHomeFetcher({
   onMessage,
   onRefreshUsers,
   onChatOpened,
+  onChatClosed,
   onChatCreated,
   onContactOpened,
   onProfileOpened,
@@ -51,6 +53,9 @@ export function useHomeFetcher({
         const d = data as Extract<ActionReturn, { intent: "addContact" }>;
         onRefreshUsers(d.data.contacts, d.data.users);
         onMessage("Added new contact.");
+      },
+      toggleArchived: () => {
+        onChatClosed();
       },
       createChat: () => {
         const d = data as Extract<ActionReturn, { intent: "createChat" }>;

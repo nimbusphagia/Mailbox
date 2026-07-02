@@ -19,6 +19,7 @@ export type ActionReturn =
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatRes } }
   | { intent: "createGroup"; data: { chat: ChatRes } }
+  | { intent: "toggleArchived" }
   | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
@@ -77,6 +78,14 @@ export async function HomeAction({
           data: { users: usersRes.data, contacts: contactsRes.data },
         };
       }
+      case "toggleArchived": {
+        const { chatId } = result;
+        await api.post("api/chat/archived", { chatId });
+        return {
+          intent,
+        };
+      }
+
       case "createChat": {
         const { contacts } = result;
         const response = await api.post<ChatRes>("api/chat", {

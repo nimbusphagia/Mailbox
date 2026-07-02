@@ -19,6 +19,7 @@ export const GroupResponseSchema = z.object({
   name: z.string().min(1),
   imgUrl: z.url(),
   isGroup: z.boolean(),
+  isArchived: z.boolean(),
   createdAt: z.date(),
   createdBy: SafeUserSchema.nullable(),
   primaryMember: SafeUserSchema.extend({

@@ -68,6 +68,9 @@ export function useHomeNavigation(
       setShowUserInfo(true);
       setUserInfo(user);
     },
+    onChatClosed: () => {
+      clearMain();
+    },
     onError,
     onMessage,
   });

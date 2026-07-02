@@ -19,14 +19,15 @@ type Props = {
   group: GroupRes,
   images: string[],
   profilePictures: ProfilePicture[],
+  archiveFn: () => void,
   hideFn: () => void,
   titleFn: (id: UuidType, title: string) => void,
 }
-export function GroupPage({ group, profilePictures, images, hideFn, titleFn }: Props) {
+export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, titleFn }: Props) {
   const [title, setTitle] = useState<string>(group.name);
   const activeRole = group.primaryMember.role;
   const [showMedia, setShowMedia] = useState<boolean>(false);
-  const picture = useProfilePictureEditor(profilePictures);
+  const picture = useProfilePictureEditor(profilePictures, group.imgUrl);
 
   function GroupLabel() {
     return (
@@ -61,7 +62,7 @@ export function GroupPage({ group, profilePictures, images, hideFn, titleFn }: P
                   pictures={profilePictures}
                   onPictureClick={picture.onAssetPicked}
                   onCameraClick={picture.openFilePicker}
-                  cols={6}
+                  cols="grid-cols-6"
                 />
                 <div className="flex justify-between mt-auto *:text-xs *:rounded-sm py-1">
                   <Button
@@ -159,9 +160,11 @@ export function GroupPage({ group, profilePictures, images, hideFn, titleFn }: P
         </div>
       </div>
       <div className="flex p-3 mt-auto justify-between text-sm *:bg-transparent *:text-bg2 *:px-3 *:hover:bg-fg2/70 *:rounded-sm!">
-        <Button className="font-medium hover:text-orange/90! px-4!">
+        <Button
+          className="font-medium hover:text-orange/90! px-4!"
+          onClick={archiveFn}>
           <Package />
-          Archive
+          {group.isArchived ? "Unarchive" : "Archive"}
         </Button>
         <Button
           className="font-medium hover:text-red! px-4!"

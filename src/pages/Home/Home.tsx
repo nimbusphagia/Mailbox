@@ -33,19 +33,7 @@ export function Home() {
       />
       <MainContent
         profilePictures={loaderData.assets.profilePictures}
-        user={nav.userInfo}
-        showProfile={nav.showUserInfo}
-        hideProfile={nav.hideProfile}
-        chat={nav.activeChat ?? undefined}
-        contact={nav.activeContact}
-        showInfo={nav.showInfo}
-        onShowInfo={() => nav.setShowInfo(true)}
-        actions={nav.actions}
-        closeChat={nav.closeChat}
-        closeInfo={nav.closeInfo}
-        editNickname={nav.actions.editNickname}
-        isLoading={nav.isLoading}
-        isEmpty={nav.emptyMain}
+        nav={nav}
       />
     </MainLayout>
   )

@@ -11,10 +11,12 @@ import { AsciiRandom } from "@/components/AsciiRandom";
 type Props = {
   contact: ContactType | null,
   images: string[],
+  isArchived: boolean,
+  archiveFn: () => void,
   hideFn: () => void,
   nicknameFn: (id: UuidType, nickname: string | null) => void,
 }
-export function ContactPage({ contact, images, hideFn, nicknameFn }: Props) {
+export function ContactPage({ contact, images, isArchived, archiveFn, hideFn, nicknameFn }: Props) {
   const title: string = contact?.nickname ?? contact?.user?.name ?? "User";
   const [nickname, setNickname] = useState<string | null>(contact!.nickname);
   const [showMedia, setShowMedia] = useState<boolean>(false);
@@ -116,9 +118,12 @@ export function ContactPage({ contact, images, hideFn, nicknameFn }: Props) {
         </div>
       </div>
       <div className="flex p-3 mt-auto justify-between text-sm *:bg-transparent *:text-bg2 *:px-3 *:hover:bg-fg2/70 *:rounded-sm!">
-        <Button className="font-medium hover:text-orange/90! px-4!">
+        <Button
+          className="font-medium hover:text-orange/90! px-4!"
+          onClick={archiveFn}
+        >
           <Package />
-          Archive
+          {isArchived ? "Unarchive" : "Archive"}
         </Button>
         <Button className="font-medium hover:text-red! px-4!">
           <Ban />

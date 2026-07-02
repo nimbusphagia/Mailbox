@@ -67,7 +67,7 @@ export function ProfilePage({ user, profilePictures, closeFn, handleLogout }: Pr
                 pictures={profilePictures}
                 onPictureClick={picture.onAssetPicked}
                 onCameraClick={picture.openFilePicker}
-                cols={6}
+                cols="grid-cols-6"
               />
               <div className="flex justify-between mt-auto *:text-xs *:rounded-sm py-1">
                 <Button

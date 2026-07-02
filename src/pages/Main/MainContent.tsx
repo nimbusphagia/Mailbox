@@ -1,50 +1,41 @@
-import type { ChatRes } from "@/lib/schemas/chat.schema"
-import type { ContactType } from "@/lib/schemas/contact.schema"
-import type { homeActionsReturn } from "../Home/hooks/useHomeActions"
 import { ContactPage } from "../ChatInfo/Contact"
 import { Chat } from "../Chat/Chat"
-import type { UuidType } from "@/lib/schemas/util.schema"
 import type { GroupRes } from "@/lib/schemas/group.schema"
 import { GroupPage } from "../ChatInfo/Group"
 import { LogoRandom } from "@/components/LogoRandom"
 import { Signature } from "@/components/Signature"
-import type { SafeUser } from "@/lib/schemas/user.schema"
 import { ProfilePage } from "../Profile/Profile"
 import type { ProfilePicture } from "@/lib/schemas/assets.schema"
+import type { NavigationReturn } from "../Home/hooks/useHomeNavigation"
 
 type Props = {
-  isLoading: boolean,
-  isEmpty: boolean,
-  chat?: ChatRes | GroupRes | null,
-  contact?: ContactType | null,
-  user?: SafeUser | null,
+  nav: NavigationReturn,
   profilePictures: ProfilePicture[]
-  actions: homeActionsReturn,
-  showInfo: boolean,
-  showProfile: boolean,
-  hideProfile: () => void,
-  onShowInfo: () => void,
-  closeInfo: () => void,
-  closeChat: () => void,
-  editNickname: (id: UuidType, nickname: string | null) => void,
 }
 
 export function MainContent({
-  chat,
-  contact,
-  actions,
-  user,
+  nav,
   profilePictures,
-  showProfile,
-  hideProfile,
-  showInfo,
-  onShowInfo,
-  closeInfo,
-  closeChat,
-  editNickname,
-  //isLoading,
-  isEmpty
+
 }: Props) {
+
+  const {
+    userInfo: user,
+    showUserInfo: showProfile,
+    hideProfile,
+    activeChat: chat,
+    activeContact: contact,
+    showInfo,
+    setShowInfo,
+    actions,
+    closeChat,
+    closeInfo,
+    emptyMain: isEmpty,
+  } = nav;
+
+  const { toggleArchived, editNickname } = actions
+
+
   if (isEmpty) return (
     <div className="w-full h-full flex items-center justify-center pt-5 p-4 pl-2">
       <div className="relative border-[1px] border-bg3 rounded-sm flex flex-col items-center justify-center size-full">
@@ -68,6 +59,8 @@ export function MainContent({
       <ContactPage
         contact={contact}
         images={chat.messages.filter(m => m.type === "IMAGE").map(m => m.metadata!.url ?? null)}
+        archiveFn={() => toggleArchived(chat.id)}
+        isArchived={chat.isArchived}
         hideFn={closeInfo}
         nicknameFn={editNickname}
       />
@@ -78,6 +71,7 @@ export function MainContent({
         group={chat as GroupRes}
         images={chat.messages.filter(m => m.type === "IMAGE").map(m => m.metadata!.url ?? null)}
         profilePictures={profilePictures}
+        archiveFn={() => toggleArchived(chat.id)}
         hideFn={closeInfo}
         titleFn={editNickname}
       />
@@ -89,7 +83,7 @@ export function MainContent({
       chat={chat!}
       sendFn={actions.createMessage}
       getContact={actions.getContact}
-      showInfo={onShowInfo}
+      showInfo={() => setShowInfo(true)}
       closeChat={closeChat}
     />
   )

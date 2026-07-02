@@ -3,20 +3,19 @@ import { Button } from "./ui/button";
 import { Camera } from "lucide-react";
 type Props = {
   pictures: ProfilePicture[],
-  cols?: number,
+  cols?: string,
   onCameraClick: () => void,
   onPictureClick: (img: ProfilePicture) => void,
 }
 
-export function PicturePicker({ pictures, onCameraClick, onPictureClick, cols = 5 }: Props) {
+export function PicturePicker({ pictures, onCameraClick, onPictureClick, cols = "grid-cols-5" }: Props) {
 
-  const buttonStyle = "h-full p-1.5! aspect-square rounded-full border-bg3! bg-fg4/50 hover:bg-fg4/80"
-  const gridCols = `grid-cols-${cols}`
+  const buttonStyle = "h-full p-0! aspect-square rounded-full overflow-hidden border-bg3! bg-fg4/50 hover:bg-fg4/80";
 
   return (
-    <div className={`w-full grid ${gridCols} gap-x-3 gap-y-1 p-2.5 border-[1px] border-fg4 rounded-sm`}>
+    <div className={`w-full grid ${cols} gap-x-3 gap-y-1 p-2.5 border-[1px] border-fg4 rounded-sm`}>
       <Button
-        className={buttonStyle}
+        className={` ${buttonStyle} p-1.5!`}
         onClick={onCameraClick}
       >
         <Camera
@@ -34,7 +33,7 @@ export function PicturePicker({ pictures, onCameraClick, onPictureClick, cols = 
           <img
             src={picture.url}
             alt={picture.name}
-            className=""
+            className="max-h-full"
           />
         </Button>
       ))}

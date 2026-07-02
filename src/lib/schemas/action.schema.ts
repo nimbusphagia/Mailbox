@@ -11,6 +11,7 @@ export const HOME_INTENTS = [
   "createChat",
   "createGroup",
   "addContact",
+  "toggleArchived",
   "getChat",
   "getGroup",
   "getContact",
