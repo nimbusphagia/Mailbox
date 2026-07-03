@@ -94,44 +94,52 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
           replyFn={(message: Message, userName: string) => setReplying({ message, userName })}
         />
 
-        <div className="flex flex-col m-1 gap-2 flex-1 bg-fg0/75 rounded-sm shadow-md">
-          {preview && <PreviewPanel preview={preview} onClear={() => setImage(null)} />}
-          {replying && <ReplyPanel {...replying} onClear={() => setReplying(null)} />}
+        {
+          directChat?.isBlocked ?
+            <div className="w-full my-2 flex justify-center items-center">
+              <div className="h-[30px] w-[99%] rounded-sm bg-fg2/50 text-xs text-bg3 font-normal flex items-center justify-center">
+                <p>Chat is disabled.</p>
+              </div>
+            </div> :
+            <div className="flex flex-col m-1 gap-2 flex-1 bg-fg0/75 rounded-sm shadow-md">
+              {preview && <PreviewPanel preview={preview} onClear={() => setImage(null)} />}
+              {replying && <ReplyPanel {...replying} onClear={() => setReplying(null)} />}
 
-          <div className="flex flex-col gap-2 flex-1">
-            <div className="flex items-center gap-2 p-1.5">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) setImage(f) }}
-              />
-              <Button
-                className="text-md text-bg3 p-1.5 flex items-center justify-center
+              <div className="flex flex-col gap-2 flex-1">
+                <div className="flex items-center gap-2 p-1.5">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => { const f = e.target.files?.[0]; if (f) setImage(f) }}
+                  />
+                  <Button
+                    className="text-md text-bg3 p-1.5 flex items-center justify-center
                 border-none bg-transparent hover:bg-fg1 hover:text-bg2!"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Image className="w-[1.2em]" />
-              </Button>
-              <input
-                className="p-1 px-3 text-[0.8em] flex-1 outline-none text-bg1 border-1 border-transparent
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Image className="w-[1.2em]" />
+                  </Button>
+                  <input
+                    className="p-1 px-3 text-[0.8em] flex-1 outline-none text-bg1 border-1 border-transparent
                 focus:placeholder:text-bg2 focus:text-bg1 focus:border-fg3 focus:bg-fg2/10 rounded-sm"
-                placeholder="Write a message"
-                value={textValue}
-                onChange={(e) => setTextValue(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitText() } }}
-              />
-              <Button
-                className="text-bg2 border-transparent bg-transparent p-1 enabled:text-bg2!"
-                disabled={!(image || textValue.length)}
-                onClick={submitMessage}
-              >
-                <SendHorizontal className="size-[1rem]" />
-              </Button>
+                    placeholder="Write a message"
+                    value={textValue}
+                    onChange={(e) => setTextValue(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitText() } }}
+                  />
+                  <Button
+                    className="text-bg2 border-transparent bg-transparent p-1 enabled:text-bg2!"
+                    disabled={!(image || textValue.length)}
+                    onClick={submitMessage}
+                  >
+                    <SendHorizontal className="size-[1rem]" />
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+        }
       </div>
     </main>
   )

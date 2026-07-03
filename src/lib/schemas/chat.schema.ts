@@ -7,6 +7,7 @@ export const ChatLazySchema = z.object({
   id: UuidSchema,
   createdAt: z.coerce.date(),
   isGroup: z.boolean(),
+  isBlocked: z.boolean(),
   isArchived: z.boolean(),
   otherMember: ChatUserSchema,
   lastMessage: ChatMessageSchema.optional(),
@@ -16,6 +17,7 @@ export type ChatLazy = z.infer<typeof ChatLazySchema>;
 export const ChatSchema = z.object({
   id: UuidSchema,
   isGroup: z.boolean(),
+  isBlocked: z.boolean(),
   isArchived: z.boolean(),
   createdAt: z.coerce.date(),
   primaryMember: SafeUserSchema,
