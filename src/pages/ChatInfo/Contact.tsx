@@ -13,10 +13,11 @@ type Props = {
   images: string[],
   isArchived: boolean,
   archiveFn: () => void,
+  blockFn: (contactId: UuidType) => void,
   hideFn: () => void,
   nicknameFn: (id: UuidType, nickname: string | null) => void,
 }
-export function ContactPage({ contact, images, isArchived, archiveFn, hideFn, nicknameFn }: Props) {
+export function ContactPage({ contact, images, isArchived, blockFn, archiveFn, hideFn, nicknameFn }: Props) {
   const title: string = contact?.nickname ?? contact?.user?.name ?? "User";
   const [nickname, setNickname] = useState<string | null>(contact!.nickname);
   const [showMedia, setShowMedia] = useState<boolean>(false);
@@ -125,9 +126,13 @@ export function ContactPage({ contact, images, isArchived, archiveFn, hideFn, ni
           <Package />
           {isArchived ? "Unarchive" : "Archive"}
         </Button>
-        <Button className="font-medium hover:text-red! px-4!">
+        <Button
+          className="font-medium hover:text-red! px-4!"
+          disabled={!contact}
+          onClick={() => contact ? blockFn(contact.id) : null}
+        >
           <Ban />
-          Block
+          {contact?.isBlocked ? "Unblock" : "Block"}
         </Button>
       </div>
 

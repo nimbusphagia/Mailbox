@@ -57,6 +57,11 @@ export function useHomeFetcher({
       toggleArchived: () => {
         onChatClosed();
       },
+      toggleBlocked: () => {
+        const d = data as Extract<ActionReturn, { intent: "toggleBlocked" }>;
+        onRefreshUsers(d.data.contacts, d.data.users);
+        onChatClosed();
+      },
       createChat: () => {
         const d = data as Extract<ActionReturn, { intent: "createChat" }>;
         onMessage("Created new chat.");

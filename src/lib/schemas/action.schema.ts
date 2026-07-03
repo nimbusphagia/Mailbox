@@ -15,6 +15,7 @@ export const HOME_INTENTS = [
   "getChat",
   "getGroup",
   "getContact",
+  "toggleBlocked",
   "createMessage",
   "editNickname",
   "logout",

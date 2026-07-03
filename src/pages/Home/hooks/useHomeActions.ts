@@ -43,6 +43,8 @@ export function useHomeActions(
     openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),
     openGroup: (groupId: UuidType) => submit({ intent: "getGroup", groupId }),
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
+    toggleBlocked: (contactId: UuidType) =>
+      submit({ intent: "toggleBlocked", contactId }),
     createMessage: (message: MessageCreate, image?: ValidImage) =>
       submit({ intent: "createMessage", image, message }),
     editNickname: (userId: UuidType, nickname: string | null) =>

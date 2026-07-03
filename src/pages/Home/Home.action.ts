@@ -23,6 +23,10 @@ export type ActionReturn =
   | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
+  | {
+      intent: "toggleBlocked";
+      data: { users: SafeUser[]; contacts: ContactType[] };
+    }
   | { intent: "createMessage"; data: { chat: ChatRes | GroupRes } }
   | { intent: "editNickname"; data: { contact: ContactType } }
   | {
@@ -73,6 +77,22 @@ export async function HomeAction({
           api.get<SafeUser[]>("api/user"),
           api.get<ContactType[]>("api/user/contact"),
         ]);
+        return {
+          intent,
+          data: { users: usersRes.data, contacts: contactsRes.data },
+        };
+      }
+      case "toggleBlocked": {
+        const { contactId } = result;
+        await api.patch<ContactType>(`api/user/contact/block/${contactId}`);
+        const [usersRes, contactsRes]: [
+          AxiosResponse<SafeUser[]>,
+          AxiosResponse<ContactType[]>,
+        ] = await Promise.all([
+          api.get<SafeUser[]>("api/user"),
+          api.get<ContactType[]>("api/user/contact"),
+        ]);
+
         return {
           intent,
           data: { users: usersRes.data, contacts: contactsRes.data },
