@@ -8,8 +8,9 @@ type Props = {
   handlePicker: () => void,
   handleDelete: () => void,
   handlePreview: ChangeEventHandler<HTMLInputElement>,
+  actionsClassName?: string,
 }
-export function ProfilePictureComponent({ imgUrl, fileInputRef, handlePicker, handleDelete, handlePreview }: Props) {
+export function ProfilePictureComponent({ imgUrl, fileInputRef, handlePicker, handleDelete, handlePreview, actionsClassName }: Props) {
   return (
     <div className="relative h-fit">
       <div
@@ -29,7 +30,7 @@ export function ProfilePictureComponent({ imgUrl, fileInputRef, handlePicker, ha
           onChange={handlePreview}
         />
       </div>
-      <div className="absolute right-0 top-20 flex gap-1">
+      <div className={`absolute right-0 top-20 flex gap-1 ${actionsClassName}`}>
         <Button
           className="m-auto aspect-square p-2 rounded-full 
             size-fit bg-fg1! border-bg4! opacity-[0.5] hover:opacity-[1]

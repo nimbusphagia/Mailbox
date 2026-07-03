@@ -35,15 +35,15 @@ export function UsersPanel({ contacts, users, selected, addContactFn, createChat
           <ToggleGroupItem value="users" aria-label="show all users">Find</ToggleGroupItem>
         </ToggleGroup>
         <Button
-          className="relative h-full aspect-square p-0 text-bg3! bg-transparent text-xs border-[1px]! border-bg3 rounded-full"
+          className="relative h-full aspect-square p-0 text-bg3! bg-transparent text-xs border-[1px]! border-bg3 rounded-full hover:border-bg4!"
           disabled={!selected.length}
           onClick={() => { selected.length > 1 ? onStartGroup() : createChatFn(selected[0]) }}
           title={selected.length > 1 ? "Create group" : "Send a message"}
         >
           <MailPlus className="size-[1.5em]" />
-          <div className="absolute size-[10px] flex items-center 
-          justify-center bg-fg2 rounded-full border-[1px] border-bg3 p-2 -left-[7px] -bottom-[6px] ">
-            <p className="leading-none font-medium text-[0.8em] text-bg3">{selected.length}</p>
+          <div className={`absolute size-[10px] flex items-center text-bg3 
+          justify-center bg-fg1 rounded-full  border-bg3 p-2 -left-[7px] -bottom-[6px] ${selected.length > 1 ? "text-bg4! font-semibold" : ""} `}>
+            <p className="leading-none font-medium text-[0.8em]">{selected.length}</p>
           </div>
         </Button>
       </div>

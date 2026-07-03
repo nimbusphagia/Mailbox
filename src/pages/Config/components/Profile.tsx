@@ -1,7 +1,7 @@
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { UserRoundPen } from "lucide-react"
+import { KeyRound, UserRoundPen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor"
@@ -16,7 +16,7 @@ type Props = {
 export function ProfilePage({ user, profilePictures }: Props) {
   const [name, setName] = useState<string>(user.name);
   const [username, setUsername] = useState<string>(user.username);
-  const picture = useProfilePictureEditor(profilePictures, user.imgUrl);
+  const picture = useProfilePictureEditor(profilePictures, user.imgUrl, true);
 
   function cancelPictureChange() {
     picture.onDelete();
@@ -26,8 +26,9 @@ export function ProfilePage({ user, profilePictures }: Props) {
 
   return (
     <div
-      className="mt-2 mr-4 ml-2 pt-3 pb-4 rounded-sm flex flex-col 
-      gap-4 *:rounded-sm">
+      className="overflow-hidden m-4 ml-2 rounded-sm flex flex-col 
+      gap-4 *:rounded-sm
+      ">
       <header
         className="flex items-center gap-2 *:bg-fg2 
       *:rounded-sm *:p-2 *:border-[0.01em] *:border-fg3 *:text-bg1
@@ -41,17 +42,20 @@ export function ProfilePage({ user, profilePictures }: Props) {
           </h2>
         </div>
       </header>
-      <div
-        className="relative border-1 border-fg4 h-full pt-12 pb-18 
-        bg-fg2/30 flex flex-col items-center justify-between gap-5"
+      <main
+        className="relative border-1 border-fg4 h-full p-10 
+        bg-fg2/30 flex flex-col items-center gap-12 overflow-y-scroll 
+        [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
+        "
       >
-        <div className="w-[35%] flex flex-col gap-2 ">
+        <div className="w-[40%] flex flex-col gap-2 ">
           <ProfilePictureComponent
             imgUrl={picture.imgUrl}
             fileInputRef={picture.inputRef}
             handlePicker={picture.togglePicker}
             handlePreview={picture.onFileSelected}
             handleDelete={picture.onDelete}
+            actionsClassName="gap-3"
           />
           {picture.showPicker &&
             <>
@@ -59,7 +63,7 @@ export function ProfilePage({ user, profilePictures }: Props) {
                 pictures={profilePictures}
                 onPictureClick={picture.onAssetPicked}
                 onCameraClick={picture.openFilePicker}
-                cols="grid-cols-6"
+                cols="grid-cols-6 gap-2.5! p-3.5!"
               />
               <div className="flex justify-between mt-auto *:text-xs *:rounded-sm py-1">
                 <Button
@@ -74,7 +78,7 @@ export function ProfilePage({ user, profilePictures }: Props) {
 
         </div>
         <FieldGroup
-          className="flex-1 max-h-[50%] w-[60%] mt-0 mx-auto flex flex-col items-center  
+          className="w-[60%] mt-0 mx-auto flex flex-col items-center  
           *:px-[10%] [&_*]:text-bg1/80!"
         >
           <Field orientation="horizontal">
@@ -100,7 +104,13 @@ export function ProfilePage({ user, profilePictures }: Props) {
             />
           </Field>
         </FieldGroup>
-      </div>
+        <div >
+          <Button className="text-bg3 font-normal text-[13px] gap-3 border-fg4 rounded-sm">
+            Change password
+            <KeyRound strokeWidth={1.3} />
+          </Button>
+        </div>
+      </main>
     </div>
   )
 }

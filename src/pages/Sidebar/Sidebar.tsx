@@ -1,12 +1,15 @@
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { ChatList } from "./components/ChatList";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Contacts } from "../Contacts/Contacts";
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation";
 import { CollapsedSidebar } from "./components/CollapsedSidebar";
 import { SidebarHeader } from "./components/SidebarHeader";
 import { SidebarMainLayout } from "@/layouts/SidebarMainLayout";
 import { ConfigPanel } from "../Config/Config";
+import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
+import type { GroupReq } from "@/lib/schemas/group.schema";
+import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 
 type SidebarProps = {
   data: HomeLoaderReturn,
@@ -19,7 +22,7 @@ type SidebarView = "chats" | "archived" | "contacts" | "profile";
 export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const { chats, groups, archived, assets } = data;
   const { loadUsers, addContact, createChat, createGroup, logout } = nav.actions;
-  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile, activeChat } = nav;
+  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile } = nav;
   const [query, setQuery] = useState<string>("");
   const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
   const [view, setView] = useState<SidebarView>("chats");
@@ -87,38 +90,41 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
     setView("profile");
   }
 
-  useEffect(() => {
-    if (activeChat) closeContacts();
-  }, [activeChat]);
-
   const mainContent = {
     chats: <ChatList
       chats={filteredChats.chats}
       groups={filteredChats.groups}
-      showChat={openChat}
+      showChat={(id: UuidType) => { setView("chats"); openChat(id) }}
       showGroup={openGroup}
       isArchived={false}
     />,
     archived: <ChatList
       chats={filteredChats.chats}
       groups={filteredChats.groups}
-      showChat={openChat}
+      showChat={(id: UuidType) => { setView("archived"); openChat(id) }}
       showGroup={openGroup}
       isArchived={true}
     />,
     contacts: <Contacts
       contacts={filteredUsers.contacts}
       users={filteredUsers.users}
-      addContactFn={addContact}
-      createChatFn={createChat}
-      createGroupFn={createGroup}
       profilePictures={assets.profilePictures}
+      addContactFn={addContact}
+      createChatFn={(id: UuidType) => {
+        closeContacts();
+        createChat(id)
+      }}
+      createGroupFn={(group: GroupReq, image?: ValidImage, asset?: ProfilePicture) => {
+        closeContacts();
+        createGroup(group, image, asset)
+      }}
       showSearchbar={(val: boolean) => setShowSearchbar(val)}
     />,
     profile: <ConfigPanel
       showProfile={showProfile}
       showBlocked={() => null}
       logoutFn={logout}
+
     />,
   }
   return (

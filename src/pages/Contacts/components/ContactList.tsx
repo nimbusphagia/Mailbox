@@ -43,7 +43,6 @@ export function ContactList({ contacts, selected, selectFn }: Props) {
                       onClick={() => selectFn(c.userId, !isSelected)}
                       aria-label={`${isSelected ? "Unselect" : "Select"} ${c.nickname ?? c.user.name}`}
                       title={`${isSelected ? "Unselect" : "Select"} ${c.nickname ?? c.user.name}`}
-
                     >
                     </Checkbox>
                   </div>

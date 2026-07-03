@@ -5,8 +5,9 @@ import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 export function useProfilePictureEditor(
   profilePictures: ProfilePicture[],
   defaultUrl?: string,
+  defaultOpened?: boolean,
 ) {
-  const [showPicker, setShowPicker] = useState(false);
+  const [showPicker, setShowPicker] = useState(defaultOpened ?? false);
   const [selectedAsset, setSelectedAsset] = useState<ProfilePicture | null>(
     defaultUrl ? null : profilePictures[0],
   );
