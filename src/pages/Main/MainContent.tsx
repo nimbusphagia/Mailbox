@@ -4,9 +4,9 @@ import type { GroupRes } from "@/lib/schemas/group.schema"
 import { GroupPage } from "../ChatInfo/Group"
 import { LogoRandom } from "@/components/LogoRandom"
 import { Signature } from "@/components/Signature"
-import { ProfilePage } from "../Profile/Profile"
 import type { ProfilePicture } from "@/lib/schemas/assets.schema"
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation"
+import { ProfilePage } from "../Config/components/Profile"
 
 type Props = {
   nav: NavigationReturn,
@@ -22,7 +22,6 @@ export function MainContent({
   const {
     userInfo: user,
     showUserInfo: showProfile,
-    hideProfile,
     activeChat: chat,
     activeContact: contact,
     showInfo,
@@ -49,8 +48,6 @@ export function MainContent({
   if (user && showProfile) return (
     <ProfilePage
       user={user}
-      closeFn={hideProfile}
-      handleLogout={actions.logout}
       profilePictures={profilePictures}
     />
   )

@@ -1,9 +1,8 @@
 import type { SafeUser } from "@/lib/schemas/user.schema"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, DoorOpen, UserRoundPen } from "lucide-react"
+import { UserRoundPen } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Signature } from "@/components/Signature"
 import { useState } from "react"
 import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor"
 import type { ProfilePicture } from "@/lib/schemas/assets.schema"
@@ -13,10 +12,8 @@ import { PicturePicker } from "@/components/PicturePicker"
 type Props = {
   user: SafeUser,
   profilePictures: ProfilePicture[],
-  closeFn: () => void,
-  handleLogout: () => void,
 }
-export function ProfilePage({ user, profilePictures, closeFn, handleLogout }: Props) {
+export function ProfilePage({ user, profilePictures }: Props) {
   const [name, setName] = useState<string>(user.name);
   const [username, setUsername] = useState<string>(user.username);
   const picture = useProfilePictureEditor(profilePictures, user.imgUrl);
@@ -35,17 +32,12 @@ export function ProfilePage({ user, profilePictures, closeFn, handleLogout }: Pr
         className="flex items-center gap-2 *:bg-fg2 
       *:rounded-sm *:p-2 *:border-[0.01em] *:border-fg3 *:text-bg1
         ">
-        <Button
-          onClick={closeFn}
-          className="size-[1.8em] p-1 rounded-[100%]!">
-          <ArrowLeft />
-        </Button>
         <div className="flex gap-2 items-center">
           <UserRoundPen className="size-[1em]" />
           <h2
             className="text-sm font-semibold "
           >
-            Profile
+            Account
           </h2>
         </div>
       </header>
@@ -108,20 +100,6 @@ export function ProfilePage({ user, profilePictures, closeFn, handleLogout }: Pr
             />
           </Field>
         </FieldGroup>
-        <div
-          className="*:text-sm *:text-bg3 *:underline *:decoration-[0.1em] flex flex-col gap-2 items-center"
-        >
-          <Button
-            onClick={handleLogout}
-            className="py-4 font-light text-bg1!
-          hover:bg-red decoration-transparent">
-            <DoorOpen />
-            Logout
-          </Button>
-        </div>
-        <footer className="absolute bottom-3">
-          <Signature />
-        </footer>
       </div>
     </div>
   )

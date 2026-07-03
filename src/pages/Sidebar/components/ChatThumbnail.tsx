@@ -25,7 +25,7 @@ export function ChatThumbnail({ entry, onClick }: Props) {
     ? data.lastMessage.type === "TEXT"
       ? data.lastMessage.content ?? "..."
       : "Media sent"
-    : "This mailbox is empty";
+    : "This chat is empty.";
 
   return (
     <div

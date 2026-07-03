@@ -1,14 +1,14 @@
-import { Package, MessagesSquare, MoveDiagonal2, UserCog, NotebookTabs } from "lucide-react";
+import { Package, MessagesSquare, MoveDiagonal2, NotebookTabs, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
   toggleSidebar: () => void,
-  showProfile: () => void,
+  openProfile: () => void,
   openChatList: (regular: boolean) => void,
   openContacts: () => void,
 }
 
-export function SidebarHeader({ toggleSidebar, showProfile, openChatList, openContacts }: Props) {
+export function SidebarHeader({ toggleSidebar, openProfile, openChatList, openContacts }: Props) {
   return (
     <header className="max-h-fit flex items-center justify-between rounded-sm m-2
     *:text-bg1 *:size-[2.5em] [&>button>*]:size-full *:rounded-full">
@@ -17,10 +17,7 @@ export function SidebarHeader({ toggleSidebar, showProfile, openChatList, openCo
       >
         <MoveDiagonal2 />
       </Button>
-      <Button
-        onClick={showProfile}>
-        <UserCog />
-      </Button>
+
       <Button
         onClick={() => openChatList(true)}
       >
@@ -35,6 +32,10 @@ export function SidebarHeader({ toggleSidebar, showProfile, openChatList, openCo
       <Button
         onClick={openContacts}>
         <NotebookTabs />
+      </Button>
+      <Button
+        onClick={openProfile}>
+        <Settings />
       </Button>
     </header>
   )
