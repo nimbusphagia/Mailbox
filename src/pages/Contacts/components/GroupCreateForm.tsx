@@ -21,7 +21,7 @@ type Props = {
 
 export function GroupCreateForm({ members, profilePictures, onUnselectMember, onReturn, onCreate, selected }: Props) {
   const [groupName, setGroupName] = useState<string>("");
-  const picture = useProfilePictureEditor(profilePictures);
+  const picture = useProfilePictureEditor(profilePictures, undefined, true);
 
   const submitCreate = () => {
     if (groupName === undefined || !selected.length) return;

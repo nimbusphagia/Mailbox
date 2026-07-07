@@ -21,7 +21,7 @@ export function ChatInfoLayout({ backFn, label, children }: PropsWithChildren<Pr
       <div
         className="flex justify-center m-2 bg-fg1 border-1 border-fg4 rounded-sm p-1.5
         overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        <div className="w-[63%] h-full self-center flex flex-col gap-2 py-4">
+        <div className="w-[55%] h-full self-center flex flex-col gap-2 py-3">
           {children}
         </div>
       </div>

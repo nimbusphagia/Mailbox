@@ -11,7 +11,7 @@ import {
 } from "@/lib/utils";
 import type { AxiosResponse } from "axios";
 import { redirect, type ActionFunctionArgs } from "react-router-dom";
-import type { GroupRes } from "@/lib/schemas/group.schema";
+import { type GroupRes } from "@/lib/schemas/group.schema";
 
 export type ActionReturn =
   | { intent: "getMe"; data: { user: SafeUser } }
@@ -22,6 +22,7 @@ export type ActionReturn =
   | { intent: "toggleArchived" }
   | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
+  | { intent: "removeGroupMember"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
   | {
       intent: "toggleBlocked";
@@ -150,6 +151,15 @@ export async function HomeAction({
       case "getGroup": {
         const { groupId } = result;
         const response = await api.get<GroupRes>(`api/group/${groupId}`);
+        return {
+          intent,
+          data: { group: response.data },
+        };
+      }
+      case "removeGroupMember": {
+        const { userId, chatId } = result;
+        await api.delete(`api/group/member/${chatId}/${userId}`);
+        const response = await api.get<GroupRes>(`api/group/${chatId}`);
         return {
           intent,
           data: { group: response.data },

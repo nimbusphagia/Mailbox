@@ -9,9 +9,9 @@ type Props = {
 }
 export function ChatInit({ title, imgUrl, createdAt }: Props) {
   return (
-    <div className="flex flex-col gap-4 w-[60%] p-3 m-auto my-2">
+    <div className="flex flex-col gap-4 w-[50%] p-3 m-auto my-2">
       <div
-        className="flex flex-col gap-4 items-center p-4 bg-fg2/50
+        className="flex flex-col gap-4 items-center p-4 px-10 bg-fg2/50
       border-[1px] border-fg3 rounded-sm shadow-sm">
         <Avatar className="size-fit">
           <AvatarImage

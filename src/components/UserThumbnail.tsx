@@ -11,7 +11,7 @@ type Props = {
 export function UserThumbnail({ imgUrl, fullName, className, textClassName, avatarClassname, showFn }: Props) {
   return (
     <div
-      className={`flex items-center gap-3 ${showFn ? "cursor-pointer" : ""} ${className}`}
+      className={`flex items-center gap-2 ${showFn ? "cursor-pointer" : ""} ${className}`}
       onClick={showFn}
     >
       <Avatar className={`size-[2em] border-[0.1em] border-fg2 ${avatarClassname}`}>

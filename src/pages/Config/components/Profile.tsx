@@ -48,7 +48,7 @@ export function ProfilePage({ user, profilePictures }: Props) {
         [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
         "
       >
-        <div className="w-[40%] flex flex-col gap-2 ">
+        <div className="w-[40%] max-w-[370px] flex flex-col gap-2 ">
           <ProfilePictureComponent
             imgUrl={picture.imgUrl}
             fileInputRef={picture.inputRef}

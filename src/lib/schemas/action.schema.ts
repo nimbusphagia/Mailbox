@@ -15,6 +15,7 @@ export const HOME_INTENTS = [
   "getChat",
   "getGroup",
   "getContact",
+  "removeGroupMember",
   "toggleBlocked",
   "createMessage",
   "editNickname",
@@ -24,6 +25,7 @@ export const HOME_INTENTS = [
 export const ActionSchema = z.object({
   intent: z.enum(HOME_INTENTS),
   userId: UuidSchema.optional(),
+  memberId: UuidSchema.optional(),
   contactId: UuidSchema.optional(),
   contacts: UuidSchema.array().optional(),
   chatId: UuidSchema.optional(),

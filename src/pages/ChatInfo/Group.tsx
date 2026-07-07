@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { GroupRes } from "@/lib/schemas/group.schema";
-import { PillAvatar } from "@/components/PillAvatar";
 import { MemberPill } from "./components/MemberPill";
 import { ChatInfoLayout } from "@/layouts/ChatInfoLayout";
 import { UserThumbnail } from "@/components/UserThumbnail";
@@ -20,10 +19,11 @@ type Props = {
   images: string[],
   profilePictures: ProfilePicture[],
   archiveFn: () => void,
+  removeMemberFn: (userId: UuidType, chatId: UuidType) => void,
   hideFn: () => void,
   titleFn: (id: UuidType, title: string) => void,
 }
-export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, titleFn }: Props) {
+export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, removeMemberFn, titleFn }: Props) {
   const [title, setTitle] = useState<string>(group.name);
   const activeRole = group.primaryMember.role;
   const [showMedia, setShowMedia] = useState<boolean>(false);
@@ -46,15 +46,16 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, t
       label={GroupLabel()}
       backFn={hideFn}
     >
-      <div className=" w-full flex flex-col gap-2 items-center p-3 ">
+      <div className=" w-full flex flex-col gap-1 items-center p-1 ">
         {group.primaryMember.role === "OWNER" ?
-          <div className="w-[50%] flex flex-col gap-2 ">
+          <div className="w-[60%] flex flex-col gap-2 ">
             <ProfilePictureComponent
               imgUrl={picture.imgUrl}
               fileInputRef={picture.inputRef}
               handlePicker={picture.togglePicker}
               handlePreview={picture.onFileSelected}
               handleDelete={picture.onDelete}
+              actionsClassName="gap-3"
             />
             {picture.showPicker &&
               <>
@@ -90,10 +91,10 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, t
           >{"Created on " + formatDate(new Date(group.createdAt), "long")}</p>
         </div>
       </div>
-      <div className="flex flex-col gap-4 px-3 py-3 [&_*]:text-bg2 [&_*]:text-sm">
+      <div className="flex flex-col gap-4 px-3 py-3 [&_*]:text-bg3 [&_*]:text-sm">
         <div className="flex justify-between">
           <label className="font-medium flex items-center gap-1" htmlFor="name">
-            <User className="size-[1rem]" />
+            <User className="size-[1em]" />
             Group Name
           </label>
           {
@@ -110,10 +111,10 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, t
               />
           }
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           <div className="flex justify-between">
             <label className="font-medium flex items-center gap-2">
-              <Image className="size-[1rem]" />
+              <Image className="size-[1em]" />
               Files
             </label>
             <Button
@@ -127,7 +128,7 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, t
           {
             showMedia &&
             <div className="grid grid-cols-4 w-full gap-2.5 p-2! bg-fg1 border-1 border-fg2 rounded-sm">
-              {images.map(url =>
+              {images.length ? images.map(url =>
                 <div
                   key={url}
                   className="size-full border-1 border-fg3 rounded-xs overflow-hidden">
@@ -136,30 +137,36 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, t
                     className="object-center size-full"
                   />
                 </div>
-              )}
+              ) :
+                <div className="h-[35px] flex items-center justify-center  col-span-full ">
+                  <p className="text-xs!">No shared media to display</p>
+                </div>
+              }
             </div>
           }
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           <label className="font-medium flex items-center gap-1">
-            <Users className="size-[1rem]" />
-            {`Members (${group.secondaryMembers.length + 1})`}
+            <Users className="size-[1em]" />
+            {`Members(${group.secondaryMembers.length + 1})`}
           </label>
-          <div className="flex flex-wrap flex-1 justify-evenly gap-x-4 gap-y-3.5 p-2! bg-fg1 border-1 border-fg2 rounded-sm">
-            <PillAvatar
-              name={group.primaryMember.name}
-              imgUrl={group.primaryMember.imgUrl!}
-              className="px-2.5! "
-              avatarClassname="size-[1.3em]"
-              titleClassname="text-fg2 font-black! underline decoration-[0.15em]"
+          <div className="flex flex-wrap flex-1 justify-around gap-y-4 gap-x-3
+          py-3! px-3.5! bg-fg2/50 border-1 border-fg4 rounded-sm">
+            <MemberPill
+              member={group.primaryMember}
+              primary={true}
             />
             {group.secondaryMembers.map((m) => (
-              <MemberPill key={m.id} member={m} activeRole={activeRole} />
+              <MemberPill
+                key={m.id}
+                member={m}
+                removeFn={group.primaryMember.role === "OWNER" ? () => removeMemberFn(m.id, group.id) : undefined}
+              />
             ))}
           </div>
         </div>
       </div>
-      <div className="flex p-3 mt-auto justify-between text-sm *:bg-transparent *:text-bg2 *:px-3 *:hover:bg-fg2/70 *:rounded-sm!">
+      <div className="flex p-3 mt-auto justify-between text-xs *:bg-transparent *:text-bg2 *:px-3 *:hover:bg-fg2/70 *:rounded-sm!">
         <Button
           className="font-medium hover:text-orange/90! px-4!"
           onClick={archiveFn}>
@@ -174,7 +181,7 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, t
             group.primaryMember.id === group.createdBy?.id ?
               <>
                 <Trash />
-                Delete Group
+                Delete
               </> :
               <>
                 <DoorOpen />

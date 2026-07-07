@@ -42,6 +42,8 @@ export function useHomeActions(
       submit({ intent: "toggleArchived", chatId }),
     openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),
     openGroup: (groupId: UuidType) => submit({ intent: "getGroup", groupId }),
+    removeGroupMember: (userId: UuidType, chatId: UuidType) =>
+      submit({ intent: "removeGroupMember", userId, chatId }),
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
     toggleBlocked: (contactId: UuidType) =>
       submit({ intent: "toggleBlocked", contactId }),

@@ -32,7 +32,7 @@ export function MainContent({
     emptyMain: isEmpty,
   } = nav;
 
-  const { toggleArchived, toggleBlocked, editNickname } = actions
+  const { toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions
 
 
   if (isEmpty) return (
@@ -70,6 +70,7 @@ export function MainContent({
         images={chat.messages.filter(m => m.type === "IMAGE").map(m => m.metadata!.url ?? null)}
         profilePictures={profilePictures}
         archiveFn={() => toggleArchived(chat.id)}
+        removeMemberFn={removeGroupMember}
         hideFn={closeInfo}
         titleFn={editNickname}
       />
