@@ -38,6 +38,8 @@ export function useHomeActions(
       image?: ValidImage,
       asset?: ProfilePicture,
     ) => submit({ intent: "createGroup", image, asset, group }),
+    editGroup: (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) =>
+      submit({ intent: "editGroup", image, asset, group }),
     toggleArchived: (chatId: UuidType) =>
       submit({ intent: "toggleArchived", chatId }),
     openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),

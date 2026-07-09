@@ -32,7 +32,7 @@ export function MainContent({
     emptyMain: isEmpty,
   } = nav;
 
-  const { toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions
+  const { editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions
 
 
   if (isEmpty) return (
@@ -72,7 +72,7 @@ export function MainContent({
         archiveFn={() => toggleArchived(chat.id)}
         removeMemberFn={removeGroupMember}
         hideFn={closeInfo}
-        titleFn={editNickname}
+        onEdit={editGroup}
       />
     )
   }

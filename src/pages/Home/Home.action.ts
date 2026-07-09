@@ -19,6 +19,7 @@ export type ActionReturn =
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatRes } }
   | { intent: "createGroup"; data: { chat: ChatRes } }
+  | { intent: "editGroup"; data: { chat: ChatRes } }
   | { intent: "toggleArchived" }
   | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
@@ -136,6 +137,29 @@ export async function HomeAction({
           });
         } else {
           response = await api.post<ChatRes>("api/group", group);
+        }
+
+        return { intent, data: { chat: response.data } };
+      }
+      case "editGroup": {
+        const { group, image, asset } = result;
+        if (!group) return { error: "Empty body" };
+
+        let response;
+
+        if (image instanceof File) {
+          response = await api.put<ChatRes>(
+            `api/group/${group.id}`,
+            { ...group, image },
+            { headers: { "Content-Type": "multipart/form-data" } },
+          );
+        } else if (asset) {
+          response = await api.put<ChatRes>(`api/group/${group.id}`, {
+            ...group,
+            asset,
+          });
+        } else {
+          response = await api.put<ChatRes>(`api/group/${group.id}`, group);
         }
 
         return { intent, data: { chat: response.data } };

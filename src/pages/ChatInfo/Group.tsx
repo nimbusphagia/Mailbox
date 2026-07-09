@@ -3,8 +3,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { DoorOpen, Image, Package, Trash, User, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import type { UuidType } from "@/lib/schemas/util.schema";
-import type { GroupRes } from "@/lib/schemas/group.schema";
+import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
+import type { GroupReq, GroupRes } from "@/lib/schemas/group.schema";
 import { MemberPill } from "./components/MemberPill";
 import { ChatInfoLayout } from "@/layouts/ChatInfoLayout";
 import { UserThumbnail } from "@/components/UserThumbnail";
@@ -21,10 +21,10 @@ type Props = {
   archiveFn: () => void,
   removeMemberFn: (userId: UuidType, chatId: UuidType) => void,
   hideFn: () => void,
-  titleFn: (id: UuidType, title: string) => void,
+  onEdit: (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) => void,
 }
-export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, removeMemberFn, titleFn }: Props) {
-  const [title, setTitle] = useState<string>(group.name);
+export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, removeMemberFn, onEdit }: Props) {
+  const [groupName, setGroupName] = useState<string>(group.name);
   const activeRole = group.primaryMember.role;
   const [showMedia, setShowMedia] = useState<boolean>(false);
   const picture = useProfilePictureEditor(profilePictures, group.imgUrl);
@@ -33,13 +33,27 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, r
     return (
       <UserThumbnail
         imgUrl={group.imgUrl ?? ""}
-        fullName={title}
+        fullName={groupName}
         className="gap-2!"
         textClassName="text-bg2! text-sm"
         avatarClassname="size-[1.8em] "
       />
     )
   }
+
+  const submitEdit = () => {
+    if (groupName === undefined) return;
+    const data: GroupReq = { name: groupName, members: [], id: group.id };
+
+    if (picture.image) {
+      onEdit(data, picture.image);
+    } else if (picture.selectedAsset) {
+      onEdit(data, undefined, picture.selectedAsset);
+    } else {
+      onEdit(data);
+    }
+  };
+
 
   return (
     <ChatInfoLayout
@@ -69,6 +83,7 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, r
                   <Button
                     className="text-bg3">Cancel</Button>
                   <Button
+                    onClick={submitEdit}
                     className="text-bg4 border-bg4!">Confirm</Button>
                 </div>
               </>
@@ -83,7 +98,7 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, r
         }
         <div className="h-25 font-bold flex flex-col gap-2 py-2 items-center">
           <AsciiRandom
-            text={title}
+            text={groupName}
             className="text-bg0!"
           />
           <p
@@ -99,14 +114,14 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, r
           </label>
           {
             activeRole === "MEMBER" ?
-              <p className="text-center min-w-[25%] w-fit">{title}</p> :
+              <p className="text-center min-w-[25%] w-fit">{groupName}</p> :
               <input
                 name="name"
                 id="name"
                 placeholder="Insert a group name"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onBlur={() => titleFn(group.id, title)}
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+                onBlur={submitEdit}
                 className="bg-fg2/30 text-center min-w-[25%] flex-0 rounded-sm p-0.5"
               />
           }

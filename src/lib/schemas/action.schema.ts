@@ -14,6 +14,7 @@ export const HOME_INTENTS = [
   "toggleArchived",
   "getChat",
   "getGroup",
+  "editGroup",
   "getContact",
   "removeGroupMember",
   "toggleBlocked",

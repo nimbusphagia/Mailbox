@@ -72,6 +72,10 @@ export function useHomeFetcher({
         onMessage("Created new group chat.");
         onChatCreated(d.data.chat);
       },
+      editGroup: () => {
+        const d = data as Extract<ActionReturn, { intent: "editGroup" }>;
+        onChatCreated(d.data.chat);
+      },
       removeGroupMember: () => {
         const d = data as Extract<
           ActionReturn,
