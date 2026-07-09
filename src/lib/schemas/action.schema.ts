@@ -3,9 +3,11 @@ import { ImageSchema, UuidSchema } from "./util.schema";
 import { MessageCreateSchema } from "./message.schema";
 import { GroupReqSchema } from "./group.schema";
 import { ProfilePictureSchema } from "./assets.schema";
+import { SafeUserSchema } from "./user.schema";
 
 export const HOME_INTENTS = [
   "getMe",
+  "editProfile",
   "getUsers",
   "getContacts",
   "createChat",
@@ -25,6 +27,7 @@ export const HOME_INTENTS = [
 
 export const ActionSchema = z.object({
   intent: z.enum(HOME_INTENTS),
+  user: SafeUserSchema.optional(),
   userId: UuidSchema.optional(),
   memberId: UuidSchema.optional(),
   contactId: UuidSchema.optional(),

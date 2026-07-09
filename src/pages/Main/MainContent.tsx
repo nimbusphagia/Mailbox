@@ -32,7 +32,7 @@ export function MainContent({
     emptyMain: isEmpty,
   } = nav;
 
-  const { editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions
+  const { editProfile, editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions
 
 
   if (isEmpty) return (
@@ -49,6 +49,7 @@ export function MainContent({
     <ProfilePage
       user={user}
       profilePictures={profilePictures}
+      onEdit={editProfile}
     />
   )
   if (chat) {

@@ -8,12 +8,14 @@ import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor"
 import type { ProfilePicture } from "@/lib/schemas/assets.schema"
 import { ProfilePictureComponent } from "@/components/ProfilePicture"
 import { PicturePicker } from "@/components/PicturePicker"
+import type { ValidImage } from "@/lib/schemas/util.schema"
 
 type Props = {
   user: SafeUser,
   profilePictures: ProfilePicture[],
+  onEdit: (user: SafeUser, image?: ValidImage, asset?: ProfilePicture) => void,
 }
-export function ProfilePage({ user, profilePictures }: Props) {
+export function ProfilePage({ user, profilePictures, onEdit }: Props) {
   const [name, setName] = useState<string>(user.name);
   const [username, setUsername] = useState<string>(user.username);
   const picture = useProfilePictureEditor(profilePictures, user.imgUrl, true);
@@ -22,7 +24,18 @@ export function ProfilePage({ user, profilePictures }: Props) {
     picture.onDelete();
     picture.togglePicker();
   }
-  function submitCreate() { }
+  const submitEdit = () => {
+    if (user.name === undefined) return;
+    const data: SafeUser = { ...user, username, name, };
+
+    if (picture.image) {
+      onEdit(data, picture.image);
+    } else if (picture.selectedAsset) {
+      onEdit(data, undefined, picture.selectedAsset);
+    } else {
+      onEdit(data);
+    }
+  };
 
   return (
     <div
@@ -70,7 +83,10 @@ export function ProfilePage({ user, profilePictures }: Props) {
                   onClick={cancelPictureChange}
                   className="text-bg3">Cancel</Button>
                 <Button
-                  onClick={submitCreate}
+                  onClick={() => {
+                    picture.togglePicker();
+                    submitEdit();
+                  }}
                   className="text-bg4 border-bg4!">Confirm</Button>
               </div>
             </>
@@ -90,6 +106,7 @@ export function ProfilePage({ user, profilePictures }: Props) {
               placeholder="Your Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              onBlur={submitEdit}
             />
           </Field>
           <Field orientation="horizontal">
@@ -100,6 +117,7 @@ export function ProfilePage({ user, profilePictures }: Props) {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onBlur={submitEdit}
               placeholder="@your_username"
             />
           </Field>

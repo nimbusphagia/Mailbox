@@ -6,6 +6,7 @@ import type { MessageCreate } from "@/lib/schemas/message.schema";
 import type { GroupReq } from "@/lib/schemas/group.schema";
 import type { Action } from "@/lib/schemas/action.schema";
 import type { ProfilePicture } from "@/lib/schemas/assets.schema";
+import type { SafeUser } from "@/lib/schemas/user.schema";
 
 export type homeActionsReturn = ReturnType<typeof useHomeActions>;
 
@@ -29,6 +30,9 @@ export function useHomeActions(
 
   return {
     getMe: () => submit({ intent: "getMe" }),
+    editProfile: (user: SafeUser, image?: ValidImage, asset?: ProfilePicture) =>
+      submit({ intent: "editProfile", image, asset, user }),
+
     loadUsers: () => submit({ intent: "getUsers" }),
     addContact: (userId: UuidType) => submit({ intent: "addContact", userId }),
     createChat: (contactId: UuidType) =>

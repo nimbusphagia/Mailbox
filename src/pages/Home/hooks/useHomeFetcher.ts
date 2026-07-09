@@ -45,6 +45,10 @@ export function useHomeFetcher({
         const d = data as Extract<ActionReturn, { intent: "getMe" }>;
         onProfileOpened(d.data.user);
       },
+      editProfile: () => {
+        const d = data as Extract<ActionReturn, { intent: "editProfile" }>;
+        onProfileOpened(d.data.user);
+      },
       getUsers: () => {
         const d = data as Extract<ActionReturn, { intent: "getUsers" }>;
         onRefreshUsers(d.data.contacts, d.data.users);

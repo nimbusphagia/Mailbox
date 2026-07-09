@@ -15,6 +15,7 @@ import { type GroupRes } from "@/lib/schemas/group.schema";
 
 export type ActionReturn =
   | { intent: "getMe"; data: { user: SafeUser } }
+  | { intent: "editProfile"; data: { user: SafeUser } }
   | { intent: "getContacts"; data: ContactType[] }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatRes } }
@@ -51,6 +52,30 @@ export async function HomeAction({
           data: { user: response.data },
         };
       }
+      case "editProfile": {
+        const { user, image, asset } = result;
+        if (!user) return { error: "Empty body" };
+
+        let response;
+
+        if (image instanceof File) {
+          response = await api.patch<SafeUser>(
+            `api/user/${user.id}`,
+            { ...user, image },
+            { headers: { "Content-Type": "multipart/form-data" } },
+          );
+        } else if (asset) {
+          response = await api.patch<SafeUser>(`api/user/${user.id}`, {
+            ...user,
+            asset,
+          });
+        } else {
+          response = await api.patch<SafeUser>(`api/user/${user.id}`, user);
+        }
+
+        return { intent, data: { user: response.data } };
+      }
+
       case "getContacts": {
         const response: AxiosResponse<ContactType[]> =
           await api.get<ContactType[]>("api/user/contact");
