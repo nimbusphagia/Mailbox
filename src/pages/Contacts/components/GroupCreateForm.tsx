@@ -37,7 +37,7 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
   };
 
   return (
-    <div className={`text-center font-bold flex flex-col p-2 gap-2 h-full
+    <div className={`text-center font-bold flex flex-col p-2 gap-2 flex-1
       *:rounded-sm *:border-[1px]
       `}>
       <header className=" border-fg4 text-sm font-light p-1.5 text-bg4">
@@ -67,26 +67,28 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
             onChange={(e) => setGroupName(e.currentTarget.value)}
           />
         </div>
-        <div className="flex flex-wrap gap-2 rounded-sm p-2 border-[1px] overflow-y-scroll">
+        <div className="flex-1 flex flex-wrap content-start justify-between items-start gap-4 rounded-sm py-3 pl-3.5 pr-4.5 
+        border-[1px] overflow-y-scroll overflow-x-hidden scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {members.map(c =>
             c.user &&
             <PillAvatar
               key={c.id}
               name={c.nickname ?? c.user.name}
               imgUrl={c.user.imgUrl!}
-              className="px-2! gap-2! items-center"
+              className="h-fit px-2! gap-2!"
               avatarClassname="size-[1.5em]"
             >
               <Button
-                className="size-fit p-1 bg-transparent border-none"
+                className="absolute size-fit -right-3.5 -top-1.5 bg-fg2 border-bg3 rounded-full
+          p-[4.5px] flex hover:bg-fg0 hover:text-bg1!"
                 onClick={() => onUnselectMember(c.user!.id)}
               >
-                <Trash2 className="text-bg2 size-[0.9rem]" />
+                <Trash2 className="size-[0.65em]" color="var(--color-bg3)" />
               </Button>
             </PillAvatar>
           )}
         </div>
-        <div className="flex justify-between mt-auto *:text-xs">
+        <div className="h-fit flex justify-between mt-auto *:text-xs">
           <Button onClick={onReturn} className="text-bg3">Return</Button>
           <Button onClick={submitCreate} className="text-bg4 border-bg4!">Create</Button>
         </div>
