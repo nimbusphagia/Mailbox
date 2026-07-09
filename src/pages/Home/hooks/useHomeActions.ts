@@ -44,12 +44,16 @@ export function useHomeActions(
     ) => submit({ intent: "createGroup", image, asset, group }),
     editGroup: (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) =>
       submit({ intent: "editGroup", image, asset, group }),
+    deleteGroup: (groupId: UuidType) =>
+      submit({ intent: "deleteGroup", groupId }),
     toggleArchived: (chatId: UuidType) =>
       submit({ intent: "toggleArchived", chatId }),
     openChat: (chatId: UuidType) => submit({ intent: "getChat", chatId }),
     openGroup: (groupId: UuidType) => submit({ intent: "getGroup", groupId }),
     removeGroupMember: (userId: UuidType, chatId: UuidType) =>
       submit({ intent: "removeGroupMember", userId, chatId }),
+    leaveGroup: (chatId: UuidType) => submit({ intent: "leaveGroup", chatId }),
+
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
     toggleBlocked: (contactId: UuidType) =>
       submit({ intent: "toggleBlocked", contactId }),

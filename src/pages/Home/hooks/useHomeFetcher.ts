@@ -80,6 +80,12 @@ export function useHomeFetcher({
         const d = data as Extract<ActionReturn, { intent: "editGroup" }>;
         onChatCreated(d.data.chat);
       },
+      deleteGroup: () => {
+        onChatClosed();
+      },
+      leaveGroup: () => {
+        onChatClosed();
+      },
       removeGroupMember: () => {
         const d = data as Extract<
           ActionReturn,

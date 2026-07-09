@@ -20,10 +20,21 @@ type Props = {
   profilePictures: ProfilePicture[],
   archiveFn: () => void,
   removeMemberFn: (userId: UuidType, chatId: UuidType) => void,
+  leaveGroupFn: (chatId: UuidType) => void,
+  deleteGroupFn: (chatId: UuidType) => void,
   hideFn: () => void,
   onEdit: (group: GroupReq, image?: ValidImage, asset?: ProfilePicture) => void,
 }
-export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, removeMemberFn, onEdit }: Props) {
+export function GroupPage({
+  group,
+  profilePictures,
+  images,
+  archiveFn,
+  hideFn,
+  leaveGroupFn,
+  deleteGroupFn,
+  removeMemberFn,
+  onEdit }: Props) {
   const [groupName, setGroupName] = useState<string>(group.name);
   const activeRole = group.primaryMember.role;
   const [showMedia, setShowMedia] = useState<boolean>(false);
@@ -190,7 +201,8 @@ export function GroupPage({ group, profilePictures, images, archiveFn, hideFn, r
         </Button>
         <Button
           className="font-medium hover:text-red! px-4!"
-          onClick={() => null}
+          onClick={() => group.primaryMember.id === group.createdBy?.id ?
+            deleteGroupFn(group.id) : leaveGroupFn(group.id)}
         >
           {
             group.primaryMember.id === group.createdBy?.id ?

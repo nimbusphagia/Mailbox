@@ -21,9 +21,11 @@ export type ActionReturn =
   | { intent: "createChat"; data: { chat: ChatRes } }
   | { intent: "createGroup"; data: { chat: ChatRes } }
   | { intent: "editGroup"; data: { chat: ChatRes } }
+  | { intent: "deleteGroup" }
   | { intent: "toggleArchived" }
   | { intent: "getChat"; data: { chat: ChatRes } }
   | { intent: "getGroup"; data: { group: GroupRes } }
+  | { intent: "leaveGroup" }
   | { intent: "removeGroupMember"; data: { group: GroupRes } }
   | { intent: "getContact"; data: { contact: ContactType } }
   | {
@@ -188,6 +190,18 @@ export async function HomeAction({
         }
 
         return { intent, data: { chat: response.data } };
+      }
+      case "deleteGroup": {
+        const { groupId } = result;
+        await api.delete(`api/group/${groupId}`);
+        return { intent };
+      }
+      case "leaveGroup": {
+        const { chatId } = result;
+        await api.delete(`api/group/leave/${chatId}`);
+        return {
+          intent,
+        };
       }
       case "getChat": {
         const { chatId } = result;
