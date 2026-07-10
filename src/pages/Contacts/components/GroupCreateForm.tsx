@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import { PillAvatar } from "@/components/PillAvatar";
 import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor";
 import type { ContactType } from "@/lib/schemas/contact.schema";
@@ -67,7 +67,7 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
             onChange={(e) => setGroupName(e.currentTarget.value)}
           />
         </div>
-        <div className="flex-1 flex flex-wrap content-start justify-between items-start gap-4 rounded-sm py-3 pl-3.5 pr-4.5 
+        <div className="flex-1 flex flex-wrap content-start justify-around items-start gap-4 gap-y-3 rounded-sm py-3 pl-3 pr-4 
         border-[1px] overflow-y-scroll overflow-x-hidden scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {members.map(c =>
             c.user &&
@@ -79,18 +79,18 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
               avatarClassname="size-[1.5em]"
             >
               <Button
-                className="absolute size-fit -right-3.5 -top-1.5 bg-fg2 border-bg3 rounded-full
-          p-[4.5px] flex hover:bg-fg0 hover:text-bg1!"
+                className="absolute size-fit -right-3.5 -top-1.5 bg-fg2 border-fg4! rounded-full
+          p-[3.5px] flex text-bg3 hover:text-bg2!"
                 onClick={() => onUnselectMember(c.user!.id)}
               >
-                <Trash2 className="size-[0.65em]" color="var(--color-bg3)" />
+                <X className="size-[0.65em] " strokeWidth={2.5} />
               </Button>
             </PillAvatar>
           )}
         </div>
         <div className="h-fit flex justify-between mt-auto *:text-xs">
-          <Button onClick={onReturn} className="text-bg3">Return</Button>
-          <Button onClick={submitCreate} className="text-bg4 border-bg4!">Create</Button>
+          <Button onClick={onReturn} className="text-bg3 rounded-sm">Return</Button>
+          <Button onClick={submitCreate} className="text-bg4 border-bg4! rounded-sm">Create</Button>
         </div>
       </main >
     </div >

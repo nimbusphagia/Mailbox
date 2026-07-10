@@ -28,12 +28,12 @@ export function BlockedContacts({ contacts, unblockFn }: Props) {
       </header>
       <main
         className="relative border-1 border-fg4 h-full p-3
-        bg-fg2/30 flex flex-col items-center gap-12 overflow-y-scroll 
+        bg-fg2/30 flex flex-col items-center justify-center gap-12 overflow-y-scroll 
         [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
         "
       >
-        <div className=" w-[100%] *:w-[90%] h-full flex flex-col justify-center items-center gap-4">
-          <div className="h-[80%] flex gap-6 border-[1px] border-fg3 bg-fg2 p-4 rounded-sm overflow-y-scroll
+        <div className=" w-[100%] *:w-[95%] h-[92%] flex flex-col justify-between items-center gap-6">
+          <div className="h-[95%] flex gap-6 border-[1px] border-fg3 bg-fg2 p-4 rounded-sm overflow-y-scroll
           [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {contacts.length ? contacts.map((c) => {
               if (!c.user) return null;
