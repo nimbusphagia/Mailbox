@@ -17,6 +17,7 @@ export type ActionReturn =
   | { intent: "getMe"; data: { user: SafeUser } }
   | { intent: "editProfile"; data: { user: SafeUser } }
   | { intent: "getContacts"; data: ContactType[] }
+  | { intent: "getBlockedContacts"; data: { contacts: ContactType[] } }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatRes } }
   | { intent: "createGroup"; data: { chat: ChatRes } }
@@ -236,6 +237,15 @@ export async function HomeAction({
         return {
           intent,
           data: { contact: response.data },
+        };
+      }
+      case "getBlockedContacts": {
+        const response = await api.get<ContactType[]>(
+          `api/user/contact/blocked`,
+        );
+        return {
+          intent,
+          data: { contacts: response.data },
         };
       }
       case "createMessage": {

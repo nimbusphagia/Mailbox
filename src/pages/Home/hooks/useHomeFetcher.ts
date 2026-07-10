@@ -15,6 +15,7 @@ interface UseHomeFetcherProps {
   onChatClosed: () => void;
   onChatCreated: (chat: ChatRes) => void;
   onContactOpened: (contact: ContactType) => void;
+  onBlockedContactsOpened: (contacts: ContactType[]) => void;
   onProfileOpened: (user: SafeUser) => void;
 }
 
@@ -26,6 +27,7 @@ export function useHomeFetcher({
   onChatClosed,
   onChatCreated,
   onContactOpened,
+  onBlockedContactsOpened,
   onProfileOpened,
 }: UseHomeFetcherProps) {
   const fetcher = useFetcher<ActionReturn | ErrorMessage>();
@@ -109,6 +111,13 @@ export function useHomeFetcher({
       getContact: () => {
         const d = data as Extract<ActionReturn, { intent: "getContact" }>;
         onContactOpened(d.data.contact);
+      },
+      getBlockedContacts: () => {
+        const d = data as Extract<
+          ActionReturn,
+          { intent: "getBlockedContacts" }
+        >;
+        onBlockedContactsOpened(d.data.contacts);
       },
       editNickname: () => {
         const d = data as Extract<ActionReturn, { intent: "editNickname" }>;

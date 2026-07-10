@@ -17,12 +17,12 @@ type SidebarProps = {
   toggleSidebar: () => void,
   isHidden: boolean,
 }
-type SidebarView = "chats" | "archived" | "contacts" | "profile";
+export type SidebarView = "chats" | "archived" | "contacts" | "config";
 
 export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const { chats, groups, archived, assets } = data;
   const { loadUsers, addContact, createChat, createGroup, logout } = nav.actions;
-  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile } = nav;
+  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile, showBlockedContacts } = nav;
   const [query, setQuery] = useState<string>("");
   const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
   const [view, setView] = useState<SidebarView>("chats");
@@ -84,10 +84,10 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
     if (view === "contacts") closeContacts();
     setView(regular ? "chats" : "archived")
   }
-  const openProfile = () => {
+  const openConfig = () => {
     showProfile();
     setShowSearchbar(false);
-    setView("profile");
+    setView("config");
   }
 
   const mainContent = {
@@ -120,9 +120,9 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
       }}
       showSearchbar={(val: boolean) => setShowSearchbar(val)}
     />,
-    profile: <ConfigPanel
+    config: <ConfigPanel
       showProfile={showProfile}
-      showBlocked={() => null}
+      showBlocked={showBlockedContacts}
       logoutFn={logout}
 
     />,
@@ -135,9 +135,10 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
         <aside className="flex flex-col m-2 overflow-hidden">
           <SidebarHeader
             toggleSidebar={toggleSidebar}
-            openProfile={openProfile}
+            openConfig={openConfig}
             openChatList={openChatList}
             openContacts={openContacts}
+            active={view}
           />
           <SidebarMainLayout
             query={query}

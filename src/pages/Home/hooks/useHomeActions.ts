@@ -55,6 +55,7 @@ export function useHomeActions(
     leaveGroup: (chatId: UuidType) => submit({ intent: "leaveGroup", chatId }),
 
     getContact: (userId: UuidType) => submit({ intent: "getContact", userId }),
+    getBlockedContacts: () => submit({ intent: "getBlockedContacts" }),
     toggleBlocked: (contactId: UuidType) =>
       submit({ intent: "toggleBlocked", contactId }),
     createMessage: (message: MessageCreate, image?: ValidImage) =>

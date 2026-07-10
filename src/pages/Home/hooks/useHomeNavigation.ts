@@ -6,9 +6,26 @@ import type { GroupRes } from "@/lib/schemas/group.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
 import type { UuidType } from "@/lib/schemas/util.schema";
 import type { HomeLoaderReturn } from "../Home.loader";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 
 export type AllUsers = { contacts: ContactType[]; users: SafeUser[] };
+
+type MainView =
+  | { screen: "empty" }
+  | { screen: "profile"; user: SafeUser }
+  | { screen: "blockedContacts"; contacts: ContactType[] }
+  | { screen: "chat"; chat: ChatRes | GroupRes }
+  | { screen: "contactInfo"; chat: ChatRes; contact: ContactType }
+  | { screen: "groupInfo"; chat: GroupRes };
+
+type ViewAction =
+  | { type: "OPEN_CHAT"; chat: ChatRes | GroupRes }
+  | { type: "OPEN_CONTACT_INFO"; contact: ContactType }
+  | { type: "OPEN_BLOCKED_CONTACTS"; contacts: ContactType[] }
+  | { type: "SHOW_GROUP_INFO" }
+  | { type: "HIDE_INFO" }
+  | { type: "OPEN_PROFILE"; user: SafeUser }
+  | { type: "CLEAR" };
 
 type NavigationCallbacks = {
   onError: (msg: string) => void;
@@ -21,39 +38,21 @@ export function useHomeNavigation(
   loaderData: HomeLoaderReturn,
   { onError, onMessage }: NavigationCallbacks,
 ) {
-  const [userInfo, setUserInfo] = useState<SafeUser | null>(loaderData.user);
-  const [activeChat, setActiveChat] = useState<ChatRes | GroupRes | null>(null);
-  const [activeContact, setActiveContact] = useState<ContactType | null>(null);
-  const [showInfo, setShowInfo] = useState(false);
-  const [showUserInfo, setShowUserInfo] = useState(false);
-  const emptyMain = !activeChat && !showUserInfo && !showInfo;
+  const [view, dispatch] = useReducer(viewReducer, {
+    screen: "empty",
+  } as MainView);
   const [allUsers, setAllUsers] = useState<AllUsers>({
     contacts: [],
     users: [],
   });
 
-  const closeInfo = () => setShowInfo(false);
-
-  const clearMain = () => {
-    setActiveChat(null);
-    setActiveContact(null);
-    setShowInfo(false);
-    setShowUserInfo(false);
-  };
-
   const fetcher = useHomeFetcher({
-    onChatOpened: (chat) => {
-      clearMain();
-      setActiveChat(chat);
-    },
-    onChatCreated: (chat) => {
-      clearMain();
-      setActiveChat(chat);
-    },
-    onContactOpened: (contact) => {
-      setShowInfo(true);
-      setActiveContact(contact);
-    },
+    onChatOpened: (chat) => dispatch({ type: "OPEN_CHAT", chat }),
+    onChatCreated: (chat) => dispatch({ type: "OPEN_CHAT", chat }),
+    onContactOpened: (contact) =>
+      dispatch({ type: "OPEN_CONTACT_INFO", contact }),
+    onBlockedContactsOpened: (contacts) =>
+      dispatch({ type: "OPEN_BLOCKED_CONTACTS", contacts }),
     onRefreshUsers: (contacts, users) => {
       const contactUserIds = new Set(
         contacts.map((c) => c.user?.id || c.isBlocked),
@@ -63,68 +62,74 @@ export function useHomeNavigation(
       );
       setAllUsers({ contacts, users: filtered });
     },
-    onProfileOpened: (user) => {
-      clearMain();
-      setShowUserInfo(true);
-      setUserInfo(user);
-    },
-    onChatClosed: () => {
-      clearMain();
-    },
+    onProfileOpened: (user) => dispatch({ type: "OPEN_PROFILE", user }),
+    onChatClosed: () => dispatch({ type: "CLEAR" }),
     onError,
     onMessage,
   });
+
   const actions = useHomeActions(fetcher);
 
-  const showProfile = () => {
-    actions.getMe();
-  };
-  const hideProfile = () => {
-    setShowUserInfo(false);
-    setUserInfo(null);
-  };
-  const openChat = (id: UuidType) => {
-    actions.openChat(id);
-  };
-
-  const openGroup = (id: UuidType) => {
-    actions.openGroup(id);
-  };
-
-  const closeChat = () => {
-    setActiveChat(null);
-  };
-
-  const openContact = (id: UuidType) => {
-    actions.getContact(id);
-  };
-
-  const closeContact = (chatId: UuidType) => {
-    actions.openChat(chatId);
-  };
-  const unloadAllUsers = () => {
-    setAllUsers({ contacts: [], users: [] });
-  };
+  const showProfile = () => actions.getMe();
+  const hideProfile = () => dispatch({ type: "CLEAR" });
+  const openChat = (id: UuidType) => actions.openChat(id);
+  const openGroup = (id: UuidType) => actions.openGroup(id);
+  const closeChat = () => dispatch({ type: "CLEAR" });
+  const openContact = (id: UuidType) => actions.getContact(id);
+  const closeContact = (chatId: UuidType) => actions.openChat(chatId);
+  const showGroupInfo = () => dispatch({ type: "SHOW_GROUP_INFO" });
+  const hideInfo = () => dispatch({ type: "HIDE_INFO" });
+  const unloadAllUsers = () => setAllUsers({ contacts: [], users: [] });
+  const showBlockedContacts = () => actions.getBlockedContacts();
 
   return {
-    showProfile,
-    hideProfile,
-    activeChat,
-    activeContact,
-    userInfo,
-    showUserInfo,
-    showInfo,
-    setShowInfo,
-    closeInfo,
+    view,
     allUsers,
     unloadAllUsers,
     actions,
+    showProfile,
+    hideProfile,
     openChat,
     openGroup,
     openContact,
+    showBlockedContacts,
     closeChat,
     closeContact,
-    emptyMain,
-    isLoading: fetcher.state !== "idle" && !emptyMain,
+    showGroupInfo,
+    hideInfo,
+    isLoading: fetcher.state !== "idle" && view.screen !== "empty",
   };
+}
+
+function viewReducer(state: MainView, action: ViewAction): MainView {
+  switch (action.type) {
+    case "OPEN_CHAT":
+      return { screen: "chat", chat: action.chat };
+
+    case "OPEN_CONTACT_INFO":
+      if (state.screen !== "chat") return state;
+      return {
+        screen: "contactInfo",
+        chat: state.chat as ChatRes,
+        contact: action.contact,
+      };
+    case "OPEN_BLOCKED_CONTACTS":
+      return { screen: "blockedContacts", contacts: action.contacts };
+
+    case "SHOW_GROUP_INFO":
+      if (state.screen !== "chat" || !state.chat.isGroup) return state;
+      return { screen: "groupInfo", chat: state.chat as GroupRes };
+
+    case "HIDE_INFO":
+      if (state.screen === "contactInfo" || state.screen === "groupInfo") {
+        return { screen: "chat", chat: state.chat };
+      }
+      return state;
+
+    case "OPEN_PROFILE":
+      return { screen: "profile", user: action.user };
+
+    case "CLEAR":
+      return { screen: "empty" };
+  }
 }

@@ -24,6 +24,7 @@ export const HOME_INTENTS = [
   "toggleBlocked",
   "createMessage",
   "editNickname",
+  "getBlockedContacts",
   "logout",
 ] as const;
 
