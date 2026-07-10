@@ -1,5 +1,5 @@
 import z from "zod";
-import { PasswordSchema, UsernameSchema } from "./util.schema";
+import { PasswordSchema, UsernameSchema, UuidSchema } from "./util.schema";
 
 export const LoginSchema = z.object({
   username: UsernameSchema,
@@ -19,3 +19,15 @@ export const RegisterSchema = z
     path: ["confirmPassword"],
   });
 export type RegisterInput = z.infer<typeof RegisterSchema>;
+export const PasswordChangeSchema = z
+  .object({
+    userId: UuidSchema,
+    currentPassword: PasswordSchema,
+    newPassword: PasswordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+export type PasswordChange = z.infer<typeof PasswordChangeSchema>;

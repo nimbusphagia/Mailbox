@@ -15,7 +15,7 @@ type Props = {
 
 export function MainContent({ nav, profilePictures }: Props) {
   const { view, actions, closeChat, hideInfo } = nav;
-  const { deleteGroup, leaveGroup, editProfile, editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions;
+  const { changePassword, deleteGroup, leaveGroup, editProfile, editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions;
 
   switch (view.screen) {
     case "empty":
@@ -29,7 +29,12 @@ export function MainContent({ nav, profilePictures }: Props) {
       );
 
     case "profile":
-      return <ProfilePage user={view.user} profilePictures={profilePictures} onEdit={editProfile} />;
+      return <ProfilePage
+        user={view.user}
+        profilePictures={profilePictures}
+        onEdit={editProfile}
+        changePasswordFn={changePassword}
+      />;
 
     case "contactInfo":
       return (

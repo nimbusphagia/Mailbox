@@ -3,22 +3,32 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { KeyRound, UserRoundPen } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useProfilePictureEditor } from "@/hooks/useProfilePictureEditor"
 import type { ProfilePicture } from "@/lib/schemas/assets.schema"
 import { ProfilePictureComponent } from "@/components/ProfilePicture"
 import { PicturePicker } from "@/components/PicturePicker"
-import type { ValidImage } from "@/lib/schemas/util.schema"
+import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
+import { PasswordChange } from "./PasswordChange"
 
 type Props = {
   user: SafeUser,
   profilePictures: ProfilePicture[],
   onEdit: (user: SafeUser, image?: ValidImage, asset?: ProfilePicture) => void,
+  changePasswordFn: (userId: UuidType, currentP: string, newP: string, confirmP: string) => void,
 }
-export function ProfilePage({ user, profilePictures, onEdit }: Props) {
+export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }: Props) {
   const [name, setName] = useState<string>(user.name);
   const [username, setUsername] = useState<string>(user.username);
-  const picture = useProfilePictureEditor(profilePictures, user.imgUrl, true);
+  const picture = useProfilePictureEditor(profilePictures, user.imgUrl);
+  const [showPM, setShowPM] = useState<boolean>(false);
+  const pmRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (showPM) {
+      pmRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [showPM]);
 
   function cancelPictureChange() {
     picture.onDelete();
@@ -36,6 +46,10 @@ export function ProfilePage({ user, profilePictures, onEdit }: Props) {
       onEdit(data);
     }
   };
+  const submitPasswordChange = (currentP: string, newP: string, confirmP: string) => {
+    changePasswordFn(user.id, currentP, newP, confirmP);
+    setShowPM(false);
+  }
 
   return (
     <div
@@ -122,11 +136,21 @@ export function ProfilePage({ user, profilePictures, onEdit }: Props) {
             />
           </Field>
         </FieldGroup>
-        <div >
-          <Button className="text-bg3 font-normal text-[13px] gap-3 border-fg4 rounded-sm">
-            Change password
-            <KeyRound strokeWidth={1.3} />
-          </Button>
+        <div className="w-full flex items-center justify-center">
+          {showPM ?
+            <PasswordChange
+              onSubmit={submitPasswordChange}
+              hideFn={() => setShowPM(false)}
+              ref={pmRef}
+            /> :
+            <Button
+              className="text-bg3 font-normal text-[13px] gap-3 border-fg4 rounded-sm"
+              onClick={() => setShowPM(true)}
+            >
+              Change password
+              <KeyRound strokeWidth={1.3} />
+            </Button>
+          }
         </div>
       </main>
     </div>

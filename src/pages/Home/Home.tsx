@@ -5,21 +5,26 @@ import { useHomeNavigation } from "./hooks/useHomeNavigation"
 import type { HomeLoaderReturn } from "./Home.loader"
 import { useLoaderData } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { MessagePill } from "@/components/MessagePill"
 
+export type Message = {
+  type: "error" | "success" | "any",
+  body?: string,
+}
 export function Home() {
-  const loaderData = useLoaderData<HomeLoaderReturn>()
-  const [flash, setFlash] = useState<string | undefined>()
-  const [showSB, setShowSB] = useState(true)
+  const loaderData = useLoaderData<HomeLoaderReturn>();
+  const [message, setMessage] = useState<Message | null>();
+  const [showSB, setShowSB] = useState(true);
 
   useEffect(() => {
-    if (!flash) return
-    const t = setTimeout(() => setFlash(undefined), 8000)
+    if (!message) return
+    const t = setTimeout(() => setMessage(null), 80000)
     return () => clearTimeout(t)
-  }, [flash])
+  }, [message])
 
   const nav = useHomeNavigation(loaderData, {
-    onError: setFlash,
-    onMessage: setFlash,
+    onError: (msg: string) => setMessage({ type: "error", body: msg }),
+    onMessage: (msg: string) => setMessage({ type: "success", body: msg }),
   })
 
   return (
@@ -35,6 +40,12 @@ export function Home() {
         profilePictures={loaderData.assets.profilePictures}
         nav={nav}
       />
+      {message &&
+        <MessagePill
+          message={message}
+          className="absolute right-5 bottom-5 m-2 min-w-[100px]"
+        />
+      }
     </MainLayout>
   )
 }

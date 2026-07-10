@@ -16,7 +16,7 @@ export function SafeParseForm<T extends ZodRawShape>(
 ): ErrorMessage | z.infer<ZodObject<T>> {
   const result = schema.safeParse(Object.fromEntries(data));
   if (!result.success) {
-    return { error: "Error: " + result.error.issues[0].message };
+    return { error: result.error.issues[0].message };
   }
   return result.data;
 }
@@ -26,7 +26,7 @@ export function SafeParseJSON<T extends ZodRawShape>(
 ): ErrorMessage | z.infer<ZodObject<T>> {
   const result = schema.safeParse(data);
   if (!result.success) {
-    return { error: "Error: " + result.error.issues[0].message };
+    return { error: result.error.issues[0].message };
   }
   return result.data;
 }
@@ -47,7 +47,7 @@ export async function SafeParseRequest<T extends ZodRawShape>(
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    return { error: "Error: " + result.error.issues[0].message };
+    return { error: result.error.issues[0].message };
   }
 
   return result.data;

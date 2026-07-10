@@ -1,5 +1,5 @@
 import z from "zod";
-import { ImageSchema, UuidSchema } from "./util.schema";
+import { ImageSchema, PasswordSchema, UuidSchema } from "./util.schema";
 import { MessageCreateSchema } from "./message.schema";
 import { GroupReqSchema } from "./group.schema";
 import { ProfilePictureSchema } from "./assets.schema";
@@ -25,6 +25,7 @@ export const HOME_INTENTS = [
   "createMessage",
   "editNickname",
   "getBlockedContacts",
+  "changePassword",
   "logout",
 ] as const;
 
@@ -46,6 +47,9 @@ export const ActionSchema = z.object({
     .optional(),
   image: ImageSchema.optional(),
   asset: ProfilePictureSchema.optional(),
+  currentPassword: PasswordSchema.optional(),
+  confirmPassword: PasswordSchema.optional(),
+  newPassword: PasswordSchema.optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

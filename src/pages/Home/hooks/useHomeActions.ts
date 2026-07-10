@@ -63,6 +63,19 @@ export function useHomeActions(
     editNickname: (userId: UuidType, nickname: string | null) =>
       submit({ intent: "editNickname", userId, nickname }),
     logout: () => submit({ intent: "logout" }),
+    changePassword: (
+      userId: UuidType,
+      currentPassword: string,
+      newPassword: string,
+      confirmPassword: string,
+    ) =>
+      submit({
+        intent: "changePassword",
+        userId,
+        currentPassword,
+        confirmPassword,
+        newPassword,
+      }),
   };
 }
 

@@ -12,6 +12,7 @@ import {
 import type { AxiosResponse } from "axios";
 import { redirect, type ActionFunctionArgs } from "react-router-dom";
 import { type GroupRes } from "@/lib/schemas/group.schema";
+import { PasswordChangeSchema } from "@/lib/schemas/auth.schema";
 
 export type ActionReturn =
   | { intent: "getMe"; data: { user: SafeUser } }
@@ -38,7 +39,8 @@ export type ActionReturn =
   | {
       intent: "addContact";
       data: { users: SafeUser[]; contacts: ContactType[] };
-    };
+    }
+  | { intent: "changePassword" };
 
 export async function HomeAction({
   request,
@@ -274,6 +276,26 @@ export async function HomeAction({
         return {
           intent,
           data: { contact: response.data },
+        };
+      }
+      case "changePassword": {
+        const { userId, currentPassword, newPassword } = result;
+        try {
+          PasswordChangeSchema.parse({
+            userId,
+            currentPassword,
+            newPassword,
+          });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Invalid input";
+          return { error: message };
+        }
+        await api.patch(`api/user/password/${userId}`, {
+          oldPassword: currentPassword,
+          newPassword,
+        });
+        return {
+          intent,
         };
       }
       case "logout": {
