@@ -123,6 +123,10 @@ export function useHomeFetcher({
         const d = data as Extract<ActionReturn, { intent: "editNickname" }>;
         onContactOpened(d.data.contact);
       },
+      changePassword: () => {
+        const d = data as Extract<ActionReturn, { intent: "changePassword" }>;
+        onMessage(d.data.message);
+      },
     };
 
     handlers[data.intent as ActionReturn["intent"]]?.();

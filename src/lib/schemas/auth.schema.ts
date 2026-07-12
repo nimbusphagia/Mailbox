@@ -1,5 +1,5 @@
 import z from "zod";
-import { PasswordSchema, UsernameSchema, UuidSchema } from "./util.schema";
+import { PasswordSchema, UsernameSchema } from "./util.schema";
 
 export const LoginSchema = z.object({
   username: UsernameSchema,
@@ -21,7 +21,6 @@ export const RegisterSchema = z
 export type RegisterInput = z.infer<typeof RegisterSchema>;
 export const PasswordChangeSchema = z
   .object({
-    userId: UuidSchema,
     currentPassword: PasswordSchema,
     newPassword: PasswordSchema,
     confirmPassword: z.string(),

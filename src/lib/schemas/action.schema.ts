@@ -1,9 +1,10 @@
 import z from "zod";
-import { ImageSchema, PasswordSchema, UuidSchema } from "./util.schema";
+import { ImageSchema, UuidSchema } from "./util.schema";
 import { MessageCreateSchema } from "./message.schema";
 import { GroupReqSchema } from "./group.schema";
 import { ProfilePictureSchema } from "./assets.schema";
 import { SafeUserSchema } from "./user.schema";
+import { PasswordChangeSchema } from "./auth.schema";
 
 export const HOME_INTENTS = [
   "getMe",
@@ -47,9 +48,7 @@ export const ActionSchema = z.object({
     .optional(),
   image: ImageSchema.optional(),
   asset: ProfilePictureSchema.optional(),
-  currentPassword: PasswordSchema.optional(),
-  confirmPassword: PasswordSchema.optional(),
-  newPassword: PasswordSchema.optional(),
+  changePassword: PasswordChangeSchema.optional(),
 });
 
 export type Action = z.infer<typeof ActionSchema>;

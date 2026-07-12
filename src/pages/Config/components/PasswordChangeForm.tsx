@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button"
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import type { PasswordChange } from "@/lib/schemas/auth.schema"
 import { KeyRound } from "lucide-react"
 import { useState, type Ref } from "react"
 
 type Props = {
-  onSubmit: (currentP: string, newP: string, confirmP: string) => void,
+  onSubmit: (passwordData: PasswordChange) => void,
   hideFn: () => void,
   ref: Ref<HTMLDivElement>,
 }
 
-export function PasswordChange({ onSubmit, hideFn, ref }: Props) {
+export function PasswordChangeForm({ onSubmit, hideFn, ref }: Props) {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -95,7 +96,7 @@ export function PasswordChange({ onSubmit, hideFn, ref }: Props) {
             className="border-bg4 text-bg4! *:text-bg4! px-3!"
             onClick={() => {
               if (!currentPassword?.trim() || !confirmPassword?.trim() || !newPassword?.trim()) return;
-              onSubmit(currentPassword, newPassword, confirmPassword);
+              onSubmit({ currentPassword, newPassword, confirmPassword });
             }}>
             <KeyRound strokeWidth={1.5} className="size-[1.1em] p-0" />
             Confirm

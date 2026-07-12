@@ -7,6 +7,7 @@ import type { GroupReq } from "@/lib/schemas/group.schema";
 import type { Action } from "@/lib/schemas/action.schema";
 import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 import type { SafeUser } from "@/lib/schemas/user.schema";
+import type { PasswordChange } from "@/lib/schemas/auth.schema";
 
 export type homeActionsReturn = ReturnType<typeof useHomeActions>;
 
@@ -63,18 +64,11 @@ export function useHomeActions(
     editNickname: (userId: UuidType, nickname: string | null) =>
       submit({ intent: "editNickname", userId, nickname }),
     logout: () => submit({ intent: "logout" }),
-    changePassword: (
-      userId: UuidType,
-      currentPassword: string,
-      newPassword: string,
-      confirmPassword: string,
-    ) =>
+    changePassword: (userId: UuidType, passwordData: PasswordChange) =>
       submit({
         intent: "changePassword",
         userId,
-        currentPassword,
-        confirmPassword,
-        newPassword,
+        changePassword: passwordData,
       }),
   };
 }

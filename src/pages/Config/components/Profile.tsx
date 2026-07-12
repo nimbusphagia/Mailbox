@@ -9,13 +9,14 @@ import type { ProfilePicture } from "@/lib/schemas/assets.schema"
 import { ProfilePictureComponent } from "@/components/ProfilePicture"
 import { PicturePicker } from "@/components/PicturePicker"
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema"
-import { PasswordChange } from "./PasswordChange"
+import { PasswordChangeForm } from "./PasswordChangeForm"
+import type { PasswordChange } from "@/lib/schemas/auth.schema"
 
 type Props = {
   user: SafeUser,
   profilePictures: ProfilePicture[],
   onEdit: (user: SafeUser, image?: ValidImage, asset?: ProfilePicture) => void,
-  changePasswordFn: (userId: UuidType, currentP: string, newP: string, confirmP: string) => void,
+  changePasswordFn: (userId: UuidType, passwordData: PasswordChange) => void,
 }
 export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }: Props) {
   const [name, setName] = useState<string>(user.name);
@@ -46,8 +47,8 @@ export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }:
       onEdit(data);
     }
   };
-  const submitPasswordChange = (currentP: string, newP: string, confirmP: string) => {
-    changePasswordFn(user.id, currentP, newP, confirmP);
+  const submitPasswordChange = (passwordData: PasswordChange) => {
+    changePasswordFn(user.id, passwordData);
     setShowPM(false);
   }
 
@@ -138,7 +139,7 @@ export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }:
         </FieldGroup>
         <div className="w-full flex items-center justify-center">
           {showPM ?
-            <PasswordChange
+            <PasswordChangeForm
               onSubmit={submitPasswordChange}
               hideFn={() => setShowPM(false)}
               ref={pmRef}

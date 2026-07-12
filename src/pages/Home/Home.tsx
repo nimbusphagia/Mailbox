@@ -18,7 +18,7 @@ export function Home() {
 
   useEffect(() => {
     if (!message) return
-    const t = setTimeout(() => setMessage(null), 80000)
+    const t = setTimeout(() => setMessage(null), 50000)
     return () => clearTimeout(t)
   }, [message])
 
