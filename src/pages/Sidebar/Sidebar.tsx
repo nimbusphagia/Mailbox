@@ -5,7 +5,7 @@ import { Contacts } from "../Contacts/Contacts";
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation";
 import { CollapsedSidebar } from "./components/CollapsedSidebar";
 import { SidebarHeader } from "./components/SidebarHeader";
-import { SidebarMainLayout } from "@/layouts/SidebarMainLayout";
+import { SidebarMainLayout } from "./layout/SidebarMainLayout";
 import { ConfigPanel } from "../Config/Config";
 import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
 import type { GroupReq } from "@/lib/schemas/group.schema";
@@ -26,7 +26,13 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const [query, setQuery] = useState<string>("");
   const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
   const [view, setView] = useState<SidebarView>("chats");
+  /*
+  const [loading, setLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (!isLoading) setLoading(false);
+  }, [isLoading]);
+*/
   const filteredChats = useMemo(() => {
     const search = query.trim().toLowerCase();
 
@@ -71,6 +77,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   }, [query, allUsers])
 
   const openContacts = () => {
+    //setLoading(true);
     loadUsers();
     setQuery("");
     setView("contacts");
@@ -85,8 +92,8 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
     setView(regular ? "chats" : "archived")
   }
   const openConfig = () => {
-    showProfile();
-    setShowSearchbar(false);
+    //setLoading(true);
+    showProfile(); setShowSearchbar(false);
     setView("config");
   }
 

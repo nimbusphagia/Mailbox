@@ -14,7 +14,7 @@ type Props = {
 }
 
 export function MainContent({ nav, profilePictures }: Props) {
-  const { view, actions, closeChat, hideInfo } = nav;
+  const { view, actions, closeChat, hideInfo, } = nav;
   const { changePassword, deleteGroup, leaveGroup, editProfile, editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions;
 
   switch (view.screen) {

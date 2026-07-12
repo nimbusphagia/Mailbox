@@ -97,7 +97,7 @@ export function useHomeNavigation(
     closeContact,
     showGroupInfo,
     hideInfo,
-    isLoading: fetcher.state !== "idle" && view.screen !== "empty",
+    isLoading: fetcher.state !== "idle",
   };
 }
 

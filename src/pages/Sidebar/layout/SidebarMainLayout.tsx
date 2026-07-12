@@ -5,7 +5,7 @@ type Props = {
   query: string,
   onChange: (value: string) => void,
   className?: string,
-  search?: boolean
+  search?: boolean,
 }
 export function SidebarMainLayout({ query, onChange, className, search = true, children }: PropsWithChildren<Props>) {
   return (
@@ -23,6 +23,7 @@ export function SidebarMainLayout({ query, onChange, className, search = true, c
           bg-fg2 border-fg4 border-[1px] py-1 px-0.5 flex flex-col
           [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {
+
           children
         }
       </div>

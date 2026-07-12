@@ -18,7 +18,7 @@ export function Home() {
 
   useEffect(() => {
     if (!message) return
-    const t = setTimeout(() => setMessage(null), 50000)
+    const t = setTimeout(() => setMessage(null), 5000)
     return () => clearTimeout(t)
   }, [message])
 
@@ -29,7 +29,9 @@ export function Home() {
 
   return (
     <MainLayout
-      className={showSB ? "grid grid-cols-[25vw_1fr]" : "grid grid-cols-[auto_1fr]"}>
+      className={showSB ? "grid grid-cols-[25vw_1fr]" : "grid grid-cols-[auto_1fr]"}
+      isLoading={nav.isLoading}
+    >
       <Sidebar
         data={loaderData}
         nav={nav}
