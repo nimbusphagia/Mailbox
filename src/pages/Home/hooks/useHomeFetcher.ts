@@ -50,27 +50,30 @@ export function useHomeFetcher({
       editProfile: () => {
         const d = data as Extract<ActionReturn, { intent: "editProfile" }>;
         onProfileOpened(d.data.user);
-        onMessage("changes applied");
+        onMessage("Changes applied");
       },
       toggleBlocked: () => {
         const d = data as Extract<ActionReturn, { intent: "toggleBlocked" }>;
+        onMessage("Changes applied.");
         onRefreshUsers(d.data.contacts, d.data.users);
         onChatClosed();
       },
       createChat: () => {
         const d = data as Extract<ActionReturn, { intent: "createChat" }>;
-        onMessage("Created new chat.");
         onChatCreated(d.data.chat);
       },
 
       editGroup: () => {
         const d = data as Extract<ActionReturn, { intent: "editGroup" }>;
+        onMessage("Group updated succesfully.");
         onChatCreated(d.data.chat);
       },
       deleteGroup: () => {
+        onMessage("Group deleted succesfully.");
         onChatClosed();
       },
       leaveGroup: () => {
+        onMessage("You left the group succesfully.");
         onChatClosed();
       },
       removeGroupMember: () => {
@@ -78,7 +81,7 @@ export function useHomeFetcher({
           ActionReturn,
           { intent: "removeGroupMember" }
         >;
-        onMessage("Succesfully removed group member");
+        onMessage("Succesfully removed member");
         onChatOpened(d.data.group);
       },
       getChat: () => {
@@ -120,15 +123,16 @@ export function useHomeFetcher({
         onMessage("Added new contact.");
       },
       toggleArchived: () => {
+        onMessage("Changes applied.");
         onChatClosed();
       },
       createGroup: () => {
         const d = data as Extract<ActionReturn, { intent: "createGroup" }>;
-        onMessage("Created new group chat.");
         onChatCreated(d.data.chat);
       },
       editNickname: () => {
         const d = data as Extract<ActionReturn, { intent: "editNickname" }>;
+        onMessage("Nickname updated succesfully.");
         onContactOpened(d.data.contact);
       },
     };

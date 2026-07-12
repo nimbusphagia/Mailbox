@@ -39,6 +39,7 @@ export function BlockedContacts({ contacts, unblockFn }: Props) {
               if (!c.user) return null;
               return (
                 <BlockedMember
+                  key={c.id}
                   name={c.user.name}
                   username={c.user.username}
                   imgUrl={c.user.imgUrl}

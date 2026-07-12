@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { Box, NotebookTabs } from "lucide-react";
 
 type Props = {
+  active: string | null,
   isArchived: boolean,
   chats: ChatLazy[],
   groups: GroupLazy[],
@@ -13,7 +14,7 @@ type Props = {
   showGroup: (chatId: UuidType) => void,
 }
 
-export function ChatList({ isArchived, chats, groups, showChat, showGroup }: Props) {
+export function ChatList({ active, isArchived, chats, groups, showChat, showGroup }: Props) {
   const sorted = useMemo<ChatEntry[]>(() => {
     const entries: ChatEntry[] = [
       ...chats.map((c): ChatEntry => ({ type: "dm", data: c })),
@@ -32,6 +33,7 @@ export function ChatList({ isArchived, chats, groups, showChat, showGroup }: Pro
         sorted.length ?
           sorted.map((entry) => (
             <ChatThumbnail
+              isActive={entry.data.id === active}
               entry={entry}
               isGroup={entry.type === "group"}
               onClick={() => entry.type === "group" ? showGroup(entry.data.id) : showChat(entry.data.id)}

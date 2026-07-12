@@ -1,6 +1,6 @@
 import type { HomeLoaderReturn } from "../Home/Home.loader";
 import { ChatList } from "./components/ChatList";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Contacts } from "../Contacts/Contacts";
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation";
 import { CollapsedSidebar } from "./components/CollapsedSidebar";
@@ -22,10 +22,11 @@ export type SidebarView = "chats" | "archived" | "contacts" | "config";
 export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const { chats, groups, archived, assets } = data;
   const { loadUsers, addContact, createChat, createGroup, logout } = nav.actions;
-  const { allUsers, unloadAllUsers, openChat, openGroup, showProfile, showBlockedContacts } = nav;
+  const { allUsers, unloadAllUsers, showProfile, showBlockedContacts, view: mainView } = nav;
   const [query, setQuery] = useState<string>("");
   const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
   const [view, setView] = useState<SidebarView>("chats");
+  const [activeChat, setActiveChat] = useState<string | null>(null);
   /*
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -33,6 +34,12 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
     if (!isLoading) setLoading(false);
   }, [isLoading]);
 */
+  useEffect(() => {
+    if (mainView.screen !== "chat") {
+      setActiveChat(null);
+    }
+  }, [mainView])
+
   const filteredChats = useMemo(() => {
     const search = query.trim().toLowerCase();
 
@@ -97,19 +104,26 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
     setView("config");
   }
 
+  const openChat = (chatId: UuidType, isGroup: boolean) => {
+    setActiveChat(chatId);
+    isGroup ? nav.openGroup(chatId) : nav.openChat(chatId);
+  }
+
   const mainContent = {
     chats: <ChatList
+      active={activeChat}
       chats={filteredChats.chats}
       groups={filteredChats.groups}
-      showChat={(id: UuidType) => { setView("chats"); openChat(id) }}
-      showGroup={openGroup}
+      showChat={(id: UuidType) => { setView("chats"); openChat(id, false) }}
+      showGroup={(id: UuidType) => { openChat(id, true) }}
       isArchived={false}
     />,
     archived: <ChatList
+      active={activeChat}
       chats={filteredChats.chats}
       groups={filteredChats.groups}
-      showChat={(id: UuidType) => { setView("archived"); openChat(id) }}
-      showGroup={openGroup}
+      showChat={(id: UuidType) => { setView("archived"); openChat(id, false) }}
+      showGroup={(id: UuidType) => { openChat(id, true) }}
       isArchived={true}
     />,
     contacts: <Contacts

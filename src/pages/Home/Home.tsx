@@ -24,7 +24,7 @@ export function Home() {
 
   const nav = useHomeNavigation(loaderData, {
     onError: (msg: string) => setMessage({ type: "error", body: msg }),
-    onMessage: (msg: string) => setMessage({ type: "success", body: msg }),
+    onMessage: (msg: string) => setMessage({ type: "any", body: msg }),
   })
 
   return (
@@ -45,7 +45,7 @@ export function Home() {
       {message &&
         <MessagePill
           message={message}
-          className="absolute right-5 bottom-5 m-2 min-w-[100px]"
+          className="absolute right-8 bottom-8 m-2 min-w-[100px]"
         />
       }
     </MainLayout>
