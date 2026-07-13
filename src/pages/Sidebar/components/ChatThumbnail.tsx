@@ -32,7 +32,7 @@ export function ChatThumbnail({ isActive, entry, onClick }: Props) {
     <div
       className={`flex items-center gap-3 px-3 py-2 m-1 bg-fg1/20 
     rounded-md cursor-pointer hover:bg-fg1/80  border-[1px] 
-      shadow-sm ${isActive ? "border-bg2 hover:border-bg2/80 bg-fg1/60! shadow-lg!" : "border-fg4 hover:border-bg3"}`}
+      shadow-sm ${isActive ? "border-bg2 hover:border-bg2/80 bg-fg1/60!" : "border-fg4 hover:border-bg3"}`}
       onClick={onClick}
     >
       <Avatar className="w-[18%] h-auto border-bg3 border-[1px]">
