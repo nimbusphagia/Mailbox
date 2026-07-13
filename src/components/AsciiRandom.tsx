@@ -1,6 +1,7 @@
 import { randomFromRange } from "@/lib/utils";
 import { useFiglet } from "@/pages/Hooks/useFiglet";
 import { useEffect, useMemo, useRef } from "react";
+import fonts from "@/assets/asciiFonts";
 
 type Props = {
   text: string,
@@ -8,11 +9,10 @@ type Props = {
   containerCN?: string,
 }
 export function AsciiRandom({ text, className, containerCN }: Props) {
-  const styles = ["Chiseled", "DiamFont", "Flower Power", "Patorjk's Cheese", "Lil Devil", "Shaded Blocky", "Slant Relief", "Small Isometric1", "Sweet", "Sub-Zero", "Train", "Varsity", "Wet Letter", "ANSI Shadow", "Bloody", "Delta Corps Priest 1", "Elite", "Stronger Than All", "Rebel", "Bolger", "Caligraphy2"]
-  const random = useMemo(() => randomFromRange(0, styles.length - 1), [])
+  const random = useMemo(() => randomFromRange(0, fonts.length - 1), [])
 
 
-  const { ascii, loading } = useFiglet(text, { font: styles[random] })
+  const { ascii, loading } = useFiglet(text, { font: fonts[random] })
   const containerRef = useRef<HTMLDivElement>(null)
   const preRef = useRef<HTMLPreElement>(null)
 
