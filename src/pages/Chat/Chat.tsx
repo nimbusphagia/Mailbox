@@ -60,8 +60,8 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
   }
 
   return (
-    <main className="relative box-border flex-1 min-h-0 size-full grid grid-rows-[8%_1fr_auto] text-bg1 py-2">
-      <div className="flex items-center px-2 gap-2 *:bg-fg2 *:rounded-sm
+    <div className="relative box-border min-h-0 max-w-full flex flex-col gap-4 m-4 ml-0 text-bg1">
+      <header className="flex items-center gap-2 *:bg-fg2 *:rounded-sm
       *:px-2 *:py-1 *:border-[0.01em] *:border-fg3 *:text-bg1">
         <Button
           onClick={closeChat}
@@ -76,10 +76,10 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
           avatarClassname="size-[1.8em] "
           showFn={handleShowInfo}
         />
-      </div>
+      </header>
 
-      <div
-        className="flex flex-col gap-2 m-2 bg-fg0/20 border-1 border-fg3 rounded-sm p-1.5
+      <main
+        className="flex flex-1 flex-col gap-2 mr-2 m-0 bg-fg0/20 border-1 border-fg4 rounded-sm p-1.5
         overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <Messages
           scrollRef={scrollRef}
@@ -140,7 +140,7 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
               </div>
             </div>
         }
-      </div>
-    </main>
+      </main>
+    </div>
   )
 }

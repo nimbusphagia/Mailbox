@@ -7,14 +7,14 @@ type Props = {
 
 export function CollapsedSidebar({ toggleSidebar }: Props) {
   return (
-    <div className="h-full grid grid-rows-[8%_1fr_auto] m-2 mr-0 *:text-bg1">
+    <div className="h-full flex flex-col gap-4 my-4 mx-2 *:text-bg1">
       <Button
         onClick={toggleSidebar}
-        className="size-fit self-center grid-row-1 rounded-full! p-[8px]! overflow-hidden! bg-fg0/40 border-transparent
+        className="size-fit self-center my-1 grid-row-1 rounded-full! p-[8px]! overflow-hidden! bg-fg0/40 border-transparent
 hover:bg-fg0/70!
         "
       >
-        <MoveDiagonal2 className="size-[0.85rem] text-bg2! " strokeWidth={2.2} />
+        <MoveDiagonal2 className="size-[0.9rem] text-bg2! " strokeWidth={2.2} />
       </Button >
     </div >
   )

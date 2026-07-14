@@ -9,6 +9,7 @@ import type { UuidType, ValidImage } from "@/lib/schemas/util.schema";
 import { PicturePicker } from "@/components/PicturePicker";
 import type { ProfilePicture } from "@/lib/schemas/assets.schema";
 import { ProfilePictureComponent } from "@/components/ProfilePicture";
+import { useRef } from "react";
 
 type Props = {
   members: ContactType[],
@@ -22,9 +23,13 @@ type Props = {
 export function GroupCreateForm({ members, profilePictures, onUnselectMember, onReturn, onCreate, selected }: Props) {
   const [groupName, setGroupName] = useState<string>("");
   const picture = useProfilePictureEditor(profilePictures, undefined, true);
+  const nameInput = useRef<HTMLInputElement | null>(null);
 
   const submitCreate = () => {
-    if (groupName === undefined || !selected.length) return;
+    if (groupName.trim() === "" || !selected.length) {
+      nameInput.current?.focus();
+      return
+    };
     const group: GroupReq = { name: groupName, members: selected };
 
     if (picture.image) {
@@ -63,8 +68,10 @@ export function GroupCreateForm({ members, profilePictures, onUnselectMember, on
             className="p-1 px-3 text-[0.8em] flex-1 outline-none text-bg1 border-1 border-transparent
                 focus:placeholder:text-bg2 focus:text-bg1 focus:border-bg4 focus:bg-fg2/10 rounded-sm"
             placeholder="Name your group"
+            ref={nameInput}
             value={groupName}
             onChange={(e) => setGroupName(e.currentTarget.value)}
+            required
           />
         </div>
         <div className="flex-1 flex flex-wrap content-start justify-around items-start gap-4 gap-y-3 rounded-sm py-3 pl-3 pr-4 

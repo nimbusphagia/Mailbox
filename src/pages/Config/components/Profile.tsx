@@ -54,7 +54,7 @@ export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }:
 
   return (
     <div
-      className="overflow-hidden m-4 ml-2 rounded-sm flex flex-col 
+      className="overflow-hidden m-4 ml-2 flex flex-col 
       gap-4 *:rounded-sm
       ">
       <header
