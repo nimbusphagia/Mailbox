@@ -9,6 +9,7 @@ export const ChatLazySchema = z.object({
   isGroup: z.boolean(),
   isBlocked: z.boolean(),
   isArchived: z.boolean(),
+  isRead: z.boolean(),
   otherMember: ChatUserSchema,
   lastMessage: ChatMessageSchema.optional(),
 });
@@ -19,6 +20,7 @@ export const ChatSchema = z.object({
   isGroup: z.boolean(),
   isBlocked: z.boolean(),
   isArchived: z.boolean(),
+  isRead: z.boolean(),
   createdAt: z.coerce.date(),
   primaryMember: SafeUserSchema,
   secondaryMember: ChatUserSchema,

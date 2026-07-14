@@ -20,6 +20,7 @@ export const GroupResponseSchema = z.object({
   imgUrl: z.url(),
   isGroup: z.boolean(),
   isArchived: z.boolean(),
+  isRead: z.boolean(),
   createdAt: z.date(),
   createdBy: SafeUserSchema.nullable(),
   primaryMember: SafeUserSchema.extend({
@@ -41,6 +42,7 @@ export const GroupLazySchema = z.object({
   createdAt: z.coerce.date(),
   isGroup: z.boolean(),
   isArchived: z.boolean(),
+  isRead: z.boolean(),
   name: z.string().min(1),
   imgUrl: z.url().optional(),
   lastMessage: ChatMessageSchema.optional(),

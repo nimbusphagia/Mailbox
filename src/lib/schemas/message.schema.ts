@@ -14,7 +14,6 @@ export const ReplySchema = z.object({
   type: MessageTypeSchema,
   metadata: ImageMetadataSchema.nullable().optional(),
   createdAt: z.coerce.date(),
-  isRead: z.boolean(),
 });
 
 export type Reply = z.infer<typeof ReplySchema>;
@@ -29,7 +28,6 @@ export const ChatMessageSchema = z.object({
   createdAt: z.coerce.date(),
   replyToId: UuidSchema.nullable().optional(),
   replyTo: ReplySchema.optional(),
-  isRead: z.boolean(),
 });
 
 export type Message = z.infer<typeof ChatMessageSchema>;
