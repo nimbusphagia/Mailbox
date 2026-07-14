@@ -44,104 +44,75 @@ export function useHomeFetcher({
       return;
     }
 
-    const handlers: Partial<Record<ActionReturn["intent"], () => void>> = {
-      getMe: () => {
-        const d = data as Extract<ActionReturn, { intent: "getMe" }>;
-        onProfileOpened(d.data.user);
-      },
-      editProfile: () => {
-        const d = data as Extract<ActionReturn, { intent: "editProfile" }>;
-        onProfileOpened(d.data.user);
+    switch (data.intent) {
+      case "getMe":
+        onProfileOpened(data.data.user);
+        break;
+      case "editProfile":
+        onProfileOpened(data.data.user);
         onMessage("Profile updated");
-      },
-      toggleBlocked: () => {
-        const d = data as Extract<ActionReturn, { intent: "toggleBlocked" }>;
-        onContactOpened(d.data.contact);
-      },
-      unblockContact: () => {
-        const d = data as Extract<ActionReturn, { intent: "unblockContact" }>;
-        onRefreshUsers(d.data.contacts, d.data.users);
-        onBlockedContactsOpened(d.data.blocked);
-      },
-      createChat: () => {
-        const d = data as Extract<ActionReturn, { intent: "createChat" }>;
-        onChatCreated(d.data.chat);
-      },
-
-      editGroup: () => {
-        const d = data as Extract<ActionReturn, { intent: "editGroup" }>;
+        break;
+      case "toggleBlocked":
+        onContactOpened(data.data.contact);
+        break;
+      case "unblockContact":
+        onRefreshUsers(data.data.contacts, data.data.users);
+        onBlockedContactsOpened(data.data.blocked);
+        break;
+      case "createChat":
+        onChatCreated(data.data.chat);
+        break;
+      case "editGroup":
         onMessage("Group info updated.");
-        onGroupInfoOpened(d.data.chat);
-      },
-      deleteGroup: () => {
+        onGroupInfoOpened(data.data.chat);
+        break;
+      case "deleteGroup":
         onMessage("Group deleted.");
         onChatClosed();
-      },
-      leaveGroup: () => {
+        break;
+      case "leaveGroup":
         onMessage("You left the group.");
         onChatClosed();
-      },
-      removeGroupMember: () => {
-        const d = data as Extract<
-          ActionReturn,
-          { intent: "removeGroupMember" }
-        >;
+        break;
+      case "removeGroupMember":
         onMessage("Member removed");
-        onChatOpened(d.data.group);
-      },
-      getChat: () => {
-        const d = data as Extract<ActionReturn, { intent: "getChat" }>;
-        onChatOpened(d.data.chat);
-      },
-      getGroup: () => {
-        const d = data as Extract<ActionReturn, { intent: "getGroup" }>;
-        onChatOpened(d.data.group);
-      },
-      createMessage: () => {
-        const d = data as Extract<ActionReturn, { intent: "createMessage" }>;
-        onChatOpened(d.data.chat);
-      },
-      getContact: () => {
-        const d = data as Extract<ActionReturn, { intent: "getContact" }>;
-        onContactOpened(d.data.contact);
-      },
-      getBlockedContacts: () => {
-        const d = data as Extract<
-          ActionReturn,
-          { intent: "getBlockedContacts" }
-        >;
-        onBlockedContactsOpened(d.data.blocked);
-      },
-      changePassword: () => {
-        const d = data as Extract<ActionReturn, { intent: "changePassword" }>;
-        onMessage(d.data.message);
-      },
-
-      //Sidebar scope
-      getUsers: () => {
-        const d = data as Extract<ActionReturn, { intent: "getUsers" }>;
-        onRefreshUsers(d.data.contacts, d.data.users);
-      },
-      addContact: () => {
-        const d = data as Extract<ActionReturn, { intent: "addContact" }>;
-        onRefreshUsers(d.data.contacts, d.data.users);
+        onChatOpened(data.data.group);
+        break;
+      case "getChat":
+        onChatOpened(data.data.chat);
+        break;
+      case "getGroup":
+        onChatOpened(data.data.group);
+        break;
+      case "createMessage":
+        onChatOpened(data.data.chat);
+        break;
+      case "getContact":
+        onContactOpened(data.data.contact);
+        break;
+      case "getBlockedContacts":
+        onBlockedContactsOpened(data.data.blocked);
+        break;
+      case "changePassword":
+        onMessage(data.data.message);
+        break;
+      case "getUsers":
+        onRefreshUsers(data.data.contacts, data.data.users);
+        break;
+      case "addContact":
+        onRefreshUsers(data.data.contacts, data.data.users);
         onMessage("Added new contact.");
-      },
-      toggleArchived: () => {
+        break;
+      case "toggleArchived":
         onChatClosed();
-      },
-      createGroup: () => {
-        const d = data as Extract<ActionReturn, { intent: "createGroup" }>;
-        onChatCreated(d.data.chat);
-      },
-      editNickname: () => {
-        const d = data as Extract<ActionReturn, { intent: "editNickname" }>;
-        onContactOpened(d.data.contact);
-      },
-    };
-
-    handlers[data.intent as ActionReturn["intent"]]?.();
+        break;
+      case "createGroup":
+        onChatCreated(data.data.chat);
+        break;
+      case "editNickname":
+        onContactOpened(data.data.contact);
+        break;
+    }
   }, [fetcher.state, fetcher.data]);
-
   return fetcher;
 }
