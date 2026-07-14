@@ -22,7 +22,7 @@ type ViewAction =
   | { type: "OPEN_CHAT"; chat: ChatRes | GroupRes }
   | { type: "OPEN_CONTACT_INFO"; contact: ContactType }
   | { type: "OPEN_BLOCKED_CONTACTS"; contacts: ContactType[] }
-  | { type: "SHOW_GROUP_INFO" }
+  | { type: "SHOW_GROUP_INFO"; chat: GroupRes }
   | { type: "HIDE_INFO" }
   | { type: "OPEN_PROFILE"; user: SafeUser }
   | { type: "CLEAR" };
@@ -51,6 +51,7 @@ export function useHomeNavigation(
     onChatCreated: (chat) => dispatch({ type: "OPEN_CHAT", chat }),
     onContactOpened: (contact) =>
       dispatch({ type: "OPEN_CONTACT_INFO", contact }),
+    onGroupInfoOpened: (chat) => dispatch({ type: "SHOW_GROUP_INFO", chat }),
     onBlockedContactsOpened: (contacts) =>
       dispatch({ type: "OPEN_BLOCKED_CONTACTS", contacts }),
     onRefreshUsers: (contacts, users) => {
@@ -77,7 +78,8 @@ export function useHomeNavigation(
   const closeChat = () => dispatch({ type: "CLEAR" });
   const openContact = (id: UuidType) => actions.getContact(id);
   const closeContact = (chatId: UuidType) => actions.openChat(chatId);
-  const showGroupInfo = () => dispatch({ type: "SHOW_GROUP_INFO" });
+  const showGroupInfo = (chat: GroupRes) =>
+    dispatch({ type: "SHOW_GROUP_INFO", chat });
   const hideInfo = () => dispatch({ type: "HIDE_INFO" });
   const unloadAllUsers = () => setAllUsers({ contacts: [], users: [] });
   const showBlockedContacts = () => actions.getBlockedContacts();
@@ -107,7 +109,9 @@ function viewReducer(state: MainView, action: ViewAction): MainView {
       return { screen: "chat", chat: action.chat };
 
     case "OPEN_CONTACT_INFO":
-      if (state.screen !== "chat") return state;
+      if (state.screen !== "chat" && state.screen !== "contactInfo") {
+        return state;
+      }
       return {
         screen: "contactInfo",
         chat: state.chat as ChatRes,
@@ -117,8 +121,12 @@ function viewReducer(state: MainView, action: ViewAction): MainView {
       return { screen: "blockedContacts", contacts: action.contacts };
 
     case "SHOW_GROUP_INFO":
-      if (state.screen !== "chat" || !state.chat.isGroup) return state;
-      return { screen: "groupInfo", chat: state.chat as GroupRes };
+      if (
+        (state.screen !== "chat" || !state.chat.isGroup) &&
+        state.screen !== "groupInfo"
+      )
+        return state;
+      return { screen: "groupInfo", chat: action.chat as GroupRes };
 
     case "HIDE_INFO":
       if (state.screen === "contactInfo" || state.screen === "groupInfo") {

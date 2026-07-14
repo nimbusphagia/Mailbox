@@ -59,6 +59,9 @@ export function useHomeActions(
     getBlockedContacts: () => submit({ intent: "getBlockedContacts" }),
     toggleBlocked: (contactId: UuidType) =>
       submit({ intent: "toggleBlocked", contactId }),
+    unblockContact: (contactId: UuidType) =>
+      submit({ intent: "unblockContact", contactId }),
+
     createMessage: (message: MessageCreate, image?: ValidImage) =>
       submit({ intent: "createMessage", image, message }),
     editNickname: (userId: UuidType, nickname: string | null) =>

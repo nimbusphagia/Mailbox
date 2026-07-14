@@ -17,7 +17,7 @@ export function ContactList({ contacts, selected, selectFn }: Props) {
   return (
     <ContactListLayout
       isEmpty={!!contacts.length}
-      fbText="You can find and add contacts in the Explore section"
+      fbText="You can find and add contacts in the Explore section."
     >
       {contacts.map((c) => {
         const isSelected = !!c.userId && selected.includes(c.userId)

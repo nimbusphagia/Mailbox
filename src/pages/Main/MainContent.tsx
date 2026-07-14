@@ -7,6 +7,7 @@ import type { ProfilePicture } from "@/lib/schemas/assets.schema"
 import type { NavigationReturn } from "../Home/hooks/useHomeNavigation"
 import { ProfilePage } from "../Config/components/Profile"
 import { BlockedContacts } from "../Config/components/BlockedContacts"
+import type { GroupRes } from "@/lib/schemas/group.schema"
 
 type Props = {
   nav: NavigationReturn,
@@ -15,7 +16,7 @@ type Props = {
 
 export function MainContent({ nav, profilePictures }: Props) {
   const { view, actions, closeChat, hideInfo, } = nav;
-  const { changePassword, deleteGroup, leaveGroup, editProfile, editGroup, toggleArchived, toggleBlocked, editNickname, removeGroupMember } = actions;
+  const { changePassword, deleteGroup, leaveGroup, editProfile, editGroup, toggleArchived, toggleBlocked, unblockContact, editNickname, removeGroupMember } = actions;
 
   switch (view.screen) {
     case "empty":
@@ -71,7 +72,7 @@ export function MainContent({ nav, profilePictures }: Props) {
           sendFn={actions.createMessage}
           getContact={actions.getContact}
           showInfo={() => {
-            if (view.chat.isGroup) nav.showGroupInfo();
+            if (view.chat.isGroup) nav.showGroupInfo(view.chat as GroupRes);
           }}
           closeChat={closeChat}
         />
@@ -80,7 +81,7 @@ export function MainContent({ nav, profilePictures }: Props) {
       return (
         <BlockedContacts
           contacts={view.contacts}
-          unblockFn={toggleBlocked}
+          unblockFn={unblockContact}
         />
       );
 

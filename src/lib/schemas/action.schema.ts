@@ -23,6 +23,7 @@ export const HOME_INTENTS = [
   "removeGroupMember",
   "leaveGroup",
   "toggleBlocked",
+  "unblockContact",
   "createMessage",
   "editNickname",
   "getBlockedContacts",

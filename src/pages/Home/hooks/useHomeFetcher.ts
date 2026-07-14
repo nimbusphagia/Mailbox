@@ -15,6 +15,7 @@ interface UseHomeFetcherProps {
   onChatClosed: () => void;
   onChatCreated: (chat: ChatRes) => void;
   onContactOpened: (contact: ContactType) => void;
+  onGroupInfoOpened: (chat: GroupRes) => void;
   onBlockedContactsOpened: (contacts: ContactType[]) => void;
   onProfileOpened: (user: SafeUser) => void;
 }
@@ -27,6 +28,7 @@ export function useHomeFetcher({
   onChatClosed,
   onChatCreated,
   onContactOpened,
+  onGroupInfoOpened,
   onBlockedContactsOpened,
   onProfileOpened,
 }: UseHomeFetcherProps) {
@@ -50,13 +52,16 @@ export function useHomeFetcher({
       editProfile: () => {
         const d = data as Extract<ActionReturn, { intent: "editProfile" }>;
         onProfileOpened(d.data.user);
-        onMessage("Changes applied");
+        onMessage("Profile updated");
       },
       toggleBlocked: () => {
         const d = data as Extract<ActionReturn, { intent: "toggleBlocked" }>;
-        onMessage("Changes applied.");
+        onContactOpened(d.data.contact);
+      },
+      unblockContact: () => {
+        const d = data as Extract<ActionReturn, { intent: "unblockContact" }>;
         onRefreshUsers(d.data.contacts, d.data.users);
-        onChatClosed();
+        onBlockedContactsOpened(d.data.blocked);
       },
       createChat: () => {
         const d = data as Extract<ActionReturn, { intent: "createChat" }>;
@@ -65,15 +70,15 @@ export function useHomeFetcher({
 
       editGroup: () => {
         const d = data as Extract<ActionReturn, { intent: "editGroup" }>;
-        onMessage("Group updated succesfully.");
-        onChatCreated(d.data.chat);
+        onMessage("Group info updated.");
+        onGroupInfoOpened(d.data.chat);
       },
       deleteGroup: () => {
-        onMessage("Group deleted succesfully.");
+        onMessage("Group deleted.");
         onChatClosed();
       },
       leaveGroup: () => {
-        onMessage("You left the group succesfully.");
+        onMessage("You left the group.");
         onChatClosed();
       },
       removeGroupMember: () => {
@@ -81,7 +86,7 @@ export function useHomeFetcher({
           ActionReturn,
           { intent: "removeGroupMember" }
         >;
-        onMessage("Succesfully removed member");
+        onMessage("Member removed");
         onChatOpened(d.data.group);
       },
       getChat: () => {
@@ -105,7 +110,7 @@ export function useHomeFetcher({
           ActionReturn,
           { intent: "getBlockedContacts" }
         >;
-        onBlockedContactsOpened(d.data.contacts);
+        onBlockedContactsOpened(d.data.blocked);
       },
       changePassword: () => {
         const d = data as Extract<ActionReturn, { intent: "changePassword" }>;
@@ -123,7 +128,7 @@ export function useHomeFetcher({
         onMessage("Added new contact.");
       },
       toggleArchived: () => {
-        onMessage("Changes applied.");
+        onMessage("Chat archived.");
         onChatClosed();
       },
       createGroup: () => {
@@ -132,7 +137,6 @@ export function useHomeFetcher({
       },
       editNickname: () => {
         const d = data as Extract<ActionReturn, { intent: "editNickname" }>;
-        onMessage("Nickname updated succesfully.");
         onContactOpened(d.data.contact);
       },
     };

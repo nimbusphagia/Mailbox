@@ -50,7 +50,7 @@ export function ChatList({ active, isArchived, chats, groups, showChat, showGrou
               }
             </div>
             <p className="text-center text-xs text-bg4 font-light w-[70%]">
-              {isArchived ? "No archived chats to show" : "Find and add contacts in the Explore section"}</p>
+              {isArchived ? "No archived chats." : "Find and add contacts in the Explore section"}</p>
           </div>
       }
     </>

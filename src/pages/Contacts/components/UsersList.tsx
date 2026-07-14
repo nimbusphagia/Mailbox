@@ -16,7 +16,7 @@ export function UsersList({ users, addFn }: Props) {
   return (
     <ContactListLayout
       isEmpty={!!users.length}
-      fbText="This is empty."
+      fbText="No more users to show."
     >
       {
         <>

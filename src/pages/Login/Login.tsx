@@ -1,7 +1,7 @@
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, Link, useSearchParams } from "react-router-dom";
+import { Form, Link, useActionData, useSearchParams } from "react-router-dom";
 import { LogoRandom } from "@/components/LogoRandom";
 import { ColorCard } from "@/components/ColorCard";
 import { Signature } from "@/components/Signature";
@@ -10,10 +10,12 @@ import { useEffect, useState } from "react";
 import type { Message } from "../Home/Home";
 import { MessagePill } from "@/components/MessagePill";
 import { KeyRound, UserRound } from "lucide-react";
+import type { ActionResult } from "@/lib/utils";
 
 export function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [message, setMessage] = useState<Message | null>(null);
+  const actionData = useActionData() as ActionResult | undefined;
 
   useEffect(() => {
     if (searchParams.get("registered")) {
@@ -21,6 +23,12 @@ export function LoginPage() {
       setSearchParams({});
     }
   }, []);
+
+  useEffect(() => {
+    if (actionData && "error" in actionData) {
+      setMessage({ type: "error", body: actionData.error });
+    }
+  }, [actionData]);
 
   useEffect(() => {
     if (!message) return;

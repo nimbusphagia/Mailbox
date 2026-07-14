@@ -17,11 +17,11 @@ export type ActionReturn =
   | { intent: "getMe"; data: { user: SafeUser } }
   | { intent: "editProfile"; data: { user: SafeUser } }
   | { intent: "getContacts"; data: ContactType[] }
-  | { intent: "getBlockedContacts"; data: { contacts: ContactType[] } }
+  | { intent: "getBlockedContacts"; data: { blocked: ContactType[] } }
   | { intent: "getUsers"; data: { users: SafeUser[]; contacts: ContactType[] } }
   | { intent: "createChat"; data: { chat: ChatRes } }
   | { intent: "createGroup"; data: { chat: ChatRes } }
-  | { intent: "editGroup"; data: { chat: ChatRes } }
+  | { intent: "editGroup"; data: { chat: GroupRes } }
   | { intent: "deleteGroup" }
   | { intent: "toggleArchived" }
   | { intent: "getChat"; data: { chat: ChatRes } }
@@ -31,7 +31,17 @@ export type ActionReturn =
   | { intent: "getContact"; data: { contact: ContactType } }
   | {
       intent: "toggleBlocked";
-      data: { users: SafeUser[]; contacts: ContactType[] };
+      data: {
+        contact: ContactType;
+      };
+    }
+  | {
+      intent: "unblockContact";
+      data: {
+        users: SafeUser[];
+        contacts: ContactType[];
+        blocked: ContactType[];
+      };
     }
   | { intent: "createMessage"; data: { chat: ChatRes | GroupRes } }
   | { intent: "editNickname"; data: { contact: ContactType } }
@@ -115,18 +125,37 @@ export async function HomeAction({
       }
       case "toggleBlocked": {
         const { contactId } = result;
+        const contactRes = await api.patch<ContactType>(
+          `api/user/contact/block/${contactId}`,
+        );
+        return {
+          intent,
+          data: {
+            contact: contactRes.data,
+          },
+        };
+      }
+
+      case "unblockContact": {
+        const { contactId } = result;
         await api.patch<ContactType>(`api/user/contact/block/${contactId}`);
-        const [usersRes, contactsRes]: [
+        const [usersRes, contactsRes, blockedRes]: [
           AxiosResponse<SafeUser[]>,
+          AxiosResponse<ContactType[]>,
           AxiosResponse<ContactType[]>,
         ] = await Promise.all([
           api.get<SafeUser[]>("api/user"),
           api.get<ContactType[]>("api/user/contact"),
+          api.get<ContactType[]>("api/user/contact/blocked"),
         ]);
 
         return {
           intent,
-          data: { users: usersRes.data, contacts: contactsRes.data },
+          data: {
+            users: usersRes.data,
+            contacts: contactsRes.data,
+            blocked: blockedRes.data,
+          },
         };
       }
       case "toggleArchived": {
@@ -177,18 +206,18 @@ export async function HomeAction({
         let response;
 
         if (image instanceof File) {
-          response = await api.put<ChatRes>(
+          response = await api.put<GroupRes>(
             `api/group/${group.id}`,
             { ...group, image },
             { headers: { "Content-Type": "multipart/form-data" } },
           );
         } else if (asset) {
-          response = await api.put<ChatRes>(`api/group/${group.id}`, {
+          response = await api.put<GroupRes>(`api/group/${group.id}`, {
             ...group,
             asset,
           });
         } else {
-          response = await api.put<ChatRes>(`api/group/${group.id}`, group);
+          response = await api.put<GroupRes>(`api/group/${group.id}`, group);
         }
 
         return { intent, data: { chat: response.data } };
@@ -246,7 +275,7 @@ export async function HomeAction({
         );
         return {
           intent,
-          data: { contacts: response.data },
+          data: { blocked: response.data },
         };
       }
       case "createMessage": {

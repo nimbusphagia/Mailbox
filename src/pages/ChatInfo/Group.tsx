@@ -44,7 +44,7 @@ export function GroupPage({
     return (
       <UserThumbnail
         imgUrl={group.imgUrl ?? ""}
-        fullName={groupName}
+        fullName={group.name}
         className="gap-2!"
         textClassName="text-bg2! text-sm"
         avatarClassname="size-[1.8em] "
@@ -109,7 +109,7 @@ export function GroupPage({
         }
         <div className="h-25 font-bold flex flex-col gap-2 py-2 items-center">
           <AsciiRandom
-            text={groupName}
+            text={group.name}
             className="text-bg0!"
           />
           <p
@@ -125,7 +125,7 @@ export function GroupPage({
           </label>
           {
             activeRole === "MEMBER" ?
-              <p className="text-center min-w-[25%] w-fit">{groupName}</p> :
+              <p className="text-center min-w-[25%] w-fit">{group.name}</p> :
               <input
                 name="name"
                 id="name"
