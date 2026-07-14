@@ -36,7 +36,7 @@ export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }:
     picture.togglePicker();
   }
   const submitEdit = () => {
-    if (user.name === undefined) return;
+    if (username.trim() === "" || name.trim() === "") return;
     const data: SafeUser = { ...user, username, name, };
 
     if (picture.image) {
@@ -119,9 +119,14 @@ export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }:
               name="name"
               type="text"
               placeholder="Your Name"
+              maxLength={20}
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              onBlur={submitEdit}
+              onChange={(e) => {
+                if (e.target.value.trim() !== "") {
+                  setName(e.target.value)
+                }
+              }}
+              onBlur={(name !== user.name) ? submitEdit : () => setName(user.name)}
             />
           </Field>
           <Field orientation="horizontal">
@@ -130,9 +135,15 @@ export function ProfilePage({ user, profilePictures, onEdit, changePasswordFn }:
               id="username"
               name="username"
               type="text"
+              minLength={3}
+              maxLength={16}
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              onBlur={submitEdit}
+              onChange={(e) => {
+                if (e.target.value.trim() !== "") {
+                  setUsername(e.target.value.trim())
+                }
+              }}
+              onBlur={(username !== user.username) ? submitEdit : () => setUsername(user.username)}
               placeholder="@your_username"
             />
           </Field>

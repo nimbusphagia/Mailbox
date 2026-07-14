@@ -19,7 +19,9 @@ export function ConfigPanel({ showProfile, showBlocked, logoutFn }: Props) {
       <ToggleGroup
         variant="outline"
         type="single"
-        className="w-full h-full gap-3 flex-col p-2 border-[1px] border-fg4! rounded-sm *:data-[state=on]:border-bg3! *:data-[state=off]:bg-fg1/20 *:data-[state=on]:bg-fg0/30! *:data-[state=on]:text-bg2! *:hover:border-bg2/70 *:hover:text-bg2 "
+        className="w-full h-full gap-3 flex-col p-2 border-[1px] border-fg4! rounded-sm *:data-[state=on]:border-bg3!
+        *:data-[state=off]:bg-fg1/20 *:data-[state=on]:bg-fg0/30! *:data-[state=on]:text-bg2! *:hover:border-bg2/70
+        *:hover:text-bg2 "
         value={view}
         onValueChange={(val: ProfileView) => val && setView(val)}
       >

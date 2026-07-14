@@ -54,7 +54,7 @@ export function GroupPage({
 
   const submitEdit = () => {
     if (groupName === undefined) return;
-    const data: GroupReq = { name: groupName, members: [], id: group.id };
+    const data: GroupReq = { name: groupName.trim(), members: [], id: group.id };
 
     if (picture.image) {
       onEdit(data, picture.image);
@@ -107,7 +107,7 @@ export function GroupPage({
             />
           </Avatar>
         }
-        <div className="h-25 font-bold flex flex-col gap-2 py-2 items-center">
+        <div className="h-25 max-w-[100%] font-bold flex flex-col gap-2 py-2 items-center">
           <AsciiRandom
             text={group.name}
             className="text-bg0!"
@@ -130,9 +130,10 @@ export function GroupPage({
                 name="name"
                 id="name"
                 placeholder="Insert a group name"
+                maxLength={14}
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                onBlur={submitEdit}
+                onBlur={groupName.trim() !== group.name ? submitEdit : () => null}
                 className="bg-fg2/30 text-center min-w-[25%] flex-0 rounded-sm p-0.5"
               />
           }

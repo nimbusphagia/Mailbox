@@ -46,7 +46,7 @@ export function ContactPage({ contact, images, isArchived, blockFn, archiveFn, h
             className="h-23 bg-fg0/10 border-1 border-fg3 shadow-sm"
           />
         </Avatar>
-        <div className="h-25 font-bold flex flex-col gap-2 py-2 items-center">
+        <div className="h-25 max-w-[100%] font-bold flex flex-col gap-2 py-2 items-center">
           <AsciiRandom
             text={title}
             className="text-bg0!"
@@ -81,9 +81,10 @@ export function ContactPage({ contact, images, isArchived, blockFn, archiveFn, h
             name="nickname"
             id="nickname"
             placeholder="Insert a nickname"
+            maxLength={12}
             value={nickname ?? ""}
             onChange={(e) => setNickname(e.target.value)}
-            onBlur={() => { if (contact) { nicknameFn(contact.id, nickname) } }}
+            onBlur={() => { if (contact && nickname && (nickname.trim() !== contact.nickname)) { nicknameFn(contact.id, nickname.trim()) } }}
             className="bg-fg2/30 text-center min-w-[25%] flex-0 rounded-sm p-0.5"
           />
         </div>
