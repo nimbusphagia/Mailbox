@@ -128,7 +128,6 @@ export function useHomeFetcher({
         onMessage("Added new contact.");
       },
       toggleArchived: () => {
-        onMessage("Chat archived.");
         onChatClosed();
       },
       createGroup: () => {

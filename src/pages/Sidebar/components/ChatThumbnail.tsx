@@ -3,7 +3,7 @@ import {
 } from "@/components/ui/avatar";
 import { timeAgo } from "@/lib/utils";
 import type { ChatEntry } from "@/lib/schemas/util.schema";
-import { Mailbox } from "lucide-react";
+import { Mailbox, Users } from "lucide-react";
 
 type Props = {
   isActive: boolean,
@@ -40,12 +40,21 @@ export function ChatThumbnail({ isActive, entry, onClick }: Props) {
     >
       {
         !entry.data.isRead &&
-        <div className="absolute -top-1.5 -right-1.5 bg-fg3 p-1 rounded-full border-[1px] border-bg4 w-[23px]">
+        <div className="absolute -top-1.5 -right-1.5 bg-fg3 p-1 rounded-full border-1 border-bg1 w-[23px]">
           <Mailbox className="text-bg4 w-full h-auto" />
         </div>
       }
-      <Avatar className="w-[18%] h-auto border-bg3 border-[1px]">
+      <Avatar className="relative w-[18%] h-auto border-bg3 border-[1px]">
         <AvatarImage src={avatarSrc} className="bg-fg4" />
+        {entry.data.isGroup &&
+          <div
+            className="absolute bottom-0 -right-2 bg-fg2 p-1 rounded-full border-[1px] border-bg3 w-[1.3em]"
+            title="Group Chat"
+          >
+            <Users className="text-bg1 w-full h-auto" />
+          </div>
+
+        }
       </Avatar>
       <div className="flex flex-1 flex-col gap-[0.1em] overflow-x-hidden">
         <div className="flex justify-between items-center ">
