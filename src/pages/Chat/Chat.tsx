@@ -79,7 +79,7 @@ export function Chat({ chat, sendFn, getContact, showInfo, closeChat }: Props) {
       </header>
 
       <main
-        className="flex flex-1 flex-col gap-2 mr-2 m-0 bg-fg0/20 border-1 border-fg4 rounded-sm p-1.5
+        className="box-border flex flex-1 flex-col gap-2 mr-2 m-0 bg-fg0/20 border-1 border-fg4 rounded-sm p-1.5
         overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <Messages
           scrollRef={scrollRef}

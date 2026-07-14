@@ -16,7 +16,7 @@ export function SidebarHeader({ toggleSidebar, openConfig, openChatList, openCon
 
 
   return (
-    <header className="max-h-fit flex items-center justify-between rounded-sm m-2
+    <header className="max-h-fit flex items-center justify-between rounded-sm m-2 mb-0
     *:text-bg1 *:size-[2.5em] [&>button>*]:size-full *:rounded-full">
       <Button
         onClick={toggleSidebar}

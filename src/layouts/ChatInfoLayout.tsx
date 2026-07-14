@@ -8,8 +8,8 @@ type Props = {
 }
 export function ChatInfoLayout({ backFn, label, children }: PropsWithChildren<Props>) {
   return (
-    <div className="relative box-border pr-2! flex-1 min-h-0 size-full grid grid-rows-[8%_1fr_auto] text-bg1 py-2">
-      <div className="flex items-center px-2 gap-2 *:bg-fg2 *:rounded-sm
+    <div className="relative box-border pr-2! min-h-0 max-w-full flex flex-col gap-4 m-4 ml-0 text-bg1">
+      <header className="flex items-center  gap-2 *:bg-fg2 *:rounded-sm
       *:px-2 *:py-1 *:border-[0.01em] *:border-fg3 *:text-bg1">
         <Button
           onClick={backFn}
@@ -17,14 +17,14 @@ export function ChatInfoLayout({ backFn, label, children }: PropsWithChildren<Pr
           <ArrowLeft />
         </Button>
         {label}
-      </div>
-      <div
-        className="flex justify-center m-2 bg-fg1 border-1 border-fg4 rounded-sm p-1.5
+      </header>
+      <main
+        className="flex flex-1 flex-col gap-2 mr-2 m-0 justify-center bg-fg1 border-1 border-fg4 rounded-sm 
         overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        <div className="w-[55%] h-full self-center flex flex-col gap-2 py-3">
+        <div className="w-[55%] h-full self-center flex flex-col gap-2 py-3 p-1.5">
           {children}
         </div>
-      </div>
+      </main>
     </div>
   )
 }

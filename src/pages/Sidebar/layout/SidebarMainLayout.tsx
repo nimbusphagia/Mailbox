@@ -10,7 +10,7 @@ type Props = {
 export function SidebarMainLayout({ query, onChange, className, search = true, children }: PropsWithChildren<Props>) {
   return (
     <div
-      className={`flex-1 flex flex-col  overflow-hidden *:rounded-sm *:m-2 ${className}`}
+      className={`flex-1 flex flex-col overflow-hidden *:rounded-sm *:m-2 ${className}`}
     >
       {search &&
         <SidebarSearchInput

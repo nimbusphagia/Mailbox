@@ -27,13 +27,6 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
   const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
   const [view, setView] = useState<SidebarView>("chats");
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  /*
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!isLoading) setLoading(false);
-  }, [isLoading]);
-*/
   useEffect(() => {
     if (mainView.screen !== "chat") {
       setActiveChat(null);
@@ -153,7 +146,7 @@ export function Sidebar({ data, nav, toggleSidebar, isHidden }: SidebarProps) {
       {isHidden ?
         <CollapsedSidebar toggleSidebar={toggleSidebar} />
         :
-        <aside className="flex flex-col m-2 overflow-hidden">
+        <aside className="flex flex-col m-2 gap-2 overflow-hidden">
           <SidebarHeader
             toggleSidebar={toggleSidebar}
             openConfig={openConfig}
